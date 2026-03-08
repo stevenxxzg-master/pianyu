@@ -33,14 +33,14 @@ export const SignInBanner: React.FC = () => {
           <strong>
             <FormattedMessage
               id='sign_in_banner.mastodon_is'
-              defaultMessage="Mastodon is the best way to keep up with what's happening."
+              defaultMessage='A place to drop in, catch up, and say hi.'
             />
           </strong>
         </p>
         <p>
           <FormattedMessage
             id='sign_in_banner.follow_anyone'
-            defaultMessage='Follow anyone across the fediverse and see it all in chronological order. No algorithms, ads, or clickbait in sight.'
+            defaultMessage='Follow people across communities, read in chronological order, and join in whenever you like.'
           />
         </p>
         <a
@@ -87,14 +87,14 @@ export const SignInBanner: React.FC = () => {
         <strong>
           <FormattedMessage
             id='sign_in_banner.mastodon_is'
-            defaultMessage="Mastodon is the best way to keep up with what's happening."
+            defaultMessage='A place to drop in, catch up, and say hi.'
           />
         </strong>
       </p>
       <p>
         <FormattedMessage
           id='sign_in_banner.follow_anyone'
-          defaultMessage='Follow anyone across the fediverse and see it all in chronological order. No algorithms, ads, or clickbait in sight.'
+          defaultMessage='Follow people across communities, read in chronological order, and join in whenever you like.'
         />
       </p>
       {signupButton}

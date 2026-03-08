@@ -20,7 +20,7 @@ import Suggestions from './suggestions';
 import Tags from './tags';
 
 const messages = defineMessages({
-  title: { id: 'explore.title', defaultMessage: 'Trending' },
+  title: { id: 'explore.title', defaultMessage: 'Explore' },
 });
 
 const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {

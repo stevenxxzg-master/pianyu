@@ -43,7 +43,7 @@ export const Trends: React.FC = () => {
           <Link to={'/explore/tags'}>
             <FormattedMessage
               id='trends.trending_now'
-              defaultMessage='Trending now'
+              defaultMessage='Around here'
             />
           </Link>
         </h4>

@@ -46,7 +46,7 @@ export const Card: React.FC<{ id: string; source: SuggestionSource }> = ({
       label = (
         <FormattedMessage
           id='follow_suggestions.friends_of_friends_longer'
-          defaultMessage='Popular among people you follow'
+          defaultMessage='People you follow also follow them'
         />
       );
       break;
@@ -71,7 +71,7 @@ export const Card: React.FC<{ id: string; source: SuggestionSource }> = ({
       label = (
         <FormattedMessage
           id='follow_suggestions.popular_suggestion_longer'
-          defaultMessage='Popular on {domain}'
+          defaultMessage='Often seen around {domain}'
           values={{ domain }}
         />
       );
@@ -80,7 +80,7 @@ export const Card: React.FC<{ id: string; source: SuggestionSource }> = ({
       label = (
         <FormattedMessage
           id='follow_suggestions.popular_suggestion_longer'
-          defaultMessage='Popular on {domain}'
+          defaultMessage='Often seen around {domain}'
           values={{ domain }}
         />
       );
