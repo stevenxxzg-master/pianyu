@@ -92,7 +92,10 @@ export const ComposePanel: React.FC = () => {
 
   return (
     <div className='compose-panel' onFocus={handleFocus}>
-      <section className='compose-entry compose-entry--panel' ref={composeEntryRef}>
+      <section
+        className='compose-entry compose-entry--panel'
+        ref={composeEntryRef}
+      >
         <div className='compose-entry__hero compose-entry__hero--compact'>
           <p className='compose-entry__eyebrow'>{publishLabel}</p>
           <h2 className='compose-entry__title'>

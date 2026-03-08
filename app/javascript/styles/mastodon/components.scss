@@ -3795,16 +3795,16 @@ a.account__display-name {
       var(--color-border-primary) 84%,
       var(--color-text-brand-soft)
     );
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(
+  background: linear-gradient(
+    180deg,
+    color-mix(
         in srgb,
         var(--color-bg-secondary) 84%,
         var(--color-bg-brand-softer)
-      ) 0%,
-      var(--color-bg-primary) 100%
-    );
+      )
+      0%,
+    var(--color-bg-primary) 100%
+  );
   box-shadow: 0 14px 32px -28px var(--color-shadow-primary);
 
   &--panel {
@@ -3918,11 +3918,7 @@ a.account__display-name {
     line-height: 30px;
 
     &::placeholder {
-      color: color-mix(
-        in srgb,
-        var(--color-text-secondary) 74%,
-        transparent
-      );
+      color: color-mix(in srgb, var(--color-text-secondary) 74%, transparent);
     }
   }
 

@@ -54,7 +54,8 @@ const messages = defineMessages({
   },
   search_hint: {
     id: 'compose.search_hint',
-    defaultMessage: 'Need an account, topic, or link? Search once the draft is down.',
+    defaultMessage:
+      'Need an account, topic, or link? Search once the draft is down.',
   },
 });
 
@@ -113,11 +114,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
 
   if (multiColumn) {
     return (
-      <div
-        className='drawer'
-        role='region'
-        aria-label={publishLabel}
-      >
+      <div className='drawer' role='region' aria-label={publishLabel}>
         <nav className='drawer__header'>
           <Link
             to='/getting-started'
@@ -237,7 +234,10 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
 
       <div className='scrollable'>
         <div className='compose-page'>
-          <section className='compose-entry compose-entry--page' ref={composeEntryRef}>
+          <section
+            className='compose-entry compose-entry--page'
+            ref={composeEntryRef}
+          >
             <div className='compose-entry__hero'>
               <p className='compose-entry__eyebrow'>{publishLabel}</p>
               <h2 className='compose-entry__title'>
