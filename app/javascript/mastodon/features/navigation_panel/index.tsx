@@ -65,7 +65,7 @@ const messages = defineMessages({
     id: 'tabs_bar.notifications',
     defaultMessage: 'Notifications',
   },
-  explore: { id: 'explore.title', defaultMessage: 'Trending' },
+  explore: { id: 'explore.title', defaultMessage: 'Explore' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
   firehose_singular: {
     id: 'column.firehose_singular',
@@ -90,7 +90,7 @@ const messages = defineMessages({
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
   searchTrends: {
     id: 'navigation_bar.search_trends',
-    defaultMessage: 'Search / Trending',
+    defaultMessage: 'Search / Explore',
   },
   advancedInterface: {
     id: 'navigation_bar.advanced_interface',
