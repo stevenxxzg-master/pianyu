@@ -29,7 +29,7 @@ zh-CN:
       edit:
         title: 修改应用
       form:
-        error: 抱歉! 提交信息的时候遇到了下面的错误
+        error: 提交信息时出现以下问题
       help:
         native_redirect_uri: 本地测试请使用 %{native_redirect_uri}
         redirect_uri: 每行只能有一个 URL
@@ -126,7 +126,7 @@ zh-CN:
         admin/accounts: 账号管理
         admin/all: 所有管理功能
         admin/reports: 举报管理
-        all: 完全访问你的Mastodon账号
+        all: 完整访问你的账号
         blocks: 屏蔽
         bookmarks: 收藏
         conversations: 会话
@@ -139,11 +139,11 @@ zh-CN:
         media: 媒体文件
         mutes: 已被隐藏的
         notifications: 通知
-        profile: 你的 Mastodon 个人资料
+        profile: 你的个人资料
         push: 推送通知
         reports: 举报
         search: 搜索
-        statuses: 嘟文
+        statuses: 动态
     layouts:
       admin:
         nav:
@@ -176,7 +176,7 @@ zh-CN:
       read:accounts: 查看账号信息
       read:blocks: 查看你的屏蔽列表
       read:bookmarks: 查看你的书签
-      read:favourites: 查看喜欢的嘟文
+      read:favourites: 查看喜欢的动态
       read:filters: 查看你的过滤规则
       read:follows: 查看你的关注
       read:lists: 查看你的列表
@@ -184,13 +184,13 @@ zh-CN:
       read:notifications: 查看你的通知
       read:reports: 查看你的举报
       read:search: 以你的身份搜索
-      read:statuses: 查看所有嘟文
+      read:statuses: 查看所有动态
       write: 修改你的账号数据
       write:accounts: 修改你的个人资料
       write:blocks: 屏蔽账号与站点
-      write:bookmarks: 将嘟文加入书签
+      write:bookmarks: 将动态加入书签
       write:conversations: 静音并删除会话
-      write:favourites: 喜欢嘟文
+      write:favourites: 喜欢动态
       write:filters: 创建过滤规则
       write:follows: 关注其他人
       write:lists: 创建列表
@@ -198,4 +198,4 @@ zh-CN:
       write:mutes: 隐藏用户和对话
       write:notifications: 清除你的通知
       write:reports: 举报他人
-      write:statuses: 发表嘟文
+      write:statuses: 发布动态
