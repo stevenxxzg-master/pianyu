@@ -55,14 +55,15 @@ describe('expandTimeline', () => {
       }),
     });
 
+    type TimelineState = typeof state;
     const dispatchedActions: { type?: string }[] = [];
-    const getState = () => state;
+    const getState = (): TimelineState => state;
     interface DispatchAction {
       type?: string;
     }
     type DispatchArgument =
       | DispatchAction
-      | ((dispatch: DispatchFn, getState: typeof getState) => unknown);
+      | ((dispatch: DispatchFn, getState: () => TimelineState) => unknown);
     type DispatchFn = (action: DispatchArgument) => unknown;
 
     const dispatch: DispatchFn = (action) => {
