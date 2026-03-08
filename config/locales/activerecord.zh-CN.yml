@@ -8,7 +8,7 @@ zh-CN:
       user:
         agreement: 服务协议
         email: 电子邮箱地址
-        locale: 本地化
+        locale: 界面语言
         password: 密码
       user/account:
         username: 用户名

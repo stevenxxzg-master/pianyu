@@ -1,10 +1,10 @@
 ---
 zh-CN:
   about:
-    about_mastodon_html: 来自未来的社交网络：无广告、无监视、去中心化、合乎道德！使用 Mastodon 夺回你的数据！
+    about_mastodon_html: 一个安静、去中心化、没有广告打扰的社交角落，把交流重新还给彼此。
     contact_missing: 未设定
     contact_unavailable: 未公开
-    hosted_on: 运行在 %{domain} 上的 Mastodon 实例
+    hosted_on: 运行在 %{domain} 上的社区站点
     title: 关于本站
   accounts:
     errors:
@@ -849,7 +849,7 @@ zh-CN:
         publish_statistics: 发布统计数据
         title: 发现
         trends: 热门
-        wrapstodon: Wrapstodon 年度回顾
+        wrapstodon: 年度回顾
       domain_blocks:
         all: 对每个人
         disabled: 不对任何人
@@ -1201,7 +1201,7 @@ zh-CN:
     boosting_preferences_info_html: "<strong>提示：</strong>无论当前设置如何，对 %{icon} 转嘟图标按<kbd>Shift</kbd> + <kbd>鼠标单击</kbd>将会立即转嘟。"
     discovery: 发现
     localization:
-      body: Mastodon 由志愿者翻译。
+      body: 当前系统文案由志愿者协作翻译。
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: 每个人都可以参与翻译。
     sensitive_content: 敏感内容
@@ -1240,9 +1240,9 @@ zh-CN:
     delete_account: 删除账号
     delete_account_html: 如果你想删除你的账号，请<a href="%{path}">点击此处继续</a>。你需要确认你的操作。
     description:
-      prefix_invited_by_user: "@%{name} 邀请你加入这个Mastodon服务器！"
-      prefix_sign_up: 现在就注册 Mastodon 吧！
-      suffix: 注册一个账号，你就可以关注他人、发布嘟文、并和其它任何 Mastodon 服务器上的用户交流，而且还有其它更多功能！
+      prefix_invited_by_user: "@%{name} 邀请你加入 %{domain}！"
+      prefix_sign_up: 现在就来这里注册吧！
+      suffix: 注册一个账号后，你就可以关注他人、发布动态，并和其他站点上的用户交流，还有更多功能等你探索！
     didnt_get_confirmation: 没有收到确认链接？
     dont_have_your_security_key: 没有你的安全密钥？
     forgot_password: 忘记密码？
@@ -1271,15 +1271,15 @@ zh-CN:
       accept: 接受
       back: 返回
       invited_by: 欢迎加入%{domain}，你是通过以下用户的邀请加入的：
-      preamble: 以下规则由 %{domain} 的管理员设定并执行。
-      preamble_invited: 在继续操作前，请先阅读并同意 %{domain} 管理员设置的基本规则。
+      preamble: 以下规则由 %{domain} 的站务人员设定并执行。
+      preamble_invited: 在继续操作前，请先阅读并同意 %{domain} 站务人员设置的基本规则。
       title: 一些基本规则。
       title_invited: 通过邀请加入
     security: 账号安全
     set_new_password: 设置新密码
     setup:
       email_below_hint_html: 请检查你的垃圾邮件文件夹，或请求重新发送邮件。如果你填写的邮箱地址有误，请更正。
-      email_settings_hint_html: 点击发送到 %{email} 的链接，即可开始使用 Mastodon。
+      email_settings_hint_html: 点击发送到 %{email} 的链接，即可继续完成注册。
       link_not_received: 没有收到链接？
       new_confirmation_instructions_sent: 你将在几分钟内收到一封带有确认链接的新邮件！
       title: 请检查你的收件箱
@@ -1287,8 +1287,8 @@ zh-CN:
       preamble_html: 使用你在 <strong>%{domain}</strong> 的账号和密码登录。如果你的账号是在其他站点上注册的，你将无法在此登录。
       title: 登录到 %{domain}
     sign_up:
-      manual_review: 你在 %{domain} 上的注册需要经由管理人员手动审核。 为了帮助我们处理你的注册，请简要说明你为什么想在 %{domain} 上注册。
-      preamble: 在这个 Mastodon 站点上注册一个账号，你就可以关注联邦宇宙中的任何人，无论他们的账号在哪里。
+      manual_review: 你在 %{domain} 上的注册需要由站务人员手动审核。为了帮助我们处理你的注册，请简要说明你为什么想在 %{domain} 上注册。
+      preamble: 在这里注册一个账号后，你就可以关注联邦宇宙中的任何人，无论他们的账号在哪个站点。
       title: 让我们在 %{domain} 上开始。
     status:
       account_status: 账号状态
@@ -1304,7 +1304,7 @@ zh-CN:
     user_privacy_agreement_html: 我已阅读并同意<a href="%{privacy_policy_path}" target="_blank">隐私政策</a>
   author_attribution:
     example_title: 示例文本
-    hint_html: 你是否在 Mastodon 之外撰写新闻或博客文章？控制它们被分享到 Mastodon 时的署名方式。
+    hint_html: 你是否在站外撰写新闻或博客文章？控制它们被分享到这里时的署名方式。
     instructions: 请确保将这段代码放在你文章的 HTML 中：
     more_from_html: 来自 %{name} 的更多内容
     s_blog: "%{name} 的博客"
@@ -1412,7 +1412,7 @@ zh-CN:
       content: 抱歉，服务器出现了一些故障。
       title: 页面无法正确加载
     '503': 服务器出现临时故障，无法加载页面。
-    noscript_html: 使用 Mastodon 网页版应用需要启用 JavaScript。你也可以选择适用于你的平台的 <a href="%{apps_path}">Mastodon 应用</a>。
+    noscript_html: 使用网页版需要启用 JavaScript。你也可以选择适用于你的平台的 <a href="%{apps_path}">官方应用</a>。
   existing_username_validator:
     not_found: 在本站找不到此用户
     not_found_multiple: 找不到 %{usernames}
@@ -1612,16 +1612,16 @@ zh-CN:
     unsubscribe:
       action: 是，取消订阅
       complete: 已取消订阅
-      confirmation_html: 你确定要退订来自 %{domain} 上的 Mastodon 的 %{type} 到你的邮箱 %{email} 吗？你可以随时在<a href="%{settings_path}">邮件通知设置</a>中重新订阅。
+      confirmation_html: 你确定要把 %{domain} 的 %{type} 从邮箱 %{email} 中退订吗？你可以随时在<a href="%{settings_path}">邮件通知设置</a>中重新订阅。
       emails:
         notification_emails:
-          favourite: 嘟文被喜欢邮件通知
+          favourite: 动态被喜欢邮件通知
           follow: 账号被关注邮件通知
           follow_request: 关注请求邮件通知
           mention: 账号被提及邮件通知
-          reblog: 嘟文被转嘟邮件通知
+          reblog: 动态被转嘟邮件通知
       resubscribe_html: 如果你不小心取消了订阅，可以在你的<a href="%{settings_path}">邮件通知设置</a>中重新订阅。
-      success_html: 你将不会在你的邮箱 %{email} 中收到 %{domain} 上的 Mastodon的 %{type}
+      success_html: 你的邮箱 %{email} 将不再收到 %{domain} 的 %{type}
       title: 取消订阅
   media_attachments:
     validations:
@@ -1675,8 +1675,8 @@ zh-CN:
       sign_up:
         subject: "%{name} 注册了"
     favourite:
-      body: 你的嘟文被 %{name} 喜欢了：
-      subject: "%{name} 喜欢了你的嘟文"
+      body: 你的动态被 %{name} 喜欢了：
+      subject: "%{name} 喜欢了你的动态"
       title: 新的喜欢
     follow:
       body: "%{name} 关注了你！"
@@ -1697,21 +1697,21 @@ zh-CN:
     poll:
       subject: "%{name} 创建的一个投票已经结束"
     quote:
-      body: 你的嘟文被 %{name} 引用了：
-      subject: "%{name} 引用了你的嘟文"
+      body: 你的动态被 %{name} 引用了：
+      subject: "%{name} 引用了你的动态"
       title: 新引用
     quoted_update:
-      subject: "%{name} 编辑了一条你之前引用过的嘟文"
+      subject: "%{name} 编辑了一条你之前引用过的动态"
     reblog:
-      body: 你的嘟文被 %{name} 转嘟了：
-      subject: "%{name} 转嘟了你的嘟文"
+      body: 你的动态被 %{name} 转嘟了：
+      subject: "%{name} 转嘟了你的动态"
       title: 新的转嘟
     severed_relationships:
       subject: 由于管理决定，你已失去网络上的关注关系
     status:
-      subject: "%{name} 刚刚发布嘟文"
+      subject: "%{name} 刚刚发布了新动态"
     update:
-      subject: "%{name} 编辑了嘟文"
+      subject: "%{name} 编辑了动态"
   notifications:
     administration_emails: 管理员电子邮件通知
     email_events: 邮件通知事件
@@ -1754,19 +1754,19 @@ zh-CN:
       too_many_options: 不能超过 %{max} 项
     vote: 投票
   posting_defaults:
-    explanation: 这些设置会在你撰写新嘟文时作为默认值应用，但每篇嘟文的设置也可以在编辑器处单独修改。
+    explanation: 这些设置会在你撰写新动态时作为默认值应用，但每条动态的设置也可以在编辑器中单独修改。
   preferences:
     other: 其他
     posting_defaults: 发布默认值
     public_timelines: 公共时间线
   privacy:
-    hint_html: "<strong>自定义你希望如何找到你的个人资料和嘟文。</strong>启用Mastodon中的各种功能可以帮助你扩大受众范围。请花点时间查看这些设置，确保它们适合你的使用情况。"
+    hint_html: "<strong>自定义你希望如何找到你的个人资料和动态。</strong>启用站内的发现功能可以帮助你扩大受众范围。请花点时间查看这些设置，确保它们适合你的使用情况。"
     privacy: 隐私
     privacy_hint_html: 控制你愿意向他人透露多少信息。通过浏览他人的关注列表和查看他们发嘟所用的应用，人们可以发现有趣的用户和酷炫的应用，但你可能更喜欢将其隐藏起来。
     reach: 范围
-    reach_hint_html: 控制你是否希望被新人发现和关注。你是否希望你的嘟文出现在“探索”页面上？你是否希望其他人在关注推荐中看到你？你是想自动接受全部新关注者，还是对每个关注者都进行仔细的筛选？
+    reach_hint_html: 控制你是否希望被新人发现和关注。你是否希望你的动态出现在“探索”页面上？你是否希望其他人在关注推荐中看到你？你是想自动接受全部新关注者，还是对每个关注者都进行仔细的筛选？
     search: 搜索
-    search_hint_html: 控制你希望被找到的方式。你想让人们通过你公开发布的内容来找到你吗？当在网络上搜索时，你是否希望Mastodon之外的人能够找到你的个人资料？请注意，我们无法保证完全排除所有搜索引擎对公开信息的索引。
+    search_hint_html: 控制你希望被找到的方式。你想让人们通过你公开发布的内容来找到你吗？当在网络上搜索时，你是否希望站外的人能够找到你的个人资料？请注意，我们无法保证完全排除所有搜索引擎对公开信息的索引。
     title: 隐私与可达性
   privacy_policy:
     title: 隐私政策
@@ -1841,7 +1841,7 @@ zh-CN:
     current_session: 当前会话
     date: 日期
     description: "%{platform} 上的 %{browser}"
-    explanation: 你的 Mastodon 账号目前已在这些浏览器上登录。
+    explanation: 你的账号目前已在这些浏览器上登录。
     ip: IP 地址
     platforms:
       adobe_air: Adobe Air
@@ -1867,7 +1867,7 @@ zh-CN:
     aliases: 账号别名
     appearance: 外观
     authorized_apps: 已授权的应用
-    back: 返回 Mastodon
+    back: 返回站内
     delete: 删除账号
     development: 开发
     edit_profile: 更改个人资料
@@ -1894,7 +1894,7 @@ zh-CN:
     lost_followers: 失去的关注者
     lost_follows: 失去的关注
     preamble: 如果你屏蔽了某个站点，或者管理员封禁了某个站点，你可能会丢失一部分关注和关注者。你可以下载联系被中断的账号列表，进行检查并导入到其他站点。
-    purged: 关于此服务器的信息已被你所在服务器的管理员清除。
+    purged: 关于这个站点的信息已被你所在站点的站务人员清除。
     type: 事件
   statuses:
     attached:
@@ -1920,7 +1920,7 @@ zh-CN:
       quoted_user_not_mentioned: 无法在私下提及嘟文中引用未提及的用户。
     over_character_limit: 超过了 %{max} 字的限制
     pin_errors:
-      direct: 仅对被提及的用户可见的帖子不能被置顶
+      direct: 仅对被提及的用户可见的动态不能被置顶
       limit: 你置顶的嘟文数量已达上限
       ownership: 不能置顶别人的嘟文
       reblog: 不能置顶转嘟
@@ -1938,9 +1938,9 @@ zh-CN:
       direct: 私下提及
       private: 仅关注者
       public: 公开
-      public_long: 任何人（无论是否注册了 Mastodon）
+      public_long: 任何人（无论是否注册）
       unlisted: 悄悄公开
-      unlisted_long: 不显示在Mastodon的搜索结果、热门趋势、公共时间线上
+      unlisted_long: 不显示在搜索结果、热门趋势或公共时间线上
   statuses_cleanup:
     enabled: 自动删除旧嘟文
     enabled_hint: 自动删除你发布的超过指定期限的嘟文，除非满足下列条件之一
@@ -2017,7 +2017,7 @@ zh-CN:
     recovery_codes_regenerated: 恢复代码重新生成成功
     recovery_instructions_html: 如果你的手机无法使用，你可以使用下列任意一个恢复代码来重新获得对账号的访问权。<strong>请妥善保管好你的恢复代码</strong>（例如，你可以将它们打印出来，然后和其他重要的文件放在一起）。
     resume_app_authorization: 恢复应用程序授权
-    role_requirement: "%{domain} 要求你设置双因素认证以使用 Mastodon。"
+    role_requirement: "%{domain} 要求你设置双因素认证后再继续使用账号。"
     webauthn: 安全密钥
   user_mailer:
     announcement_published:
@@ -2036,7 +2036,7 @@ zh-CN:
       subtitle: 你的申诉已被驳回。
       title: 申诉已驳回
     backup_ready:
-      explanation: 你之前请求为你的 Mastodon 账号创建一份完整的备份。
+      explanation: 你之前请求为你的账号创建一份完整的备份。
       extra: 现在它可以下载了！
       subject: 你的存档已经准备完毕
       title: 存档导出
@@ -2069,26 +2069,26 @@ zh-CN:
         spam: 垃圾信息
         violation: 内容违反了以下社区准则
       explanation:
-        delete_statuses: 你的一些嘟文被发现违反了一条或多条社区准则，并已被 %{instance} 的管理员删除。
-        disable: 你不能再使用你的账号，但你的个人资料和其他数据保持不变。你可以请求数据备份，更改账号设置或删除账号。
-        mark_statuses_as_sensitive: 你的一些嘟文已经被 %{instance} 管理员标记为敏感内容。这意味着别人需要在嘟文中点击媒体，才能显示媒体预览。你可以在今后发布嘟文时自行将媒体标记为敏感内容。
+        delete_statuses: 你的一些动态被发现违反了一条或多条社区准则，并已被 %{instance} 的站务人员删除。
+        disable: 你的账号目前无法继续使用，但个人资料和其他数据会暂时保留。你仍可以请求数据备份、更改账号设置或删除账号。
+        mark_statuses_as_sensitive: 你的一些动态已被 %{instance} 的站务人员标记为敏感内容。这意味着别人需要在动态中点开媒体，才能显示媒体预览。你也可以在今后发布动态时自行将媒体标记为敏感内容。
         sensitive: 即刻起，你上传的全部媒体文件都将被标记为敏感内容并隐藏，在点击警告后才能查看。
-        silence: 你可以继续使用你的账号，但只有已关注你的人才能在看到你在此服务器上的嘟文，并且你会被排除在各类公共列表之外。其他用户仍可以手动关注你。
-        suspend: 你不能再使用你的账号，并且你的个人资料和其他数据都将无法访问。在大约30天内，你仍可以登录并请求数据备份，之后相关数据将被完全删除。我们会保留一些基础数据以避免封禁失效。
+        silence: 你的账号仍可继续使用，但你的动态只会展示给已关注你的人，也不会出现在公共列表中。其他账号仍然可以手动关注你。
+        suspend: 你的账号目前无法继续使用，个人资料和其他数据也将暂时无法访问。你仍可在约 30 天内登录并请求数据备份，之后相关数据会被完全删除。为确保封禁持续生效，我们会保留一小部分基础数据。
       reason: 理由：
-      statuses: 被引用的嘟文：
+      statuses: 被引用的动态：
       subject:
-        delete_statuses: 你在 %{acct} 的嘟文已被删除
+        delete_statuses: 你在 %{acct} 的动态已被删除
         disable: 你的账号 %{acct} 已被冻结
-        mark_statuses_as_sensitive: 你在 %{acct} 的嘟文已被标记为敏感内容
+        mark_statuses_as_sensitive: 你在 %{acct} 的动态已被标记为敏感内容
         none: 对 %{acct} 的警告
-        sensitive: 你在 %{acct} 的嘟文今后将被标记为敏感内容
+        sensitive: 你在 %{acct} 的动态今后将被标记为敏感内容
         silence: 你的账号 %{acct} 已被隐藏
         suspend: 你的账号 %{acct} 已被封禁
       title:
-        delete_statuses: 嘟文已删除
+        delete_statuses: 动态已删除
         disable: 账号已冻结
-        mark_statuses_as_sensitive: 嘟文已被标记为敏感内容
+        mark_statuses_as_sensitive: 动态已被标记为敏感内容
         none: 警示
         sensitive: 账号已被标记为敏感内容
         silence: 账号被隐藏
@@ -2097,7 +2097,7 @@ zh-CN:
       apps_android_action: 从 Google Play 下载
       apps_ios_action: 从 App Store 下载
       apps_step: 下载我们的官方应用。
-      apps_title: Mastodon 应用
+      apps_title: 官方应用
       checklist_subtitle: 让我们带你开启这片社交新天地：
       checklist_title: 欢迎清单
       edit_profile_action: 个性化
@@ -2105,35 +2105,35 @@ zh-CN:
       edit_profile_title: 个性化你的个人资料
       explanation: 下面是几个小贴士，希望它们能帮到你
       feature_action: 详细了解
-      feature_audience: Mastodon 为你提供了无需中间商即可管理受众的独特可能。Mastodon 可被部署在你自己的基础设施上，允许你关注其它任何 Mastodon 在线服务器的用户，或被任何其他在线 Mastodon 服务器的用户关注，并且不受你之外的任何人控制。
-      feature_audience_title: 自由吸引你的受众
-      feature_control: 你最清楚你想在你自己的主页中看到什么动态。没有算法或广告浪费你的时间。你可以用一个账号关注任何 Mastodon 服务器上的任何人，并按时间顺序获得他们发布的嘟文，让你的互联网的角落更合自己的心意。
-      feature_control_title: 掌控自己的时间线
-      feature_creativity: Mastodon 支持音频、视频和图片、无障碍描述、投票、内容警告， 动画头像、自定义表情包、缩略图裁剪控制等功能，帮助你在网上尽情表达自己。无论你是要发布你的艺术作品、音乐还是播客，Mastodon 都能为你服务。
-      feature_creativity_title: 尽情发挥创造力
-      feature_moderation: Mastodon 将决策权交还给你。每个服务器都会创建自己的规则和条例，并在站点内施行，而不是像企业社交媒体那样居高临下，这使得它可以最灵活地响应不同人群的需求。加入一个你认同其规则的服务器，或托管你自己的服务器。
-      feature_moderation_title: 管理，本应如此
+      feature_audience: 这里没有广告和流量竞赛，你可以自在地找到想交流的人，也让合拍的人找到你。无论对方在哪个站点，只要彼此愿意，就能自然地连上。
+      feature_audience_title: 自在遇见同频的人
+      feature_control: 首页该出现什么，由你自己决定。没有算法打断，也不靠广告排序。关注你在意的账号后，他们的新动态会按时间顺序出现，让这里慢慢长成你喜欢的样子。
+      feature_control_title: 把首页交还给自己
+      feature_creativity: 这里支持音频、视频、图片、无障碍描述、投票、内容提醒、自定义表情等多种表达方式。无论你想分享作品、近况还是灵感，都能慢慢说清楚。
+      feature_creativity_title: 让表达更从容
+      feature_moderation: 每个站点都可以按自己的节奏制定规则并照顾社区氛围，不必被统一的平台逻辑裹挟。选择你认同的站点，或者搭一个属于自己的角落。
+      feature_moderation_title: 社区气质由社区决定
       follow_action: 关注
-      follow_step: 关注有趣的人，这就是 Mastodon 的意义所在。
-      follow_title: 个性化你的主页动态
-      follows_subtitle: 关注知名账号
+      follow_step: 先关注一些你想常常见到的人，首页就会慢慢热闹起来。
+      follow_title: 把首页变成喜欢的样子
+      follows_subtitle: 从这些账号开始逛逛
       follows_title: 推荐关注
       follows_view_more: 查看更多可关注的人
       hashtags_recent_count:
         other: 过去2天内有 %{people} 人
-      hashtags_subtitle: 探索过去2天以来的热门内容
+      hashtags_subtitle: 看看这两天大家在聊什么
       hashtags_title: 热门话题
       hashtags_view_more: 查看更多热门话题
       post_action: 撰写
-      post_step: 向世界打个招呼吧。
-      post_title: 发布你的第一条嘟文
-      share_step: 让你的朋友知道如何在 Mastodon 找到你。
-      share_title: 分享你的 Mastodon 个人资料
+      post_step: 发一条动态，向大家打个招呼吧。
+      post_title: 发布你的第一条动态
+      share_step: 把你的主页分享给朋友，方便他们在这里找到你。
+      share_title: 分享你的个人资料
       sign_in_action: 登录
-      subject: 欢迎来到 Mastodon
+      subject: 欢迎来到这里
       title: "%{name}，欢迎你的加入！"
   users:
-    follow_limit_reached: 你不能关注超过 %{limit} 个人
+    follow_limit_reached: 你最多只能关注 %{limit} 个账号
     go_to_sso_account_settings: 转到你的身份提供商进行账号设置
     invalid_otp_token: 输入的双因素认证代码无效
     otp_lost_help_html: 如果你不慎丢失了全部的代码，请联系 %{email} 寻求帮助
@@ -2143,7 +2143,7 @@ zh-CN:
   verification:
     extra_instructions_html: <strong>提示：</strong>你网站上的链接可能是不可见的。重要的部分是 <code>rel="me"</code>，它可以防止在具有用户生成内容的网站上冒充身份。你甚至可以在页面头部使用 <code>link</code> 标签而不是 <code>a</code>，但 HTML 必须能够在不执行 JavaScript 的情况下访问。
     here_is_how: 具体方法如下：
-    hint_html: "<strong>在Mastodon上验证你的身份对每个人都是必要的。</strong>基于开放网络标准，现在和将来永远免费。你只需要一个被人们认可的个人网站。当你在个人资料中链接到这个网站时，我们会检查该网站是否回链到你的资料，并显示一个指示符号。"
+    hint_html: "<strong>在这里验证你的身份，对每个人都一样重要。</strong>它基于开放网络标准，现在和以后都可以免费使用。你只需要一个被人们认得出的个人网站。把网站链接填进个人资料后，我们会检查该网站是否回链到你的资料，并显示一个已验证标记。"
     instructions_html: 将下面的代码复制并粘贴到你网站的HTML中。然后在“编辑个人资料”选项卡中的附加字段之一添加你网站的地址，并保存更改。
     verification: 验证
     verified_links: 你已验证的链接
@@ -2167,5 +2167,5 @@ zh-CN:
     otp_required: 要使用安全密钥，请先启用双因素认证。
     registered_on: 注册于 %{date}
   wrapstodon:
-    description: 来看看%{name}今年是怎么使用Mastodon的！
-    title: "%{name}的%{year}年Wrapstodon年度回顾"
+    description: 来看看 %{name} 今年在这里留下了哪些片刻！
+    title: "%{name} 的 %{year} 年度回顾"
