@@ -1,20 +1,48 @@
 #!/usr/bin/env sh
+set -eu
 
-# Default to port 3000 if not specified
 export PORT="${PORT:-3000}"
-
-# Get around our boot.rb ENV check
+export STREAMING_PORT="${STREAMING_PORT:-4000}"
+export VITE_RUBY_PORT="${VITE_RUBY_PORT:-3036}"
 export RAILS_ENV="${RAILS_ENV:-development}"
+export NODE_ENV="${NODE_ENV:-development}"
+export LOCAL_DOMAIN="${LOCAL_DOMAIN:-localhost:${PORT}}"
+export STREAMING_API_BASE_URL="${STREAMING_API_BASE_URL:-ws://localhost:${STREAMING_PORT}}"
+export VITE_DEV_SERVER_PUBLIC="${VITE_DEV_SERVER_PUBLIC:-localhost:${VITE_RUBY_PORT}}"
 
-if command -v overmind 1> /dev/null 2>&1
-then
-  overmind start -f Procfile.dev "$@"
-  exit $?
+required_bundler_version="$(ruby -e 'print File.read("Gemfile.lock")[/\nBUNDLED WITH\n\s+([^\n]+)/, 1].to_s.strip')"
+
+if [ -n "$required_bundler_version" ] && ! bundle "_${required_bundler_version}_" -v >/dev/null 2>&1; then
+  echo "Bundler $required_bundler_version is not installed for the active Ruby."
+  echo 'Run bin/setup after activating the repo-pinned Ruby and Node versions.'
+  exit 1
 fi
 
-if gem list --no-installed --exact --silent foreman; then
-  echo "Installing foreman..."
-  gem install foreman
+if [ -n "$required_bundler_version" ]; then
+  if ! bundle "_${required_bundler_version}_" check >/dev/null 2>&1; then
+    echo 'Ruby gems are missing.'
+    echo 'Run bin/setup before starting the development stack.'
+    exit 1
+  fi
+elif ! bundle check >/dev/null 2>&1; then
+  echo 'Ruby gems are missing.'
+  echo 'Run bin/setup before starting the development stack.'
+  exit 1
 fi
 
-foreman start -f Procfile.dev "$@"
+if ! bin/yarn --version >/dev/null 2>&1; then
+  echo 'JavaScript dependencies are missing or Yarn is unavailable.'
+  echo 'Run bin/setup before starting the development stack.'
+  exit 1
+fi
+
+if command -v overmind >/dev/null 2>&1; then
+  exec overmind start -f Procfile.dev "$@"
+fi
+
+if command -v foreman >/dev/null 2>&1; then
+  exec foreman start -f Procfile.dev "$@"
+fi
+
+echo 'Neither overmind nor foreman is installed; using the built-in Procfile runner.'
+exec ruby bin/dev-procfile Procfile.dev "$@"

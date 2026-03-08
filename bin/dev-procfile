@@ -1,0 +1,93 @@
+#!/usr/bin/env ruby
+$stdout.sync = true
+$stderr.sync = true
+
+APP_ROOT = File.expand_path('..', __dir__)
+procfile = File.expand_path(ARGV.fetch(0, 'Procfile.dev'), APP_ROOT)
+
+entries = File.readlines(procfile, chomp: true).filter_map do |line|
+  line = line.strip
+  next if line.empty? || line.start_with?('#')
+
+  name, command = line.split(':', 2)
+  next unless name && command
+
+  [name.strip, command.strip]
+end
+
+abort "No processes found in #{procfile}" if entries.empty?
+
+children = {}
+output_threads = []
+stopping = false
+exit_code = 0
+
+shutdown = lambda do |signal|
+  children.each_value do |pid|
+    begin
+      Process.kill(signal, pid)
+    rescue Errno::ESRCH
+    end
+  end
+end
+
+Signal.trap('INT') do
+  stopping = true
+  exit_code = 130 if exit_code.zero?
+  shutdown.call('TERM')
+end
+
+Signal.trap('TERM') do
+  stopping = true
+  exit_code = 143 if exit_code.zero?
+  shutdown.call('TERM')
+end
+
+entries.each do |name, command|
+  reader, writer = IO.pipe
+  pid = Process.spawn(command, chdir: APP_ROOT, out: writer, err: writer)
+  writer.close
+  children[name] = pid
+
+  output_threads << Thread.new(name, reader) do |process_name, io|
+    io.each_line do |line|
+      STDOUT.print("[#{process_name}] #{line}")
+    end
+  ensure
+    io.close
+  end
+
+  puts "[#{name}] started: #{command}"
+end
+
+begin
+  until children.empty?
+    pid, status = Process.wait2
+    name = children.key(pid)
+    next unless name
+
+    children.delete(name)
+    status_code = status.exitstatus || (128 + status.termsig.to_i)
+    puts "[#{name}] exited with status #{status_code}"
+
+    next if stopping
+
+    exit_code = status_code
+    stopping = true
+    shutdown.call('TERM')
+  end
+ensure
+  sleep 1
+  shutdown.call('KILL') unless children.empty?
+
+  children.each_value do |pid|
+    begin
+      Process.wait(pid)
+    rescue Errno::ECHILD, Errno::ESRCH
+    end
+  end
+
+  output_threads.each(&:join)
+end
+
+exit exit_code
