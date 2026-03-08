@@ -13,6 +13,8 @@ RSpec.configure do |config|
   end
 
   config.before :suite do
+    next unless defined?(Rails)
+
     Rails.application.load_seed
     Chewy.strategy(:bypass)
 
@@ -24,6 +26,8 @@ RSpec.configure do |config|
   end
 
   config.after :suite do
+    next unless defined?(Rails)
+
     FileUtils.rm_rf(Rails.root.glob('spec/test_files'))
   end
 

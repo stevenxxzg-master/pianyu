@@ -1,10 +1,38 @@
 #!/usr/bin/env sh
 
+APP_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$APP_ROOT" || exit 1
+
 # Default to port 3000 if not specified
 export PORT="${PORT:-3000}"
 
 # Get around our boot.rb ENV check
 export RAILS_ENV="${RAILS_ENV:-development}"
+
+managed_env=false
+has_nondefault_env() {
+  var_name="$1"
+  shift
+  eval "var_value=\${${var_name}:-}"
+
+  [ -n "$var_value" ] || return 1
+
+  for default_value in "$@"; do
+    [ "$var_value" = "$default_value" ] && return 1
+  done
+
+  return 0
+}
+
+if [ -n "${VAGRANT:-}" ] || [ -n "${REMOTE_DEV:-}" ] || [ -n "${DATABASE_URL:-}" ] || has_nondefault_env LOCAL_DOMAIN 'localhost:3000' || has_nondefault_env DB_HOST 'localhost' || has_nondefault_env REDIS_HOST 'localhost' '127.0.0.1'; then
+  managed_env=true
+fi
+
+if [ ! -f .env ] && [ -f .env.example ] && [ "$managed_env" = false ]; then
+  printf '\n== Bootstrapping local environment ==\n'
+  cp .env.example .env
+  echo 'Created .env from .env.example. Review the copied defaults if your local services differ.'
+fi
 
 if command -v overmind 1> /dev/null 2>&1
 then

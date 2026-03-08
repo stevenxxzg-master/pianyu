@@ -1,4 +1,4 @@
-web: env PORT=3000 RAILS_ENV=development bundle exec puma -C config/puma.rb
-sidekiq: env PORT=3000 RAILS_ENV=development bundle exec sidekiq
+web: sh -c 'PORT="${PORT:-3000}" RAILS_ENV="${RAILS_ENV:-development}" exec bundle exec puma -C config/puma.rb'
+sidekiq: sh -c 'RAILS_ENV="${RAILS_ENV:-development}" exec bundle exec sidekiq'
 stream: env PORT=4000 yarn workspace @mastodon/streaming start
 vite: yarn dev
