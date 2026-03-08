@@ -12,6 +12,16 @@ RSpec.describe UserSettings do
       it 'returns default value' do
         expect(subject[:always_send_emails]).to be false
       end
+
+      it 'returns quieter notification email defaults' do
+        aggregate_failures do
+          expect(subject[:'notification_emails.follow']).to be true
+          expect(subject[:'notification_emails.mention']).to be true
+          expect(subject[:'notification_emails.follow_request']).to be true
+          expect(subject[:'notification_emails.quote']).to be false
+          expect(subject[:'notification_emails.trends']).to be false
+        end
+      end
     end
 
     context 'when setting is set' do
