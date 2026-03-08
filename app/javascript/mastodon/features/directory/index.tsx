@@ -28,7 +28,16 @@ import { useAppDispatch, useAppSelector } from 'mastodon/store';
 import { AccountCard } from './components/account_card';
 
 const messages = defineMessages({
-  title: { id: 'column.directory', defaultMessage: 'Browse profiles' },
+  title: { id: 'footer.directory', defaultMessage: 'Profiles directory' },
+  secondaryPath: {
+    id: 'people_discovery.secondary_path',
+    defaultMessage: 'Secondary path',
+  },
+  description: {
+    id: 'people_discovery.directory.description',
+    defaultMessage:
+      'Use the directory when you want to browse more profiles by activity or server. If you already know who you are looking for, search is faster.',
+  },
   recentlyActive: {
     id: 'directory.recently_active',
     defaultMessage: 'Recently active',
@@ -137,6 +146,19 @@ export const Directory: React.FC<{
 
   const scrollableArea = (
     <div className='scrollable'>
+      <div className='people-discovery-panel'>
+        <div className='people-discovery-panel__eyebrow'>
+          {intl.formatMessage(messages.secondaryPath)}
+        </div>
+
+        <div className='people-discovery-panel__body'>
+          <div className='people-discovery-panel__content'>
+            <h3>{intl.formatMessage(messages.title)}</h3>
+            <p>{intl.formatMessage(messages.description)}</p>
+          </div>
+        </div>
+      </div>
+
       <div className='filter-form'>
         <div className='filter-form__column' role='group'>
           <RadioButton

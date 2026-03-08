@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { FormattedMessage, useIntl, defineMessages } from 'react-intl';
+import { useIntl, defineMessages } from 'react-intl';
 
 import { Link } from 'react-router-dom';
 
@@ -17,6 +17,26 @@ const messages = defineMessages({
   dismiss: {
     id: 'follow_suggestions.dismiss',
     defaultMessage: "Don't show again",
+  },
+  fromCuratedSource: {
+    id: 'follow_suggestions.source.curated',
+    defaultMessage: 'From the {domain} team',
+  },
+  fromNetworkSource: {
+    id: 'follow_suggestions.source.network',
+    defaultMessage: 'From people you follow',
+  },
+  fromRecentFollowsSource: {
+    id: 'follow_suggestions.source.recent',
+    defaultMessage: 'Related to recent follows',
+  },
+  oftenFollowedSource: {
+    id: 'follow_suggestions.source.followed',
+    defaultMessage: 'Often followed on {domain}',
+  },
+  oftenSeenSource: {
+    id: 'follow_suggestions.source.seen',
+    defaultMessage: 'Often seen on {domain}',
   },
 });
 
@@ -43,47 +63,19 @@ export const Card: React.FC<{ id: string; source: SuggestionSource }> = ({
 
   switch (source) {
     case 'friends_of_friends':
-      label = (
-        <FormattedMessage
-          id='follow_suggestions.friends_of_friends_longer'
-          defaultMessage='Popular among people you follow'
-        />
-      );
+      label = intl.formatMessage(messages.fromNetworkSource);
       break;
     case 'similar_to_recently_followed':
-      label = (
-        <FormattedMessage
-          id='follow_suggestions.similar_to_recently_followed_longer'
-          defaultMessage='Similar to profiles you recently followed'
-        />
-      );
+      label = intl.formatMessage(messages.fromRecentFollowsSource);
       break;
     case 'featured':
-      label = (
-        <FormattedMessage
-          id='follow_suggestions.featured_longer'
-          defaultMessage='Hand-picked by the {domain} team'
-          values={{ domain }}
-        />
-      );
+      label = intl.formatMessage(messages.fromCuratedSource, { domain });
       break;
     case 'most_followed':
-      label = (
-        <FormattedMessage
-          id='follow_suggestions.popular_suggestion_longer'
-          defaultMessage='Popular on {domain}'
-          values={{ domain }}
-        />
-      );
+      label = intl.formatMessage(messages.oftenFollowedSource, { domain });
       break;
     case 'most_interactions':
-      label = (
-        <FormattedMessage
-          id='follow_suggestions.popular_suggestion_longer'
-          defaultMessage='Popular on {domain}'
-          values={{ domain }}
-        />
-      );
+      label = intl.formatMessage(messages.oftenSeenSource, { domain });
       break;
   }
 
@@ -93,7 +85,9 @@ export const Card: React.FC<{ id: string; source: SuggestionSource }> = ({
 
   return (
     <div className='explore-suggestions-card'>
-      <div className='explore-suggestions-card__source'>{label}</div>
+      <div className='explore-suggestions-card__source' title={label}>
+        {label}
+      </div>
 
       <div className='explore-suggestions-card__body'>
         <Link

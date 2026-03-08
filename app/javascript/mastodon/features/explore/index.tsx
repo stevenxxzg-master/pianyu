@@ -20,6 +20,7 @@ import Suggestions from './suggestions';
 import Tags from './tags';
 
 const messages = defineMessages({
+  findPeople: { id: 'explore.find_people', defaultMessage: 'Find people' },
   title: { id: 'explore.title', defaultMessage: 'Trending' },
 });
 
@@ -68,16 +69,6 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
           />
         </NavLink>
 
-        {signedIn && (
-          <NavLink exact to='/explore/suggestions'>
-            <FormattedMessage
-              tagName='div'
-              id='explore.suggested_follows'
-              defaultMessage='People'
-            />
-          </NavLink>
-        )}
-
         <NavLink exact to='/explore/links'>
           <FormattedMessage
             tagName='div'
@@ -85,6 +76,12 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             defaultMessage='News'
           />
         </NavLink>
+
+        {signedIn && (
+          <NavLink exact to='/explore/suggestions'>
+            <div>{intl.formatMessage(messages.findPeople)}</div>
+          </NavLink>
+        )}
       </div>
 
       <Switch>

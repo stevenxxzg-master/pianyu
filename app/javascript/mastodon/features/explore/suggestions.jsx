@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -17,6 +17,42 @@ const mapStateToProps = state => ({
   suggestions: state.suggestions.items,
   isLoading: state.suggestions.isLoading,
 });
+
+const SuggestionsIntro = () => (
+  <div className='people-discovery-panel'>
+    <div className='people-discovery-panel__eyebrow'>
+      <FormattedMessage
+        id='people_discovery.secondary_path'
+        defaultMessage='Secondary path'
+      />
+    </div>
+
+    <div className='people-discovery-panel__body'>
+      <div className='people-discovery-panel__content'>
+        <h3>
+          <FormattedMessage
+            id='explore.find_people'
+            defaultMessage='Find people'
+          />
+        </h3>
+
+        <p>
+          <FormattedMessage
+            id='people_discovery.suggestions.description'
+            defaultMessage='Use this list when you want a few more people to browse. If you already know who you are looking for, search is faster.'
+          />
+        </p>
+      </div>
+
+      <Link to='/directory' className='people-discovery-panel__link'>
+        <FormattedMessage
+          id='footer.directory'
+          defaultMessage='Profiles directory'
+        />
+      </Link>
+    </div>
+  </div>
+);
 
 class Suggestions extends PureComponent {
 
@@ -43,9 +79,17 @@ class Suggestions extends PureComponent {
 
     if (!isLoading && suggestions.length === 0) {
       return (
-        <div className='explore__suggestions scrollable scrollable--flex'>
+        <div
+          className='explore__suggestions scrollable scrollable--flex'
+          data-nosnippet
+        >
+          <SuggestionsIntro />
+
           <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.explore_statuses' defaultMessage='Nothing is trending right now. Check back later!' />
+            <FormattedMessage
+              id='people_discovery.empty_suggestions'
+              defaultMessage='No account suggestions are available right now.'
+            />
           </div>
         </div>
       );
@@ -53,6 +97,8 @@ class Suggestions extends PureComponent {
 
     return (
       <div className='explore__suggestions scrollable' data-nosnippet>
+        <SuggestionsIntro />
+
         {isLoading ? <LoadingIndicator /> : suggestions.map(suggestion => (
           <Card
             key={suggestion.account_id}
