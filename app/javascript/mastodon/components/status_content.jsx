@@ -19,14 +19,57 @@ import { EmojiHTML } from './emoji/html';
 import { HandledLink } from './status/handled_link';
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
+const SHORT_STATUS_MAX_CHARACTERS = 160;
+const SHORT_STATUS_MAX_BLOCKS = 2;
+const contentParser = typeof DOMParser === 'undefined' ? null : new DOMParser();
 
 /**
  *
- * @param {any} status
+ * @param {{ getIn: (path: string[]) => string, get: (key: string) => string }} status
  * @returns {string}
  */
 export function getStatusContent(status) {
   return status.getIn(['translation', 'contentHtml']) || status.get('contentHtml');
+}
+
+export function getStatusContentMeta(contentHtml) {
+  if (!contentHtml) {
+    return { blockCount: 0, text: '', textLength: 0 };
+  }
+
+  if (contentParser) {
+    const document = contentParser.parseFromString(contentHtml, 'text/html');
+    const text = document.body.textContent?.replace(/\s+/g, ' ').trim() || '';
+    const blockCount = document.body.querySelectorAll('p, pre, blockquote, ul, ol').length || (text ? 1 : 0);
+
+    return {
+      blockCount,
+      text,
+      textLength: text.length,
+    };
+  }
+
+  const text = contentHtml
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return {
+    blockCount: text ? 1 : 0,
+    text,
+    textLength: text.length,
+  };
+}
+
+export function shouldPromoteStatusContent(contentHtml, { collapsed = false, isQuotedPost = false, spoilerText = '' } = {}) {
+  if (collapsed || isQuotedPost || spoilerText.length > 0) {
+    return false;
+  }
+
+  const { textLength, blockCount } = getStatusContentMeta(contentHtml);
+
+  return textLength > 0 && textLength <= SHORT_STATUS_MAX_CHARACTERS && blockCount <= SHORT_STATUS_MAX_BLOCKS;
 }
 
 class TranslateButton extends PureComponent {
@@ -46,7 +89,7 @@ class TranslateButton extends PureComponent {
 
       return (
         <div className='translate-button'>
-          <button className='link-button' onClick={onClick}>
+          <button type='button' className='link-button' onClick={onClick}>
             <FormattedMessage id='status.show_original' defaultMessage='Show original' />
           </button>
 
@@ -58,7 +101,7 @@ class TranslateButton extends PureComponent {
     }
 
     return (
-      <button className='status__content__translate-button' onClick={onClick}>
+      <button type='button' className='status__content__translate-button' onClick={onClick}>
         <FormattedMessage id='status.translate' defaultMessage='Translate' />
       </button>
     );
@@ -89,6 +132,7 @@ class StatusContent extends PureComponent {
     onTranslate: PropTypes.func,
     onClick: PropTypes.func,
     collapsible: PropTypes.bool,
+    isQuotedPost: PropTypes.bool,
     onCollapsedToggle: PropTypes.func,
     languages: ImmutablePropTypes.map,
     intl: PropTypes.object,
@@ -194,13 +238,19 @@ class StatusContent extends PureComponent {
 
     const content = statusContent ?? getStatusContent(status);
     const language = status.getIn(['translation', 'language']) || status.get('language');
+    const isLeadContent = shouldPromoteStatusContent(content, {
+      collapsed: renderReadMore,
+      isQuotedPost: this.props.isQuotedPost,
+      spoilerText: status.get('spoiler_text'),
+    });
     const classNames = classnames('status__content', {
       'status__content--with-action': this.props.onClick && this.props.history,
       'status__content--collapsed': renderReadMore,
+      'status__content--lead': isLeadContent,
     });
 
     const readMoreButton = renderReadMore && (
-      <button className='status__content__read-more-button' onClick={this.props.onClick} key='read-more'>
+      <button type='button' className='status__content__read-more-button' onClick={this.props.onClick} key='read-more'>
         <FormattedMessage id='status.read_more' defaultMessage='Read more' /><Icon id='angle-right' icon={ChevronRightIcon} />
       </button>
     );
