@@ -1240,7 +1240,7 @@ zh-CN:
     delete_account: 删除账号
     delete_account_html: 如果你想删除你的账号，请<a href="%{path}">点击此处继续</a>。你需要确认你的操作。
     description:
-      prefix_invited_by_user: "@%{name} 邀请你加入 %{domain}！"
+      prefix_invited_by_user: "@%{name} 邀请你加入这里！"
       prefix_sign_up: 现在就来这里注册吧！
       suffix: 注册一个账号后，你就可以关注他人、发布动态，并和其他站点上的用户交流，还有更多功能等你探索！
     didnt_get_confirmation: 没有收到确认链接？
