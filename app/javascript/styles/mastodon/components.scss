@@ -1131,6 +1131,27 @@ body > [data-popper-placement] {
   }
 }
 
+.status__content--lead {
+  padding-top: 0;
+
+  > .status__content__text.status__content__text--visible {
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 450;
+    letter-spacing: 0.01em;
+
+    .emojione {
+      width: 22px;
+      height: 22px;
+      margin: -4px 0 0;
+    }
+
+    p {
+      margin-bottom: 18px;
+    }
+  }
+}
+
 .reply-indicator {
   display: grid;
   grid-template-columns: 46px minmax(0, 1fr);
@@ -1468,6 +1489,8 @@ body > [data-popper-placement] {
 }
 
 .status {
+  --status-meta-indent: 58px;
+
   padding: 16px;
   min-height: 54px;
   border-bottom: 1px solid var(--color-border-primary);
@@ -1506,6 +1529,7 @@ body > [data-popper-placement] {
     border-bottom: 0;
 
     & > .status__content,
+    & > .status__extensions,
     & > .status__action-bar,
     & > .media-gallery,
     & > div > .video-player,
@@ -1592,13 +1616,16 @@ body > [data-popper-placement] {
 }
 
 .status__relative-time {
-  display: block;
-  font-size: 15px;
-  line-height: 22px;
-  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  height: auto;
   order: 2;
   flex: 0 0 auto;
-  color: var(--color-text-secondary);
+  margin-inline-start: var(--status-meta-indent);
+  color: var(--color-text-tertiary);
 }
 
 .notification__relative_time {
@@ -1625,24 +1652,40 @@ body > [data-popper-placement] {
 .status__info .status__display-name {
   max-width: 100%;
   display: flex;
-  font-size: 15px;
-  line-height: 22px;
-  align-items: center;
-  gap: 10px;
+  order: 1;
+  flex: 1 1 100%;
+  font-size: 14px;
+  line-height: 20px;
+  align-items: flex-start;
+  gap: 12px;
   overflow: hidden;
   margin-inline-end: auto;
 
   .display-name {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
     bdi {
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
+    &__html {
+      font-size: 15px;
+      line-height: 20px;
+      font-weight: 600;
+    }
+
     &__account {
+      font-size: 13px;
+      line-height: 18px;
       white-space: nowrap;
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: var(--color-text-tertiary);
     }
   }
 }
@@ -1653,13 +1696,37 @@ body > [data-popper-placement] {
 }
 
 .status__info {
-  font-size: 15px;
-  padding-bottom: 10px;
+  font-size: 14px;
+  padding-bottom: 14px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 10px;
+  column-gap: 12px;
+  row-gap: 4px;
   cursor: pointer;
+}
+
+.status__extensions {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+
+  > .media-gallery,
+  > .video-player,
+  > .audio-player,
+  > .attachment-list,
+  > .picture-in-picture-placeholder,
+  > .more-from-author,
+  > .status-card,
+  > .hashtag-bar,
+  > .status__quote {
+    margin-top: 0;
+  }
+
+  > .status__quote {
+    margin-inline-start: 0;
+  }
 }
 
 .status-check-box__status {
@@ -1894,6 +1961,7 @@ body > [data-popper-placement] {
   margin-inline-start: calc(var(--quote-margin) + var(--thread-margin, 0px));
   border-radius: 12px;
   color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
 }
 
@@ -1921,20 +1989,22 @@ body > [data-popper-placement] {
   overflow: hidden;
   display: flex;
   margin-top: 8px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   align-items: center;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 18px;
   letter-spacing: 0.25px;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-brand-softer);
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-primary);
   border-radius: 8px;
   cursor: default;
 }
 
 .status--is-quote {
+  --status-meta-indent: 44px;
+
   border: none;
   padding: 12px;
 
@@ -4174,10 +4244,11 @@ a.account__display-name {
   align-items: center;
   position: relative;
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
   margin-top: 14px;
   text-decoration: none;
   overflow: hidden;
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: 8px;
   contain: inline-size layout paint style;
@@ -4288,9 +4359,9 @@ a.status-card {
 
 .status-card__title {
   display: block;
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 24px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
   color: var(--color-text-primary);
   overflow: hidden;
   white-space: nowrap;
@@ -4308,15 +4379,15 @@ a.status-card {
 .status-card__content {
   flex: 1 1 auto;
   overflow: hidden;
-  padding: 15px;
+  padding: 14px;
   box-sizing: border-box;
   max-width: 100%;
 }
 
 .status-card__host {
   display: block;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4324,9 +4395,9 @@ a.status-card {
 
 .status-card__author {
   display: block;
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--color-text-primary);
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4338,8 +4409,8 @@ a.status-card {
 
 .status-card__description {
   display: block;
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 6px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -10492,21 +10563,21 @@ noscript {
   margin-top: 16px;
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 16px;
-  gap: 6px;
+  gap: 8px;
   color: color-mix(
     in oklab,
-    var(--color-text-primary),
-    var(--color-text-secondary)
+    var(--color-text-secondary),
+    var(--color-text-tertiary)
   );
 
   a {
     display: inline-flex;
     color: inherit;
     text-decoration: none;
-    padding: 4px 12px;
-    background: var(--color-bg-brand-softer);
+    padding: 4px 10px;
+    background: var(--color-bg-secondary);
     border-radius: 4px;
     font-weight: 500;
 
@@ -11157,6 +11228,7 @@ noscript {
   }
 
   .status__content,
+  .status__extensions,
   .status__action-bar,
   .media-gallery,
   .video-player,
