@@ -25,11 +25,19 @@ const contentParser = typeof DOMParser === 'undefined' ? null : new DOMParser();
 
 /**
  *
- * @param {{ getIn: (path: string[]) => string, get: (key: string) => string }} status
+ * @param {{ getIn: (path: string[]) => unknown, get: (key: string) => unknown }} status
  * @returns {string}
  */
 export function getStatusContent(status) {
-  return status.getIn(['translation', 'contentHtml']) || status.get('contentHtml');
+  const translatedContent = status.getIn(['translation', 'contentHtml']);
+
+  if (typeof translatedContent === 'string') {
+    return translatedContent;
+  }
+
+  const contentHtml = status.get('contentHtml');
+
+  return typeof contentHtml === 'string' ? contentHtml : '';
 }
 
 export function getStatusContentMeta(contentHtml) {
