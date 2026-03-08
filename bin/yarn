@@ -1,17 +1,28 @@
 #!/usr/bin/env ruby
-APP_ROOT = File.expand_path('..', __dir__)
-Dir.chdir(APP_ROOT) do
-  yarn = ENV["PATH"].split(File::PATH_SEPARATOR).
-    select { |dir| File.expand_path(dir) != __dir__ }.
-    product(["yarn", "yarn.cmd", "yarn.ps1"]).
-    map { |dir, file| File.expand_path(file, dir) }.
-    find { |file| File.executable?(file) }
+require 'fileutils'
 
-  if yarn
-    exec yarn, *ARGV
-  else
-    $stderr.puts "Yarn executable was not detected in the system."
-    $stderr.puts "Download Yarn at https://yarnpkg.com/en/docs/install"
-    exit 1
+APP_ROOT = File.expand_path('..', __dir__)
+
+def find_executable(*names)
+  ENV.fetch('PATH').split(File::PATH_SEPARATOR)
+    .reject { |dir| File.expand_path(dir) == __dir__ }
+    .flat_map { |dir| names.map { |name| File.expand_path(name, dir) } }
+    .find { |file| File.executable?(file) }
+end
+
+Dir.chdir(APP_ROOT) do
+  yarn = find_executable('yarn', 'yarn.cmd', 'yarn.ps1')
+  exec yarn, *ARGV if yarn
+
+  corepack = find_executable('corepack', 'corepack.cmd', 'corepack.ps1')
+
+  if corepack
+    ENV['COREPACK_HOME'] ||= File.join(APP_ROOT, 'tmp', 'corepack')
+    FileUtils.mkdir_p(ENV['COREPACK_HOME'])
+    exec corepack, 'yarn', *ARGV
   end
+
+  $stderr.puts 'Yarn executable was not detected in the system.'
+  $stderr.puts 'Install Node.js 20+ with Corepack, or install Yarn 4.x directly.'
+  exit 1
 end

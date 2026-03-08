@@ -71,7 +71,7 @@ You should read the overall [CONTRIBUTING](https://github.com/mastodon/.github/b
 
 You should also read and understand the [CODE OF CONDUCT](https://github.com/mastodon/.github/blob/main/CODE_OF_CONDUCT.md) that enables us to maintain a welcoming and inclusive community. Collaboration begins with mutual respect and understanding.
 
-You can learn about setting up a development environment in the [DEVELOPMENT](docs/DEVELOPMENT.md) documentation.
+For the supported PianYu clone-to-login flow, start with [PIANYU_DEVELOPMENT](docs/PIANYU_DEVELOPMENT.md). The broader environment notes remain in [DEVELOPMENT](docs/DEVELOPMENT.md).
 
 If you would like to help with translations 🌐 you can do so on [Crowdin](https://crowdin.com/project/mastodon).
 

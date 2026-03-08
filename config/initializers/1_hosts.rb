@@ -3,6 +3,7 @@
 port     = ENV.fetch('PORT') { 3000 }
 host     = ENV.fetch('LOCAL_DOMAIN') { "localhost:#{port}" }
 web_host = ENV.fetch('WEB_DOMAIN') { host }
+streaming_port = ENV.fetch('STREAMING_PORT') { 4000 }
 
 alternate_domains = ENV.fetch('ALTERNATE_DOMAINS') { '' }.split(/\s*,\s*/)
 
@@ -23,7 +24,7 @@ Rails.application.configure do
     if Rails.env.production?
       "ws#{'s' if https}://#{web_host}"
     else
-      "ws://#{host.split(':').first}:4000"
+      "ws://#{host.split(':').first}:#{streaming_port}"
     end
   end
 

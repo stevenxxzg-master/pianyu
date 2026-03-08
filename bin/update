@@ -4,9 +4,14 @@ include FileUtils
 
 # path to your application root.
 APP_ROOT = File.expand_path('..', __dir__)
+ENV['RAILS_ENV'] ||= 'development'
 
 def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+def required_bundler_version
+  File.read(File.join(APP_ROOT, 'Gemfile.lock'))[/\nBUNDLED WITH\n\s+([^\n]+)/, 1]&.strip
 end
 
 chdir APP_ROOT do
@@ -14,11 +19,12 @@ chdir APP_ROOT do
   # Add necessary update steps to this file.
 
   puts '== Installing dependencies =='
-  system! 'gem install bundler --conservative'
+  bundler_version = required_bundler_version
+  if bundler_version && !system("bundle _#{bundler_version}_ -v", out: File::NULL, err: File::NULL)
+    system! 'gem', 'install', 'bundler', '-v', bundler_version
+  end
   system('bundle check') || system!('bundle install')
-
-  # Install JavaScript dependencies if using Yarn
-  system('bin/yarn')
+  system! 'bin/yarn', 'install', '--immutable'
 
   puts "\n== Updating database =="
   system! 'bin/rails db:migrate'

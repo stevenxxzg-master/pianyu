@@ -21,18 +21,23 @@ import { isTruthy, normalizeHashtag, firstParam } from './utils.js';
 const environment = process.env.NODE_ENV || 'development';
 const PERMISSION_VIEW_FEEDS = 0x0000000000100000;
 
-// Correctly detect and load .env or .env.production file based on environment:
-const dotenvFile = environment === 'production' ? '.env.production' : '.env';
-const dotenvFilePath = path.resolve(
-  url.fileURLToPath(
-    new URL(path.join('..', dotenvFile), import.meta.url)
-  )
-);
+const dotenvFiles = [`.env.${environment}`, '.env'];
 
-dotenv.config({
-  path: dotenvFilePath,
-  quiet: true,
-});
+if (environment === 'production') {
+  dotenvFiles.unshift('.env.production');
+}
+
+dotenvFiles
+  .filter((file, index, files) => files.indexOf(file) === index)
+  .map(file => path.resolve(url.fileURLToPath(new URL(path.join('..', file), import.meta.url))))
+  .filter(filePath => fs.existsSync(filePath))
+  .forEach(filePath => {
+    dotenv.config({
+      path: filePath,
+      override: false,
+      quiet: true,
+    });
+  });
 
 initializeLogLevel(process.env, environment);
 

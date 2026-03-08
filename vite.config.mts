@@ -30,6 +30,9 @@ const cssAliasClasses: ReadonlyArray<string> = ['components', 'features'];
 
 export const config: UserConfigFnPromise = async ({ mode, command }) => {
   const isProdBuild = mode === 'production' && command === 'build';
+  const devServerPort = Number(
+    process.env.VITE_RUBY_PORT || (mode === 'test' ? 3037 : 3036),
+  );
 
   let outDirName = 'packs-dev';
   if (mode === 'test') {
@@ -110,7 +113,7 @@ export const config: UserConfigFnPromise = async ({ mode, command }) => {
         // because Vite still tries to connect to localhost.
         protocol: 'ws',
       },
-      port: 3036,
+      port: devServerPort,
     },
     build: {
       commonjsOptions: { transformMixedEsModules: true },
