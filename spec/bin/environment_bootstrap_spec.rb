@@ -43,8 +43,21 @@ RSpec.describe 'local environment bootstrap scripts' do
     RUBY
   end
 
+  def sanitized_env(env = {})
+    {
+      'DATABASE_URL' => nil,
+      'DB_HOST' => nil,
+      'LOCAL_DOMAIN' => nil,
+      'PORT' => nil,
+      'RAILS_ENV' => nil,
+      'REDIS_HOST' => nil,
+      'REMOTE_DEV' => nil,
+      'VAGRANT' => nil,
+    }.merge(env)
+  end
+
   def run_bin_setup(app_root, env = {})
-    Open3.capture3(env, 'ruby', '-e', setup_stub, chdir: app_root.to_s)
+    Open3.capture3(sanitized_env(env), 'ruby', '-e', setup_stub, chdir: app_root.to_s)
   end
 
   def write_overmind_stub(app_root)
@@ -65,7 +78,7 @@ RSpec.describe 'local environment bootstrap scripts' do
   def run_bin_dev(app_root, env = {}, from: app_root)
     stub_dir = write_overmind_stub(app_root)
     command = from == app_root ? './bin/dev' : '../bin/dev'
-    full_env = { 'PATH' => "#{stub_dir}:#{ENV.fetch('PATH')}" }.merge(env)
+    full_env = sanitized_env({ 'PATH' => "#{stub_dir}:#{ENV.fetch('PATH')}" }.merge(env))
 
     Open3.capture3(full_env, command, chdir: from.to_s)
   end
