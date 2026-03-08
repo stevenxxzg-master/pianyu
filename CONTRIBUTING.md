@@ -76,6 +76,14 @@ particular, please keep in mind:
 - Normalization of locale files (i18n-tasks)
 - Relevant accessibility or performance concerns
 
+### Unattended Codex Sessions
+
+If you run repository work through an unattended Codex session, the sandbox must
+allow writes to the checked-out repository's `.git` directory in addition to the
+working tree. Run `bin/codex-git-permission-check` before editing, and follow
+the repository runbook in `docs/CODEX_UNATTENDED_WORKFLOW.md` plus the session
+template in `.codex/unattended-linear-session.md`.
+
 ## Documentation
 
 The [Mastodon documentation] is a statically generated site that contains guides
