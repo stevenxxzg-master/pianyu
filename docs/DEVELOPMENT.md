@@ -20,6 +20,23 @@ There are instructions for these environments:
 
 Once completed, continue with the [Next steps](#next-steps) section below.
 
+### Automated / unattended sessions
+
+Before relying on an unattended session (for example, Codex or another sandboxed
+agent) to run repository Ruby tests, make sure the session can satisfy the
+repository-declared Ruby toolchain inside the session itself:
+
+- a Ruby runtime matching `.ruby-version` (currently `3.4.8`)
+- a Bundler version matching the `BUNDLED WITH` entry in `Gemfile.lock`
+  (currently `4.0.7`), or outbound access to RubyGems to install it
+- permission to execute the repository's Ruby test entrypoints such as
+  `bundle exec rspec ...`
+
+If the session cannot provide that host toolchain directly, it still needs an
+equivalent executable path, such as container access that can fetch the required
+images and gems. Without one of those paths, `bundle exec` will fail before the
+specs boot and unattended validation will not be able to close the loop.
+
 ### Vagrant
 
 A **Vagrant** configuration is included for development purposes. To use it,
