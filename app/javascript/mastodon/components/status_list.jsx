@@ -7,7 +7,6 @@ import { debounce } from 'lodash';
 
 import { TIMELINE_GAP, TIMELINE_PINNED_VIEW_ALL, TIMELINE_SUGGESTIONS } from 'mastodon/actions/timelines';
 import { RegenerationIndicator } from 'mastodon/components/regeneration_indicator';
-import { InlineFollowSuggestions } from 'mastodon/features/home_timeline/components/inline_follow_suggestions';
 import { PinnedShowAllButton } from '@/mastodon/features/account_timeline/v2/pinned_statuses';
 
 import { StatusQuoteManager } from '../components/status_quoted';
@@ -64,9 +63,7 @@ export default class StatusList extends ImmutablePureComponent {
       statusIds.map((statusId, index) => {
         switch(statusId) {
         case TIMELINE_SUGGESTIONS:
-          return (
-            <InlineFollowSuggestions key={TIMELINE_SUGGESTIONS} />
-          );
+          return null;
         case TIMELINE_GAP:
           return (
             <LoadGap
