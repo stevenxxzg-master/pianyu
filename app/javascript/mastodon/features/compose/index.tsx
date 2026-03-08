@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -43,6 +43,19 @@ const messages = defineMessages({
     defaultMessage: 'Preferences',
   },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
+  focus_title: {
+    id: 'compose.focus_title',
+    defaultMessage: 'Open and write a sentence',
+  },
+  focus_description: {
+    id: 'compose.focus_description',
+    defaultMessage:
+      'Start with the thought first. Images, polls, and visibility can wait until after the first line lands.',
+  },
+  search_hint: {
+    id: 'compose.search_hint',
+    defaultMessage: 'Need an account, topic, or link? Search once the draft is down.',
+  },
 });
 
 type ColumnMap = ImmutableMap<'id' | 'uuid' | 'params', string>;
@@ -50,6 +63,8 @@ type ColumnMap = ImmutableMap<'id' | 'uuid' | 'params', string>;
 const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const publishLabel = intl.formatMessage(navbarMessages.publish);
+  const composeEntryRef = useRef<HTMLElement | null>(null);
   const columns = useAppSelector(
     (state) =>
       (state.settings as ImmutableMap<string, unknown>).get(
@@ -64,6 +79,18 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
       dispatch(unmountCompose());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    const animationFrame = requestAnimationFrame(() => {
+      composeEntryRef.current
+        ?.querySelector<HTMLTextAreaElement>('.autosuggest-textarea__textarea')
+        ?.focus();
+    });
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [multiColumn]);
 
   const handleLogoutClick = useCallback(
     (e: React.MouseEvent) => {
@@ -89,7 +116,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
       <div
         className='drawer'
         role='region'
-        aria-label={intl.formatMessage(navbarMessages.publish)}
+        aria-label={publishLabel}
       >
         <nav className='drawer__header'>
           <Link
@@ -160,11 +187,31 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
           </a>
         </nav>
 
-        <Search singleColumn={false} />
-
         <div className='drawer__pager'>
-          <div className='drawer__inner'>
-            <ComposeFormContainer />
+          <div className='drawer__inner compose-drawer__inner'>
+            <section
+              className='compose-entry compose-entry--drawer'
+              ref={composeEntryRef}
+            >
+              <div className='compose-entry__hero'>
+                <p className='compose-entry__eyebrow'>{publishLabel}</p>
+                <h2 className='compose-entry__title'>
+                  {intl.formatMessage(messages.focus_title)}
+                </h2>
+                <p className='compose-entry__description'>
+                  {intl.formatMessage(messages.focus_description)}
+                </p>
+              </div>
+
+              <ComposeFormContainer />
+
+              <div className='compose-entry__secondary'>
+                <p className='compose-entry__secondary-copy'>
+                  {intl.formatMessage(messages.search_hint)}
+                </p>
+                <Search singleColumn={false} />
+              </div>
+            </section>
 
             <div className='drawer__inner__mastodon with-zig-zag-decoration'>
               <img alt='' draggable='false' src={mascot ?? elephantUIPlane} />
@@ -189,7 +236,21 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
       />
 
       <div className='scrollable'>
-        <ComposeFormContainer />
+        <div className='compose-page'>
+          <section className='compose-entry compose-entry--page' ref={composeEntryRef}>
+            <div className='compose-entry__hero'>
+              <p className='compose-entry__eyebrow'>{publishLabel}</p>
+              <h2 className='compose-entry__title'>
+                {intl.formatMessage(messages.focus_title)}
+              </h2>
+              <p className='compose-entry__description'>
+                {intl.formatMessage(messages.focus_description)}
+              </p>
+            </div>
+
+            <ComposeFormContainer />
+          </section>
+        </div>
       </div>
 
       <Helmet>

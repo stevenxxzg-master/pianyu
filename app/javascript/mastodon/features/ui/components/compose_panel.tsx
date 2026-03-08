@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+
+import { defineMessages, useIntl } from 'react-intl';
 
 import { useLayout } from '@/mastodon/hooks/useLayout';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
@@ -14,8 +16,28 @@ import ComposeFormContainer from 'mastodon/features/compose/containers/compose_f
 import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
 import { useIdentity } from 'mastodon/identity_context';
 
+import { messages as navbarMessages } from './navigation_bar';
+
+const messages = defineMessages({
+  focus_title: {
+    id: 'compose.focus_title_compact',
+    defaultMessage: 'Start with one sentence',
+  },
+  focus_description: {
+    id: 'compose.focus_description_compact',
+    defaultMessage:
+      'Keep the cursor front and center. Search and extra controls sit lower until you need them.',
+  },
+  search_hint: {
+    id: 'compose.search_hint_compact',
+    defaultMessage: 'Need to look something up? Search after the draft starts.',
+  },
+});
+
 export const ComposePanel: React.FC = () => {
   const dispatch = useAppDispatch();
+  const intl = useIntl();
+  const composeEntryRef = useRef<HTMLElement | null>(null);
   const handleFocus = useCallback(() => {
     dispatch(changeComposing(true));
   }, [dispatch]);
@@ -35,23 +57,63 @@ export const ComposePanel: React.FC = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if (
+      !signedIn ||
+      hideComposer ||
+      (document.activeElement instanceof HTMLElement &&
+        ![document.body, document.documentElement].includes(
+          document.activeElement,
+        ))
+    ) {
+      return;
+    }
+
+    composeEntryRef.current
+      ?.querySelector<HTMLTextAreaElement>('.autosuggest-textarea__textarea')
+      ?.focus();
+  }, [hideComposer, signedIn]);
+
   const { singleColumn } = useLayout();
+  const publishLabel = intl.formatMessage(navbarMessages.publish);
+
+  if (!signedIn) {
+    return (
+      <div className='compose-panel' onFocus={handleFocus}>
+        <Search singleColumn={singleColumn} />
+
+        <ServerBanner />
+        <div className='flex-spacer' />
+
+        <LinkFooter multiColumn={!singleColumn} />
+      </div>
+    );
+  }
 
   return (
     <div className='compose-panel' onFocus={handleFocus}>
-      <Search singleColumn={singleColumn} />
+      <section className='compose-entry compose-entry--panel' ref={composeEntryRef}>
+        <div className='compose-entry__hero compose-entry__hero--compact'>
+          <p className='compose-entry__eyebrow'>{publishLabel}</p>
+          <h2 className='compose-entry__title'>
+            {intl.formatMessage(messages.focus_title)}
+          </h2>
+          <p className='compose-entry__description'>
+            {intl.formatMessage(messages.focus_description)}
+          </p>
+        </div>
 
-      {!signedIn && (
-        <>
-          <ServerBanner />
-          <div className='flex-spacer' />
-        </>
-      )}
+        {!hideComposer && <ComposeFormContainer singleColumn />}
+        {hideComposer && <div className='compose-form' />}
 
-      {signedIn && !hideComposer && <ComposeFormContainer singleColumn />}
-      {signedIn && hideComposer && <div className='compose-form' />}
-
-      <LinkFooter multiColumn={!singleColumn} />
+        <div className='compose-entry__secondary'>
+          <p className='compose-entry__secondary-copy'>
+            {intl.formatMessage(messages.search_hint)}
+          </p>
+          <Search singleColumn={singleColumn} />
+          <LinkFooter multiColumn={!singleColumn} />
+        </div>
+      </section>
     </div>
   );
 };

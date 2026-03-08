@@ -3776,6 +3776,259 @@ a.account__display-name {
   }
 }
 
+.compose-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+  box-sizing: border-box;
+}
+
+.compose-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--color-border-primary) 84%,
+      var(--color-text-brand-soft)
+    );
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--color-bg-secondary) 84%,
+        var(--color-bg-brand-softer)
+      ) 0%,
+      var(--color-bg-primary) 100%
+    );
+  box-shadow: 0 14px 32px -28px var(--color-shadow-primary);
+
+  &--panel {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  &__hero {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &--compact {
+      gap: 6px;
+    }
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-brand);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  &__hero--compact &__title,
+  &--panel &__title {
+    font-size: 22px;
+  }
+
+  &__description {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--color-text-secondary);
+  }
+
+  &__secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 4px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-border-primary) 88%, transparent);
+  }
+
+  &__secondary-copy {
+    margin: 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-text-tertiary);
+  }
+
+  .compose-form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 18px;
+  }
+
+  .navigation-bar {
+    padding: 18px 18px 0;
+  }
+
+  .compose-form__highlightable {
+    border-radius: 18px;
+    overflow: hidden;
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-primary) 88%,
+      var(--color-text-brand-soft)
+    );
+    background: var(--color-bg-primary);
+  }
+
+  .compose-form__dropdowns {
+    order: 1;
+    margin: 0;
+    padding: 0 18px 16px;
+    color: var(--color-text-secondary);
+  }
+
+  .compose-form__footer {
+    order: 2;
+    gap: 10px;
+    padding: 14px 18px 18px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-border-primary) 88%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-bg-secondary) 55%,
+      var(--color-bg-primary)
+    );
+  }
+
+  .autosuggest-textarea__textarea {
+    min-height: 160px;
+    padding: 14px 18px 20px;
+    font-size: 20px;
+    line-height: 30px;
+
+    &::placeholder {
+      color: color-mix(
+        in srgb,
+        var(--color-text-secondary) 74%,
+        transparent
+      );
+    }
+  }
+
+  .compose-form__actions {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .compose-form__buttons {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .character-counter {
+    margin-inline-start: auto;
+  }
+
+  .compose-form__submit {
+    min-width: 132px;
+  }
+
+  .compose-form__submit .button {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .search {
+    margin: 0;
+  }
+
+  .link-footer {
+    padding-top: 0;
+    font-size: 12px;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.compose-panel .compose-entry {
+  flex: 1 1 auto;
+
+  .autosuggest-textarea__textarea {
+    min-height: 136px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .compose-form__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compose-form__submit {
+    width: 100%;
+  }
+}
+
+.compose-drawer__inner {
+  .drawer__inner__mastodon {
+    opacity: 0.5;
+
+    > img {
+      width: 68%;
+      margin-inline-start: auto;
+    }
+  }
+}
+
+@media screen and (width <= 640px) {
+  .compose-page {
+    padding: 16px 16px 28px;
+  }
+
+  .compose-entry {
+    padding: 16px;
+    border-radius: 20px;
+
+    &__title {
+      font-size: 24px;
+    }
+
+    &__hero--compact &__title,
+    &--panel &__title {
+      font-size: 20px;
+    }
+
+    .navigation-bar {
+      padding: 16px 16px 0;
+    }
+
+    .compose-form__dropdowns,
+    .compose-form__footer {
+      padding-inline: 16px;
+    }
+
+    .autosuggest-textarea__textarea {
+      min-height: 144px;
+      padding-inline: 16px;
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+}
+
 .drawer__pager {
   box-sizing: border-box;
   padding: 0;

@@ -39,16 +39,23 @@
 }
 
 .compose-standalone {
-  .compose-form {
-    width: 400px;
+  .compose-page {
+    width: min(100%, 640px);
     margin: 0 auto;
-    padding: 10px 0;
-    padding-bottom: 20px;
-    box-sizing: border-box;
+    padding: 0 0 20px;
+  }
 
-    @media screen and (width <= 400px) {
+  .compose-form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @media screen and (width <= 640px) {
+    .compose-page {
       width: 100%;
-      padding: 20px;
+      padding-bottom: 12px;
     }
   }
 }
