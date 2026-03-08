@@ -1,14 +1,34 @@
 #!/usr/bin/env ruby
-require "fileutils"
+# frozen_string_literal: true
+
+require 'fileutils'
 
 # path to your application root.
 APP_ROOT = File.expand_path('..', __dir__)
 
+# rubocop:disable Style/ArgumentsForwarding
 def system!(*args)
   system(*args, exception: true)
 end
+# rubocop:enable Style/ArgumentsForwarding
+
+ENV['RAILS_ENV'] ||= 'development'
 
 FileUtils.chdir APP_ROOT do
+  managed_override = lambda do |name, *defaults|
+    value = ENV.fetch(name, nil)
+    !value.to_s.empty? && !defaults.include?(value)
+  end
+
+  managed_env = !ENV['VAGRANT'].to_s.empty? || !ENV['REMOTE_DEV'].to_s.empty? || !ENV['DATABASE_URL'].to_s.empty? || managed_override.call('LOCAL_DOMAIN', 'localhost:3000') || managed_override.call('DB_HOST', 'localhost') || managed_override.call('REDIS_HOST', 'localhost', '127.0.0.1')
+
+  unless File.exist?('.env') || !File.exist?('.env.example') || managed_env
+    puts "\n== Bootstrapping local environment =="
+    FileUtils.cp '.env.example', '.env'
+    puts 'Created .env from .env.example'
+    puts 'Review copied defaults if local services differ'
+  end
+
   # This script is a way to set up or update your development environment automatically.
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.

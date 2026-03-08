@@ -1,0 +1,113 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+APP_ROOT = File.expand_path('..', __dir__)
+
+SMOKE_RUNNER = <<~RUBY
+  route = Rails.application.routes.recognize_path('/health', method: :get)
+  status, headers, body = HealthController.action(:show).call(Rack::MockRequest.env_for('/health'))
+
+  payload = +''
+  body.each { |chunk| payload << chunk }
+  body.close if body.respond_to?(:close)
+
+  smoke_result = {
+    route: {
+      controller: route[:controller],
+      action: route[:action],
+    },
+    status: status,
+    content_type: headers['content-type'],
+    body: payload,
+  }
+
+  puts(smoke_result)
+
+  abort('Health smoke check failed') unless smoke_result[:route] == { controller: 'health', action: 'show' } &&
+                                          smoke_result[:status] == 200 &&
+                                          smoke_result[:body].include?('OK')
+RUBY
+
+STEP_GROUPS = {
+  'javascript' => [
+    ['JavaScript lint', ['bin/yarn', 'workspaces', 'foreach', '--all', '--parallel', 'run', 'lint:js', '--max-warnings', '0']],
+    ['TypeScript check', ['bin/yarn', 'typecheck']],
+    ['JavaScript tests', ['bin/yarn', 'test:js', 'run']],
+    ['Production build', ['bin/yarn', 'build:production']],
+  ],
+  'ruby' => [
+    ['Ruby lint', ['bin/rubocop']],
+    ['Security scan', ['bin/brakeman']],
+  ],
+  'assets' => [
+    ['Assets precompile', ['bin/rails', 'assets:precompile']],
+  ],
+  'smoke' => [
+    ['Health endpoint smoke', ['bin/rails', 'runner', SMOKE_RUNNER]],
+  ],
+}.freeze
+
+ALIASES = {
+  'all' => STEP_GROUPS.keys,
+}.freeze
+
+def usage
+  steps = (STEP_GROUPS.keys + ALIASES.keys).join(', ')
+  [
+    'Usage:',
+    "  bin/ci-baseline [#{steps}]",
+    '',
+    'Default: all',
+  ].join("\n")
+end
+
+def system!(*args, env: {})
+  system(env, *args) || abort("\n== Command #{args.join(' ')} failed ==")
+end
+
+selected =
+  if ARGV.empty?
+    ['all']
+  elsif ARGV.include?('--help') || ARGV.include?('-h')
+    puts usage
+    exit 0
+  else
+    ARGV
+  end
+
+expanded = selected.flat_map { |name| ALIASES.fetch(name, [name]) }.uniq
+unknown = expanded - STEP_GROUPS.keys
+
+unless unknown.empty?
+  warn usage
+  abort("Unknown step(s): #{unknown.join(', ')}")
+end
+
+Dir.chdir(APP_ROOT) do
+  expanded.each do |group|
+    puts "\n== #{group} =="
+
+    STEP_GROUPS.fetch(group).each do |label, command|
+      puts "-> #{label}"
+
+      env = case group
+            when 'assets'
+              {
+                'RAILS_ENV' => ENV.fetch('RAILS_ENV', 'production'),
+                'SECRET_KEY_BASE_DUMMY' => ENV.fetch('SECRET_KEY_BASE_DUMMY', '1'),
+              }
+            when 'smoke'
+              {
+                'RAILS_ENV' => ENV.fetch('RAILS_ENV', 'development'),
+                'SECRET_KEY_BASE_DUMMY' => ENV.fetch('SECRET_KEY_BASE_DUMMY', '1'),
+                'LOCAL_DOMAIN' => ENV.fetch('LOCAL_DOMAIN', 'localhost:3000'),
+                'LOCAL_HTTPS' => ENV.fetch('LOCAL_HTTPS', 'false'),
+              }
+            else
+              {}
+            end
+
+      system!(*command, env: env)
+    end
+  end
+end

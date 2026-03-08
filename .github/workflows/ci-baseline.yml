@@ -1,0 +1,82 @@
+name: Baseline CI
+
+on:
+  merge_group:
+  push:
+    branches:
+      - 'main'
+      - 'stable-*'
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  BUNDLE_CLEAN: true
+  BUNDLE_FROZEN: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  javascript:
+    name: JavaScript baseline
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Javascript environment
+        uses: ./.github/actions/setup-javascript
+
+      - name: Run JavaScript baseline
+        run: bin/ci-baseline javascript
+
+  ruby:
+    name: Ruby baseline
+    runs-on: ubuntu-latest
+
+    env:
+      BUNDLE_ONLY: development
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Ruby environment
+        uses: ./.github/actions/setup-ruby
+
+      - name: Run Ruby baseline
+        run: bin/ci-baseline ruby
+
+  rails-smoke:
+    name: Rails assets and smoke
+    runs-on: ubuntu-latest
+
+    env:
+      LOCAL_DOMAIN: localhost:3000
+      LOCAL_HTTPS: false
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Ruby environment
+        uses: ./.github/actions/setup-ruby
+
+      - name: Set up Javascript environment
+        uses: ./.github/actions/setup-javascript
+        with:
+          onlyProduction: 'true'
+
+      - name: Compile assets
+        env:
+          RAILS_ENV: production
+          BUNDLE_WITH: production
+          SECRET_KEY_BASE_DUMMY: 1
+        run: bin/ci-baseline assets
+
+      - name: Run smoke baseline
+        env:
+          RAILS_ENV: development
+          SECRET_KEY_BASE_DUMMY: 1
+        run: bin/ci-baseline smoke
