@@ -122,6 +122,10 @@ RSpec.describe 'Link' do
     end
 
     context 'when the instance allows public preview' do
+      before do
+        Form::AdminSettings.new(local_topic_feed_access: 'public', remote_topic_feed_access: 'public').save
+      end
+
       context 'with an authorized user' do
         it_behaves_like 'a successful request to the link timeline'
       end

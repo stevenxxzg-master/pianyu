@@ -16,6 +16,25 @@ RSpec.describe Form::AdminSettings do
         it { is_expected.to allow_value('Glorp').for(:site_contact_username) }
       end
     end
+
+    describe 'topic feed access' do
+      it { is_expected.to allow_value('public').for(:local_topic_feed_access) }
+      it { is_expected.to allow_value('authenticated').for(:local_topic_feed_access) }
+      it { is_expected.to_not allow_value('disabled').for(:local_topic_feed_access) }
+
+      it { is_expected.to allow_value('public').for(:remote_topic_feed_access) }
+      it { is_expected.to allow_value('authenticated').for(:remote_topic_feed_access) }
+      it { is_expected.to allow_value('disabled').for(:remote_topic_feed_access) }
+    end
+  end
+
+  describe 'default topic feed access' do
+    subject(:admin_settings) { described_class.new }
+
+    it 'reflects the quiet-community defaults' do
+      expect(admin_settings.local_topic_feed_access).to eq('authenticated')
+      expect(admin_settings.remote_topic_feed_access).to eq('authenticated')
+    end
   end
 
   describe '#save' do

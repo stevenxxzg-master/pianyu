@@ -4,6 +4,11 @@ require 'rails_helper'
 
 RSpec.describe TagFeed do
   describe '#get' do
+    before do
+      Setting.local_topic_feed_access = 'public'
+      Setting.remote_topic_feed_access = 'public'
+    end
+
     let(:account) { Fabricate(:account) }
     let(:tag_cats) { Fabricate(:tag, name: 'cats') }
     let(:tag_dogs) { Fabricate(:tag, name: 'dogs') }

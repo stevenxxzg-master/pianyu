@@ -27,5 +27,18 @@ RSpec.describe REST::InstanceSerializer do
           )
         )
     end
+
+    it 'returns quiet-community topic feed access defaults' do
+      expect(serialization['configuration']['timelines_access']).to include(
+        'hashtag_feeds' => {
+          'local' => 'authenticated',
+          'remote' => 'authenticated',
+        },
+        'trending_link_feeds' => {
+          'local' => 'authenticated',
+          'remote' => 'authenticated',
+        }
+      )
+    end
   end
 end

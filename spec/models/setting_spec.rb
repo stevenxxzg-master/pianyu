@@ -3,6 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Setting do
+  describe '.default_settings' do
+    it 'includes quiet-community topic feed defaults' do
+      expect(described_class.default_settings).to include(
+        'local_topic_feed_access' => 'authenticated',
+        'remote_topic_feed_access' => 'authenticated'
+      )
+    end
+  end
+
   describe '#to_param' do
     let(:setting) { Fabricate(:setting, var: var) }
     let(:var)     { 'var' }
