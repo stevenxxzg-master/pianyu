@@ -74,7 +74,6 @@ class ComposeForm extends ImmutablePureComponent {
     singleColumn: PropTypes.bool,
     lang: PropTypes.string,
     maxChars: PropTypes.number,
-    redirectOnSuccess: PropTypes.bool,
   };
 
   static defaultProps = {

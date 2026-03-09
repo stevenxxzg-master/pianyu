@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import { debounce } from 'lodash';
 
+import { showAlert } from 'mastodon/actions/alerts';
 import { scrollRight } from '../../scroll';
 import { focusApp, unfocusApp, changeLayout } from 'mastodon/actions/app';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'mastodon/actions/markers';
@@ -97,7 +98,11 @@ import { getNavigationSkipLinkId, SkipLinks } from './components/skip_links';
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave Mastodon.' },
+  composePublished: { id: 'compose.published.body', defaultMessage: 'Post published.' },
+  composeSaved: { id: 'compose.saved.body', defaultMessage: 'Post saved.' },
 });
+
+const composeSuccessAlertKey = 'mastodon:compose-success-alert';
 
 const mapStateToProps = state => ({
   layout: state.getIn(['meta', 'layout']),
@@ -435,6 +440,20 @@ class UI extends PureComponent {
     }
 
     if (signedIn) {
+      let composeSuccessAlert;
+
+      try {
+        composeSuccessAlert = window.sessionStorage.getItem(composeSuccessAlertKey);
+        window.sessionStorage.removeItem(composeSuccessAlertKey);
+      } catch {
+      }
+
+      if (composeSuccessAlert) {
+        this.props.dispatch(showAlert({
+          message: composeSuccessAlert === 'saved' ? messages.composeSaved : messages.composePublished,
+        }));
+      }
+
       this.props.dispatch(fetchMarkers());
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(fetchNotifications());
