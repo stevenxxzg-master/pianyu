@@ -37,6 +37,9 @@ const StandaloneBoostButton: FC<ReblogButtonProps> = ({ status, counters }) => {
     () => boostItemState(statusState),
     [statusState],
   );
+  const reblogsCount = status.get('reblogs_count') as number;
+  const quotesCount = status.get('quotes_count') as number;
+  const combinedCount = reblogsCount + quotesCount;
 
   const handleClick: MouseEventHandler = useCallback(
     (event) => {
@@ -67,10 +70,7 @@ const StandaloneBoostButton: FC<ReblogButtonProps> = ({ status, counters }) => {
       className='status__action-bar__button'
       onClick={!disabled ? handleClick : undefined}
       counter={
-        counters
-          ? (status.get('reblogs_count') as number) +
-            (status.get('quotes_count') as number)
-          : undefined
+        counters && combinedCount > 0 ? combinedCount : undefined
       }
     />
   );
@@ -114,6 +114,9 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
   const statusId = status.get('id') as string;
   const wasBoosted = !!status.get('reblogged');
   const quoteApproval = status.get('quote_approval');
+  const reblogsCount = status.get('reblogs_count') as number;
+  const quotesCount = status.get('quotes_count') as number;
+  const combinedCount = reblogsCount + quotesCount;
 
   const showLoginPrompt = useCallback(() => {
     dispatch(
@@ -199,10 +202,7 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
         className='status__action-bar__button'
         iconComponent={boostIcon}
         counter={
-          counters
-            ? (status.get('reblogs_count') as number) +
-              (status.get('quotes_count') as number)
-            : undefined
+          counters && combinedCount > 0 ? combinedCount : undefined
         }
         active={isReblogged}
       />
