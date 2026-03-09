@@ -46,11 +46,11 @@ class UserSettings
     setting :reblog, default: false
     setting :favourite, default: false
     setting :mention, default: true
-    setting :quote, default: true
+    setting :quote, default: false
     setting :follow_request, default: true
     setting :report, default: true
     setting :pending_account, default: true
-    setting :trends, default: true
+    setting :trends, default: false
     setting :appeal, default: true
     setting :software_updates, default: 'critical', in: %w(none critical patch all)
   end
