@@ -404,3 +404,65 @@ svg.badgeIcon {
     padding-bottom: 14px;
   }
 }
+
+.fieldNumberLink {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0;
+  color: var(--color-text-secondary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-text-primary);
+  }
+}
+
+.fieldNumberLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.fieldNumberValue {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.fieldJoinedDate {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+
+  @container (width >= 500px) {
+    margin-inline-start: auto;
+  }
+}
+
+.fieldJoinedDateValue {
+  color: var(--color-text-secondary);
+}
+
+.tabsSecondaryLink {
+  &:not([aria-current='page']) {
+    color: var(--color-text-secondary);
+  }
+}
+
+.fieldNumbersWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  padding-top: 12px;
+  margin-top: 16px;
+  border-top: 1px solid
+    color-mix(in oklab, var(--color-border-primary), transparent 28%);
+
+  a {
+    font-weight: unset;
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+}

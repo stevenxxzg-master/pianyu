@@ -1,0 +1,24 @@
+.featuredTag {
+  padding-block: 12px;
+  gap: 12px;
+  border-bottom-color: color-mix(
+    in oklab,
+    var(--color-border-primary),
+    transparent 35%
+  );
+
+  :global(.trends__item__name) {
+    color: var(--color-text-tertiary);
+  }
+
+  :global(.trends__item__name a) {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  :global(.trends__item__current) {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+  }
+}
