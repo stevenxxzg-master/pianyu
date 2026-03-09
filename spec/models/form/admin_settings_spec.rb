@@ -3,6 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe Form::AdminSettings do
+  describe 'default-backed attributes' do
+    it 'surfaces the quiet-community defaults for untouched installations', :aggregate_failures do
+      settings = described_class.new
+
+      expect(settings).to have_attributes(
+        profile_directory: false,
+        local_live_feed_access: 'authenticated',
+        remote_live_feed_access: 'authenticated',
+        trends: false,
+        landing_page: 'about'
+      )
+    end
+  end
+
   describe 'Validations' do
     describe 'site_contact_username' do
       context 'with no accounts' do

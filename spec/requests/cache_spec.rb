@@ -171,6 +171,18 @@ RSpec.describe 'Caching behavior' do
   let(:user) { User.find_by(email: 'user@host.example') }
   let(:token) { Doorkeeper::AccessToken.find_by(resource_owner_id: user.id) }
 
+  def enable_public_discovery_for(endpoint)
+    case endpoint
+    when '/explore', '/api/v1/trends/statuses'
+      Setting.trends = true
+    when '/public'
+      Setting.local_live_feed_access = 'public'
+      Setting.remote_live_feed_access = 'public'
+    when '/directory', '/api/v1/directory'
+      Setting.profile_directory = true
+    end
+  end
+
   before_all do
     alice = Fabricate(:account, username: 'alice')
     user = Fabricate(:moderator_user, email: 'user@host.example')
@@ -195,7 +207,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::ALWAYS_CACHED.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'cachable response'
         it_behaves_like 'language-dependent' if TestEndpoints::LANGUAGE_DEPENDENT.include?(endpoint)
@@ -204,7 +219,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::COOKIE_DEPENDENT_CACHABLE.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'cachable response'
 
@@ -218,7 +236,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::AUTHORIZATION_DEPENDENT_CACHABLE.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'cachable response'
 
@@ -232,7 +253,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::REQUIRE_LOGGED_OUT.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'non-cacheable response'
       end
@@ -240,7 +264,10 @@ RSpec.describe 'Caching behavior' do
 
     (TestEndpoints::REQUIRE_SIGNATURE + TestEndpoints::REQUIRE_LOGIN + TestEndpoints::REQUIRE_TOKEN).each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'non-cacheable error'
       end
@@ -289,7 +316,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::ALWAYS_CACHED.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'cachable response'
         it_behaves_like 'language-dependent' if TestEndpoints::LANGUAGE_DEPENDENT.include?(endpoint)
@@ -298,7 +328,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::COOKIE_DEPENDENT_CACHABLE.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'non-cacheable response'
 
@@ -310,7 +343,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::REQUIRE_LOGIN.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'non-cacheable response', http_success: true
       end
@@ -318,7 +354,10 @@ RSpec.describe 'Caching behavior' do
 
     TestEndpoints::REQUIRE_LOGGED_OUT.each do |endpoint|
       describe endpoint do
-        before { get endpoint }
+        before do
+          enable_public_discovery_for(endpoint)
+          get endpoint
+        end
 
         it_behaves_like 'non-cacheable error'
       end
@@ -329,6 +368,7 @@ RSpec.describe 'Caching behavior' do
     TestEndpoints::ALWAYS_CACHED.each do |endpoint|
       describe endpoint do
         before do
+          enable_public_discovery_for(endpoint)
           get endpoint, headers: { 'Authorization' => "Bearer #{token.token}" }
         end
 
@@ -340,6 +380,7 @@ RSpec.describe 'Caching behavior' do
     TestEndpoints::AUTHORIZATION_DEPENDENT_CACHABLE.each do |endpoint|
       describe endpoint do
         before do
+          enable_public_discovery_for(endpoint)
           get endpoint, headers: { 'Authorization' => "Bearer #{token.token}" }
         end
 
@@ -354,6 +395,7 @@ RSpec.describe 'Caching behavior' do
     (TestEndpoints::REQUIRE_LOGGED_OUT + TestEndpoints::REQUIRE_TOKEN).each do |endpoint|
       describe endpoint do
         before do
+          enable_public_discovery_for(endpoint)
           get endpoint, headers: { 'Authorization' => "Bearer #{token.token}" }
         end
 
@@ -563,7 +605,10 @@ RSpec.describe 'Caching behavior' do
     context 'when anonymously accessed' do
       TestEndpoints::ALWAYS_CACHED.each do |endpoint|
         describe endpoint do
-          before { get endpoint }
+          before do
+            enable_public_discovery_for(endpoint)
+            get endpoint
+          end
 
           it_behaves_like 'cachable response'
           it_behaves_like 'language-dependent' if TestEndpoints::LANGUAGE_DEPENDENT.include?(endpoint)
@@ -572,7 +617,10 @@ RSpec.describe 'Caching behavior' do
 
       TestEndpoints::REQUIRE_LOGGED_OUT.each do |endpoint|
         describe endpoint do
-          before { get endpoint }
+          before do
+            enable_public_discovery_for(endpoint)
+            get endpoint
+          end
 
           it_behaves_like 'non-cacheable response'
         end
@@ -580,7 +628,10 @@ RSpec.describe 'Caching behavior' do
 
       (TestEndpoints::REQUIRE_TOKEN + TestEndpoints::AUTHORIZATION_DEPENDENT_CACHABLE + TestEndpoints::DisabledAnonymousAPI::REQUIRE_TOKEN).each do |endpoint|
         describe endpoint do
-          before { get endpoint }
+          before do
+            enable_public_discovery_for(endpoint)
+            get endpoint
+          end
 
           it_behaves_like 'non-cacheable error'
         end

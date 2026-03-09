@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::Web::PushSubscriptionsController < Api::Web::BaseController
+  DEFAULT_ENABLED_PUSH_ALERTS = %w(follow follow_request mention).freeze
+
   before_action :require_user!, except: :destroy
   before_action :set_push_subscription, only: :update
   before_action :destroy_previous_subscriptions, only: :create, if: :prior_subscriptions?
@@ -48,12 +50,15 @@ class Api::Web::PushSubscriptionsController < Api::Web::BaseController
   def default_subscription_data
     {
       policy: 'all',
-      alerts: Notification::TYPES.index_with { alerts_enabled },
+      alerts: Notification::TYPES.index_with { |type| default_alert_enabled?(type) },
     }.deep_stringify_keys
   end
 
-  def alerts_enabled
-    # Mobile devices do not support regular notifications, so we enable push notifications by default
+  def default_alert_enabled?(type)
+    mobile_push_defaults_enabled? && DEFAULT_ENABLED_PUSH_ALERTS.include?(type.to_s)
+  end
+
+  def mobile_push_defaults_enabled?
     active_session.detection.device.mobile? || active_session.detection.device.tablet?
   end
 

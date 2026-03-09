@@ -6,6 +6,9 @@ RSpec.describe 'UnloggedBrowsing', :js, :streaming do
   subject { page }
 
   before do
+    Setting.landing_page = 'trends'
+    Setting.trends = true
+
     visit root_path
   end
 
