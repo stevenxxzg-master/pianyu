@@ -9,20 +9,24 @@ RSpec.describe 'NewStatuses', :inline_jobs, :js, :streaming do
   let(:password)            { 'password' }
   let(:confirmed_at)        { Time.zone.now }
   let(:finished_onboarding) { true }
-  let(:status_text) { 'This is a new status!' }
+  let(:status_text)         { 'This is a new status!' }
 
   before { as_a_logged_in_user }
 
-  it 'can be posted' do
+  it 'can be posted with restrained success feedback and cleared compose state' do
     visit_homepage
 
     within('.compose-form') do
       fill_in frontend_translations('compose_form.placeholder'), with: status_text
-      click_on 'Post'
+      click_on frontend_translations('compose_form.publish')
     end
 
     expect(page)
       .to have_css('.status__content__text', text: status_text)
+      .and have_css('.notification-bar', text: frontend_translations('compose.published.body'))
+      .and have_no_css('.notification-bar__action')
+
+    expect(find('.compose-form textarea').value).to eq('')
   end
 
   def visit_homepage

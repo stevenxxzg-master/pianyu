@@ -85,11 +85,13 @@ const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   uploadQuote: { id: 'upload_error.quote', defaultMessage: 'File upload not allowed with quotes.' },
-  open: { id: 'compose.published.open', defaultMessage: 'Open' },
   published: { id: 'compose.published.body', defaultMessage: 'Post published.' },
   saved: { id: 'compose.saved.body', defaultMessage: 'Post saved.' },
   blankPostError: { id: 'compose.error.blank_post', defaultMessage: 'Post can\'t be blank.' },
 });
+
+const inAppPublishPaths = ['/publish', '/statuses/new'];
+const composeSuccessAlertKey = 'mastodon:compose-success-alert';
 
 export const ensureComposeIsVisible = (getState) => {
   if (!getState().getIn(['compose', 'mounted'])) {
@@ -253,7 +255,20 @@ export function submitCompose(successCallback) {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
     }).then(function (response) {
-      if ((browserHistory.location.pathname === '/publish' || browserHistory.location.pathname === '/statuses/new') && window.history.state) {
+      const pathName = browserHistory.location.pathname;
+      const onSharePath = pathName === '/share';
+      const onInAppPublishPath = inAppPublishPaths.includes(pathName);
+
+      if (statusId === null && onSharePath) {
+        try {
+          window.sessionStorage.setItem(composeSuccessAlertKey, 'published');
+        } catch {
+        }
+
+        window.location.assign('/home');
+      } else if (statusId === null && onInAppPublishPath) {
+        browserHistory.replace('/home');
+      } else if (onInAppPublishPath && window.history.state) {
         browserHistory.goBack();
       }
 
@@ -289,9 +304,6 @@ export function submitCompose(successCallback) {
 
       dispatch(showAlert({
         message: statusId === null ? messages.published : messages.saved,
-        action: messages.open,
-        dismissAfter: 10000,
-        onClick: () => browserHistory.push(`/@${response.data.account.username}/${response.data.id}`),
       }));
     }).catch(function (error) {
       dispatch(submitComposeFail(error));
