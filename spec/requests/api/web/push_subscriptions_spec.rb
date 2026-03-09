@@ -87,9 +87,19 @@ RSpec.describe 'API Web Push Subscriptions' do
   end
 
   describe 'POST /api/web/push_subscriptions' do
-    before { sign_in(user) }
-
     let(:user) { Fabricate :user }
+    let(:session_user_agent) { 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' }
+    let(:session_activation) { Fabricate(:session_activation, user:, user_agent: session_user_agent) }
+    let(:signed_session_id) do
+      ActionDispatch::Cookies::CookieJar.build(ActionDispatch::TestRequest.create, {}).tap do |cookie_jar|
+        cookie_jar.signed['_session_id'] = session_activation.session_id
+      end['_session_id']
+    end
+
+    before do
+      sign_in(user)
+      cookies['_session_id'] = signed_session_id
+    end
 
     it 'gracefully handles invalid nested params' do
       post api_web_push_subscriptions_path, params: { subscription: 'invalid' }
@@ -110,8 +120,46 @@ RSpec.describe 'API Web Push Subscriptions' do
           key_auth: eq(create_payload[:subscription][:keys][:auth])
         )
         .and be_standard
-      expect(user.session_activations.first.web_push_subscription)
+      expect(session_activation.reload.web_push_subscription)
         .to eq(created_push_subscription)
+    end
+
+    context 'with a mobile session' do
+      let(:session_user_agent) { 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_3 like Mac OS X)' }
+
+      it 'defaults to prioritized alert types only' do
+        post api_web_push_subscriptions_path, params: create_payload
+
+        expect(response)
+          .to have_http_status(200)
+
+        expect(created_push_subscription.data)
+          .to eq(
+            'policy' => 'all',
+            'alerts' => Notification::TYPES.index_with { |type| %w(follow follow_request mention).include?(type.to_s) }.deep_stringify_keys
+          )
+
+        expect(response.parsed_body)
+          .to include(
+            'policy' => 'all',
+            'alerts' => Notification::TYPES.index_with { |type| %w(follow follow_request mention).include?(type.to_s) }.deep_stringify_keys
+          )
+      end
+    end
+
+    context 'with a desktop session' do
+      it 'keeps default alerts disabled' do
+        post api_web_push_subscriptions_path, params: create_payload
+
+        expect(response)
+          .to have_http_status(200)
+
+        expect(created_push_subscription.data)
+          .to eq(
+            'policy' => 'all',
+            'alerts' => Notification::TYPES.index_with(false).deep_stringify_keys
+          )
+      end
     end
 
     context 'when standard is provided as false value' do
@@ -126,13 +174,11 @@ RSpec.describe 'API Web Push Subscriptions' do
     end
 
     context 'with a user who has a session with a prior subscription' do
-      before do
-        # Trigger creation of a `SessionActivation` for the user so that the
-        # prior_subscription setup and verification works as expected
-        get about_path
-      end
+      let(:prior_subscription) { Fabricate(:web_push_subscription, user:) }
 
-      let!(:prior_subscription) { Fabricate(:web_push_subscription, user:, session_activation: user.session_activations.last) }
+      before do
+        session_activation.update!(web_push_subscription: prior_subscription)
+      end
 
       it 'destroys prior subscription when creating new one' do
         post api_web_push_subscriptions_path, params: create_payload

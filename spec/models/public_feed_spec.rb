@@ -8,6 +8,11 @@ RSpec.describe PublicFeed do
   describe '#get' do
     subject { described_class.new(nil).get(20).map(&:id) }
 
+    before do
+      Setting.local_live_feed_access = 'public'
+      Setting.remote_live_feed_access = 'public'
+    end
+
     it 'only includes statuses with public visibility' do
       public_status = Fabricate(:status, visibility: :public)
       private_status = Fabricate(:status, visibility: :private)

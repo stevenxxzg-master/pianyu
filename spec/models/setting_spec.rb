@@ -3,6 +3,24 @@
 require 'rails_helper'
 
 RSpec.describe Setting do
+  describe '.default_settings' do
+    it 'loads the quiet-community defaults from config/settings.yml' do
+      expect(described_class.default_settings.slice(
+               'profile_directory',
+               'local_live_feed_access',
+               'remote_live_feed_access',
+               'trends',
+               'landing_page'
+             )).to eq(
+               'profile_directory' => false,
+               'local_live_feed_access' => 'authenticated',
+               'remote_live_feed_access' => 'authenticated',
+               'trends' => false,
+               'landing_page' => 'about'
+             )
+    end
+  end
+
   describe '#to_param' do
     let(:setting) { Fabricate(:setting, var: var) }
     let(:var)     { 'var' }

@@ -17,6 +17,9 @@ RSpec.describe 'Home page' do
 
   context 'when not signed in' do
     it 'visits the homepage and renders the web app' do
+      Setting.landing_page = 'trends'
+      Setting.trends = true
+
       visit root_path
 
       expect(page)
@@ -39,6 +42,7 @@ RSpec.describe 'Home page' do
     context 'when the landing page is set to trends' do
       before do
         Setting.landing_page = 'trends'
+        Setting.trends = true
       end
 
       it 'visits the root path and is redirected to the trends page', :js do
@@ -51,6 +55,7 @@ RSpec.describe 'Home page' do
     context 'when the landing page is set to local_feed' do
       before do
         Setting.landing_page = 'local_feed'
+        Setting.local_live_feed_access = 'public'
       end
 
       it 'visits the root path and is redirected to the local live feed page', :js do
