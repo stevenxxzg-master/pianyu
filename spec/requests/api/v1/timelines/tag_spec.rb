@@ -89,6 +89,10 @@ RSpec.describe 'Tag' do
     end
 
     context 'when the instance allows public preview' do
+      before do
+        Form::AdminSettings.new(local_topic_feed_access: 'public', remote_topic_feed_access: 'public').save
+      end
+
       context 'when the user is not authenticated' do
         let(:headers) { {} }
         let(:expected_statuses) { [life_status] }
