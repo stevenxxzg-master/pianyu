@@ -16,11 +16,19 @@ export const AccountTabs: FC<{ acct: string }> = ({ acct }) => {
         <NavLink isActive={isActive} to={`/@${acct}`}>
           <FormattedMessage id='account.activity' defaultMessage='Activity' />
         </NavLink>
-        <NavLink exact to={`/@${acct}/media`}>
-          <FormattedMessage id='account.media' defaultMessage='Media' />
-        </NavLink>
-        <NavLink exact to={`/@${acct}/featured`}>
+        <NavLink
+          className={classes.tabsSecondaryLink}
+          exact
+          to={`/@${acct}/featured`}
+        >
           <FormattedMessage id='account.featured' defaultMessage='Featured' />
+        </NavLink>
+        <NavLink
+          className={classes.tabsSecondaryLink}
+          exact
+          to={`/@${acct}/media`}
+        >
+          <FormattedMessage id='account.media' defaultMessage='Media' />
         </NavLink>
       </div>
     );

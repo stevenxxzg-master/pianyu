@@ -4,6 +4,8 @@ import type { Map as ImmutableMap } from 'immutable';
 
 import { Hashtag } from 'mastodon/components/hashtag';
 
+import classes from './styles.module.scss';
+
 export type TagMap = ImmutableMap<
   'id' | 'name' | 'url' | 'statuses_count' | 'last_status_at' | 'accountId',
   string | null
@@ -28,9 +30,10 @@ const messages = defineMessages({
 export const FeaturedTag: React.FC<FeaturedTagProps> = ({ tag, account }) => {
   const intl = useIntl();
   const name = tag.get('name') ?? '';
-  const count = Number.parseInt(tag.get('statuses_count') ?? '');
+  const count = Number.parseInt(tag.get('statuses_count') ?? '') || 0;
   return (
     <Hashtag
+      className={classes.featuredTag}
       key={name}
       name={name}
       to={`/@${account}/tagged/${name}`}
