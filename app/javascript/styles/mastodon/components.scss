@@ -1821,11 +1821,15 @@ body > [data-popper-placement] {
 }
 
 .status__action-bar__button-wrapper--boost .status__action-bar__button:hover,
-.status__action-bar__button-wrapper--boost .status__action-bar__button:focus-visible,
+.status__action-bar__button-wrapper--boost
+  .status__action-bar__button:focus-visible,
 .status__action-bar__button-wrapper--boost .status__action-bar__button.active,
-.status__action-bar__button-wrapper--favourite .status__action-bar__button:hover,
-.status__action-bar__button-wrapper--favourite .status__action-bar__button:focus-visible,
-.status__action-bar__button-wrapper--favourite .status__action-bar__button.active {
+.status__action-bar__button-wrapper--favourite
+  .status__action-bar__button:hover,
+.status__action-bar__button-wrapper--favourite
+  .status__action-bar__button:focus-visible,
+.status__action-bar__button-wrapper--favourite
+  .status__action-bar__button.active {
   opacity: 1;
 }
 

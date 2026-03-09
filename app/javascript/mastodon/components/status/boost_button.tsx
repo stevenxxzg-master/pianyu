@@ -69,9 +69,7 @@ const StandaloneBoostButton: FC<ReblogButtonProps> = ({ status, counters }) => {
       iconComponent={iconComponent}
       className='status__action-bar__button'
       onClick={!disabled ? handleClick : undefined}
-      counter={
-        counters && combinedCount > 0 ? combinedCount : undefined
-      }
+      counter={counters && combinedCount > 0 ? combinedCount : undefined}
     />
   );
 };
@@ -201,9 +199,7 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
         icon='retweet'
         className='status__action-bar__button'
         iconComponent={boostIcon}
-        counter={
-          counters && combinedCount > 0 ? combinedCount : undefined
-        }
+        counter={counters && combinedCount > 0 ? combinedCount : undefined}
         active={isReblogged}
       />
     </Dropdown>
