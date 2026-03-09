@@ -13,6 +13,7 @@ import { WebSocketServer } from 'ws';
 
 import * as Database from './database.js';
 import { AuthenticationError, RequestError, extractStatusAndMessage as extractErrorStatusAndMessage } from './errors.js';
+import { getFeedAccessSettingNames, getFeedAccessSettingsFromRows } from './feed_access.js';
 import { logger, httpLogger, initializeLogLevel, attachWebsocketHttpLogger, createWebsocketLogger } from './logging.js';
 import { setupMetrics } from './metrics.js';
 import * as Redis from './redis.js';
@@ -606,33 +607,11 @@ const startServer = async () => {
    * @returns {Promise.<{ localAccess: boolean, remoteAccess: boolean }>}
    */
   const getFeedAccessSettings = async (kind, req) => {
-    const access = { localAccess: true, remoteAccess: true };
-
-    if (req.permissions & PERMISSION_VIEW_FEEDS) {
-      return access;
-    }
-
-    let localAccessVar, remoteAccessVar;
-
-    if (kind === 'hashtag') {
-      localAccessVar = 'local_topic_feed_access';
-      remoteAccessVar = 'remote_topic_feed_access';
-    } else {
-      localAccessVar = 'local_live_feed_access';
-      remoteAccessVar = 'remote_live_feed_access';
-    }
+    const { local: localAccessVar, remote: remoteAccessVar } = getFeedAccessSettingNames(kind);
 
     const result = await pgPool.query('SELECT var, value FROM settings WHERE var IN ($1, $2)', [localAccessVar, remoteAccessVar]);
 
-    result.rows.forEach((row) => {
-      if (row.var === localAccessVar) {
-        access.localAccess = row.value !== "--- disabled\n";
-      } else {
-        access.remoteAccess = row.value !== "--- disabled\n";
-      }
-    });
-
-    return access;
+    return getFeedAccessSettingsFromRows(kind, req, result.rows, { viewFeedsPermission: PERMISSION_VIEW_FEEDS });
   };
 
   /**
