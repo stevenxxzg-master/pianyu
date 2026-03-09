@@ -78,6 +78,7 @@ export default class MediaAttachments extends ImmutablePureComponent {
               foregroundColor={audio.getIn(['meta', 'colors', 'foreground'])}
               accentColor={audio.getIn(['meta', 'colors', 'accent'])}
               duration={audio.getIn(['meta', 'original', 'duration'], 0)}
+              maxHeight={height}
             />
           )}
         </Bundle>
@@ -96,6 +97,7 @@ export default class MediaAttachments extends ImmutablePureComponent {
               src={video.get('url')}
               alt={description}
               lang={language}
+              maxHeight={height}
               width={width}
               height={height}
               inline

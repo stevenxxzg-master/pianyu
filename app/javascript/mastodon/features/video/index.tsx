@@ -162,6 +162,7 @@ export const Video: React.FC<{
   src: string;
   alt?: string;
   lang?: string;
+  maxHeight?: number;
   sensitive?: boolean;
   onOpenVideo?: (options: {
     startTime: number;
@@ -196,6 +197,7 @@ export const Video: React.FC<{
   src,
   alt = '',
   lang,
+  maxHeight,
   sensitive,
   onOpenVideo,
   onCloseVideo,
@@ -808,7 +810,10 @@ export const Video: React.FC<{
           fullscreen,
           editable,
         })}
-        style={{ aspectRatio }}
+        style={{
+          aspectRatio,
+          maxHeight: maxHeight ? `${maxHeight}px` : undefined,
+        }}
         ref={playerRef}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}

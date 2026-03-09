@@ -55,6 +55,7 @@ export const Audio: React.FC<{
   alt?: string;
   lang?: string;
   poster?: string;
+  maxHeight?: number;
   sensitive?: boolean;
   editable?: boolean;
   blurhash?: string;
@@ -87,6 +88,7 @@ export const Audio: React.FC<{
   alt,
   lang,
   poster,
+  maxHeight,
   duration,
   sensitive,
   editable,
@@ -548,6 +550,7 @@ export const Audio: React.FC<{
       ref={playerRef}
       style={
         {
+          maxHeight: maxHeight ? `${maxHeight}px` : undefined,
           '--player-background-color': backgroundColor,
           '--player-foreground-color': foregroundColor,
           '--player-accent-color': accentColor,
