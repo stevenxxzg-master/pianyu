@@ -99,6 +99,19 @@ export const AccountHeader: React.FC<{
   const suspendedOrHidden = hidden || account.suspended;
   const isLocal = !account.acct.includes('@');
   const isMe = me && account.id === me;
+  const redesignHeaderContext = isRedesign && (
+    <div className={redesignClasses.contextStack}>
+      {me !== account.id && relationship && (
+        <AccountInfo relationship={relationship} />
+      )}
+
+      <AccountBadges accountId={accountId} />
+
+      {!isMe && !suspendedOrHidden && (
+        <FamiliarFollowers accountId={accountId} />
+      )}
+    </div>
+  );
 
   return (
     <div className='account-timeline__header'>
@@ -175,19 +188,15 @@ export const AccountHeader: React.FC<{
             )}
           >
             <AccountName accountId={accountId} />
-            {isRedesign && (
-              <AccountButtons
-                accountId={accountId}
-                className={redesignClasses.buttonsDesktop}
-                noShare={!isMe || 'share' in navigator}
-                forceMenu={'share' in navigator}
-              />
-            )}
           </div>
 
-          <AccountBadges accountId={accountId} />
+          {isRedesign ? (
+            redesignHeaderContext
+          ) : (
+            <AccountBadges accountId={accountId} />
+          )}
 
-          {!isMe && !suspendedOrHidden && (
+          {!isRedesign && !isMe && !suspendedOrHidden && (
             <FamiliarFollowers accountId={accountId} />
           )}
 
@@ -200,8 +209,18 @@ export const AccountHeader: React.FC<{
           )}
 
           {!suspendedOrHidden && (
-            <div className='account__header__extra'>
-              <div className='account__header__bio'>
+            <div
+              className={classNames(
+                'account__header__extra',
+                isRedesign && redesignClasses.metaShelf,
+              )}
+            >
+              <div
+                className={classNames(
+                  'account__header__bio',
+                  isRedesign && redesignClasses.bio,
+                )}
+              >
                 {me &&
                   account.id !== me &&
                   (isRedesign ? (
@@ -214,13 +233,28 @@ export const AccountHeader: React.FC<{
                   accountId={accountId}
                   className={classNames(
                     'account__header__content',
-                    isRedesign && redesignClasses.bio,
+                    isRedesign && redesignClasses.bioContent,
                   )}
                 />
                 <AccountHeaderFields accountId={accountId} />
               </div>
 
-              <AccountNumberFields accountId={accountId} />
+              {isRedesign ? (
+                <div className={redesignClasses.metaShelfAside}>
+                  <AccountNumberFields accountId={accountId} />
+                  <AccountButtons
+                    accountId={accountId}
+                    className={classNames(
+                      redesignClasses.buttonsDesktop,
+                      redesignClasses.buttonsMeta,
+                    )}
+                    noShare={!isMe || 'share' in navigator}
+                    forceMenu={'share' in navigator}
+                  />
+                </div>
+              ) : (
+                <AccountNumberFields accountId={accountId} />
+              )}
             </div>
           )}
 
