@@ -122,5 +122,41 @@ RSpec.describe 'Tag' do
         it_behaves_like 'a successful request to the tag timeline'
       end
     end
+
+    context 'when topic feed settings fall back to authenticated defaults' do
+      before do
+        allow(Setting).to receive(:default_settings).and_return(
+          Setting.default_settings.merge(
+            'local_topic_feed_access' => 'authenticated',
+            'remote_topic_feed_access' => 'authenticated'
+          )
+        )
+
+        Setting.where(var: %w(local_topic_feed_access remote_topic_feed_access)).delete_all
+        Rails.cache.clear
+      end
+
+      after do
+        Rails.cache.clear
+      end
+
+      context 'without an authentication token' do
+        let(:headers) { {} }
+
+        it 'returns http unprocessable entity' do
+          subject
+
+          expect(response).to have_http_status(422)
+          expect(response.content_type)
+            .to start_with('application/json')
+        end
+      end
+
+      context 'when the user is authenticated' do
+        let(:expected_statuses) { [life_status] }
+
+        it_behaves_like 'a successful request to the tag timeline'
+      end
+    end
   end
 end
