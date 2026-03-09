@@ -382,24 +382,26 @@ class StatusActionBar extends ImmutablePureComponent {
     const bookmarkTitle = intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark);
     const favouriteTitle = intl.formatMessage(status.get('favourited') ? messages.removeFavourite : messages.favourite);
     const isReply = status.get('in_reply_to_account_id') === status.getIn(['account', 'id']);
+    const repliesCount = status.get('replies_count');
+    const favouritesCount = status.get('favourites_count');
   
     const shouldShowQuoteRemovalHint = isQuotingMe && contextType === 'notifications';
 
     return (
       <div className='status__action-bar'>
-        <div className='status__action-bar__button-wrapper'>
-          <IconButton className='status__action-bar__button' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} counter={status.get('replies_count')} />
+        <div className='status__action-bar__button-wrapper status__action-bar__button-wrapper--reply'>
+          <IconButton className='status__action-bar__button status__action-bar__button--reply' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} counter={repliesCount > 0 ? repliesCount : undefined} />
         </div>
-        <div className='status__action-bar__button-wrapper'>
+        <div className='status__action-bar__button-wrapper status__action-bar__button-wrapper--boost'>
           <BoostButton status={status} counters={withCounters} />
         </div>
-        <div className='status__action-bar__button-wrapper'>
-          <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
+        <div className='status__action-bar__button-wrapper status__action-bar__button-wrapper--favourite'>
+          <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} counter={withCounters && favouritesCount > 0 ? favouritesCount : undefined} />
         </div>
-        <div className='status__action-bar__button-wrapper'>
+        <div className='status__action-bar__button-wrapper status__action-bar__button-wrapper--bookmark'>
           <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} />
         </div>
-        <RemoveQuoteHint className='status__action-bar__button-wrapper' canShowHint={shouldShowQuoteRemovalHint}>
+        <RemoveQuoteHint className='status__action-bar__button-wrapper status__action-bar__button-wrapper--menu' canShowHint={shouldShowQuoteRemovalHint}>
           {(dismissQuoteHint) => (
             <Dropdown
               scrollKey={scrollKey}
