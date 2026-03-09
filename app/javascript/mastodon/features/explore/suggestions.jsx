@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
   isLoading: state.suggestions.isLoading,
 });
 
-class Suggestions extends PureComponent {
+export class ExploreSuggestions extends PureComponent {
 
   static propTypes = {
     isLoading: PropTypes.bool,
@@ -45,7 +45,10 @@ class Suggestions extends PureComponent {
       return (
         <div className='explore__suggestions scrollable scrollable--flex'>
           <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.explore_statuses' defaultMessage='Nothing is trending right now. Check back later!' />
+            <FormattedMessage
+              id='empty_column.explore_suggestions'
+              defaultMessage='No profile suggestions right now. Try searching or browse profiles instead.'
+            />
           </div>
         </div>
       );
@@ -66,4 +69,4 @@ class Suggestions extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(withRouter(Suggestions));
+export default connect(mapStateToProps)(withRouter(ExploreSuggestions));

@@ -121,15 +121,6 @@ export function expandTimeline(timelineId, path, params = {}) {
       dispatch(importFetchedStatuses(response.data));
       dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore, isLoadingRecent && preferPendingItems));
 
-      if (timelineId === 'home' && !isLoadingMore && !isLoadingRecent) {
-        const now = new Date();
-        const fittingIndex = response.data.findIndex(status => now - (new Date(status.created_at)) > 4 * 3600 * 1000);
-
-        if (fittingIndex !== -1) {
-          dispatch(insertIntoTimeline(timelineId, TIMELINE_SUGGESTIONS, Math.max(1, fittingIndex)));
-        }
-      }
-
       if (timelineId === 'home') {
         dispatch(submitMarkers());
       }

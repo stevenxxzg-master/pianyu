@@ -41,10 +41,10 @@ RSpec.describe 'Home page' do
         Setting.landing_page = 'trends'
       end
 
-      it 'visits the root path and is redirected to the trends page', :js do
+      it 'visits the root path and is redirected to the about page', :js do
         visit root_path
 
-        expect(page).to have_current_path('/explore')
+        expect(page).to have_current_path('/about')
       end
     end
 
