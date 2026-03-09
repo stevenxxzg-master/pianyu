@@ -1,0 +1,88 @@
+name: Release Performance Baseline
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  BUNDLE_CLEAN: true
+  BUNDLE_FROZEN: true
+
+jobs:
+  release-performance-baseline:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10ms
+          --health-timeout 3s
+          --health-retries 50
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10ms
+          --health-timeout 3s
+          --health-retries 50
+        ports:
+          - 6379:6379
+
+    env:
+      DB_HOST: localhost
+      DB_USER: postgres
+      DB_PASS: postgres
+      RAILS_ENV: test
+      BUNDLE_WITH: test
+      LOCAL_DOMAIN: localhost:3000
+      LOCAL_HTTPS: false
+      RELEASE_PERFORMANCE_BASELINE_STRICT: '1'
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Ruby environment
+        uses: ./.github/actions/setup-ruby
+        with:
+          ruby-version: '.ruby-version'
+          additional-system-dependencies: ffmpeg
+
+      - name: Set up Javascript environment
+        uses: ./.github/actions/setup-javascript
+
+      - name: Precompile assets
+        env:
+          SECRET_KEY_BASE_DUMMY: 1
+          BUNDLE_WITH: test
+        run: bin/rails assets:precompile
+
+      - name: Load database schema
+        run: ./bin/rails db:create db:schema:load db:seed
+
+      - name: Install Playwright Chromium browser
+        run: yarn run playwright install --with-deps chromium
+
+      - name: Collect release performance baseline
+        run: bin/collect_release_performance_baseline
+
+      - name: Upload release performance artifacts
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: release-performance-baseline
+          path: tmp/release_performance_baseline/
+
+      - name: Upload logs on failure
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: failure()
+        with:
+          name: release-performance-baseline-logs
+          path: log/
