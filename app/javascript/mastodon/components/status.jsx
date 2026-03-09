@@ -44,6 +44,8 @@ const messages = defineMessages({
   quote_cancel: { id: 'status.quote.cancel', defaultMessage: 'Cancel quote' },
 });
 
+const TIMELINE_MEDIA_MAX_HEIGHT = 110;
+
 export const textForScreenReader = ({intl, status, rebloggedByText = false, isQuote = false}) => {
   const displayName = status.getIn(['account', 'display_name']);
 
@@ -212,19 +214,19 @@ class Status extends ImmutablePureComponent {
 
   renderLoadingMediaGallery = () => {
     return (
-      <div className='media-gallery' style={{ aspectRatio: this.getAttachmentAspectRatio() }} />
+      <div className='media-gallery' style={{ aspectRatio: this.getAttachmentAspectRatio(), maxHeight: `${TIMELINE_MEDIA_MAX_HEIGHT}px` }} />
     );
   };
 
   renderLoadingVideoPlayer = () => {
     return (
-      <div className='video-player' style={{ aspectRatio: this.getAttachmentAspectRatio() }} />
+      <div className='video-player' style={{ aspectRatio: this.getAttachmentAspectRatio(), maxHeight: `${TIMELINE_MEDIA_MAX_HEIGHT}px` }} />
     );
   };
 
   renderLoadingAudioPlayer = () => {
     return (
-      <div className='audio-player' style={{ aspectRatio: this.getAttachmentAspectRatio() }} />
+      <div className='audio-player' style={{ aspectRatio: this.getAttachmentAspectRatio(), maxHeight: `${TIMELINE_MEDIA_MAX_HEIGHT}px` }} />
     );
   };
 
@@ -482,7 +484,7 @@ class Status extends ImmutablePureComponent {
                 media={status.get('media_attachments')}
                 lang={language}
                 sensitive={status.get('sensitive')}
-                height={110}
+                height={TIMELINE_MEDIA_MAX_HEIGHT}
                 onOpenMedia={this.handleOpenMedia}
                 cacheWidth={this.props.cacheMediaWidth}
                 defaultWidth={this.props.cachedMediaWidth}
@@ -510,6 +512,7 @@ class Status extends ImmutablePureComponent {
                 accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
                 duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
                 deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
+                maxHeight={TIMELINE_MEDIA_MAX_HEIGHT}
                 sensitive={status.get('sensitive')}
                 blurhash={attachment.get('blurhash')}
                 visible={this.state.showMedia}
@@ -535,6 +538,7 @@ class Status extends ImmutablePureComponent {
                 alt={description}
                 lang={language}
                 sensitive={status.get('sensitive')}
+                maxHeight={TIMELINE_MEDIA_MAX_HEIGHT}
                 onOpenVideo={this.handleOpenVideo}
                 deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
                 visible={this.state.showMedia}
@@ -550,6 +554,7 @@ class Status extends ImmutablePureComponent {
         <Card
           key={`${status.get('id')}-${status.get('edited_at')}`}
           card={status.get('card')}
+          compact
           sensitive={status.get('sensitive')}
         />
       );

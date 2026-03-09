@@ -297,13 +297,15 @@ class MediaGallery extends PureComponent {
   }
 
   render () {
-    const { media, lang, sensitive, defaultWidth, autoplay, matchedFilters } = this.props;
+    const { media, lang, sensitive, defaultWidth, autoplay, matchedFilters, height } = this.props;
     const { visible } = this.state;
     const width = this.state.width || defaultWidth;
 
     let children;
 
-    const style = {};
+    const style = {
+      maxHeight: `${height}px`,
+    };
 
     if (this.isFullSizeEligible()) {
       style.aspectRatio = `${this.props.media.getIn([0, 'meta', 'small', 'aspect'])}`;

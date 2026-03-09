@@ -65,6 +65,7 @@ const handleIframeUrl = (html: string, url: string, providerName: string) => {
 
 interface CardProps {
   card: CardType | null;
+  compact?: boolean;
   sensitive?: boolean;
 }
 
@@ -84,7 +85,7 @@ const CardVideo: React.FC<Pick<CardProps, 'card'>> = ({ card }) => (
   />
 );
 
-const Card: React.FC<CardProps> = ({ card, sensitive }) => {
+const Card: React.FC<CardProps> = ({ card, compact = false, sensitive }) => {
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [embedded, setEmbedded] = useState(false);
   const [revealed, setRevealed] = useState(!sensitive);
@@ -123,6 +124,7 @@ const Card: React.FC<CardProps> = ({ card, sensitive }) => {
   const largeImage =
     (hasImage && card.get('width') > card.get('height')) || interactive;
   const showAuthor = !!card.getIn(['authors', 0, 'accountId']);
+  const expanded = largeImage && !compact;
 
   const description = (
     <div className='status-card__content' dir='auto'>
@@ -266,7 +268,12 @@ const Card: React.FC<CardProps> = ({ card, sensitive }) => {
     }
 
     return (
-      <div className={classNames('status-card', { expanded: largeImage })}>
+      <div
+        className={classNames('status-card', {
+          expanded,
+          'status-card--compact': compact,
+        })}
+      >
         {embed}
         <a
           href={card.get('url')}
@@ -299,8 +306,9 @@ const Card: React.FC<CardProps> = ({ card, sensitive }) => {
       <a
         href={card.get('url')}
         className={classNames('status-card', {
-          expanded: largeImage,
+          expanded,
           bottomless: showAuthor,
+          'status-card--compact': compact,
         })}
         target='_blank'
         rel='noopener'
