@@ -20,9 +20,9 @@ const initialState = ImmutableMap({
 
   home: ImmutableMap({
     shows: ImmutableMap({
-      quote: true,
-      reblog: true,
-      reply: true,
+      quote: false,
+      reblog: false,
+      reply: false,
     }),
 
     regex: ImmutableMap({
