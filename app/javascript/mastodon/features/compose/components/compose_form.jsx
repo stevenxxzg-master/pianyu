@@ -5,16 +5,19 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
+import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import { length } from 'stringz';
 
 import { missingAltTextModal } from 'mastodon/initial_state';
+import { uuid } from 'mastodon/uuid';
 
 import AutosuggestInput from 'mastodon/components/autosuggest_input';
 import AutosuggestTextarea from 'mastodon/components/autosuggest_textarea';
 import { Button } from 'mastodon/components/button';
+import { Icon } from 'mastodon/components/icon';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
@@ -40,6 +43,8 @@ const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Update' },
   reply: { id: 'compose_form.reply', defaultMessage: 'Reply' },
+  moreOptions: { id: 'navigation_bar.more', defaultMessage: 'More' },
+  fewerOptions: { id: 'mute_modal.hide_options', defaultMessage: 'Hide options' },
 });
 
 class ComposeForm extends ImmutablePureComponent {
@@ -75,6 +80,7 @@ class ComposeForm extends ImmutablePureComponent {
     lang: PropTypes.string,
     maxChars: PropTypes.number,
     redirectOnSuccess: PropTypes.bool,
+    hasPoll: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -83,11 +89,13 @@ class ComposeForm extends ImmutablePureComponent {
 
   state = {
     highlighted: false,
+    isAdvancedOptionsOpen: false,
   };
 
   constructor(props) {
     super(props);
     this.textareaRef = createRef(null);
+    this.advancedOptionsId = `compose-form-more-options-${uuid()}`;
   }
 
   handleChange = (e) => {
@@ -181,6 +189,10 @@ class ComposeForm extends ImmutablePureComponent {
     }
   };
 
+  handleToggleAdvancedOptions = () => {
+    this.setState(({ isAdvancedOptionsOpen }) => ({ isAdvancedOptionsOpen: !isAdvancedOptionsOpen }));
+  };
+
   componentDidMount () {
     this._updateFocusAndSelection({ });
   }
@@ -251,7 +263,8 @@ class ComposeForm extends ImmutablePureComponent {
 
   render () {
     const { intl, onPaste, onDrop, autoFocus, withoutNavigation, maxChars, isSubmitting } = this.props;
-    const { highlighted } = this.state;
+    const { highlighted, isAdvancedOptionsOpen } = this.state;
+    const hasSecondaryState = this.props.spoiler || this.props.hasPoll;
 
     return (
       <form className='compose-form' onSubmit={this.handleSubmit}>
@@ -264,7 +277,6 @@ class ComposeForm extends ImmutablePureComponent {
 
           <div className='compose-form__dropdowns'>
             <VisibilityButton disabled={this.props.isEditing} />
-            <LanguageDropdown />
           </div>
 
           {this.props.spoiler && (
@@ -320,9 +332,20 @@ class ComposeForm extends ImmutablePureComponent {
             <div className='compose-form__actions'>
               <div className='compose-form__buttons'>
                 <UploadButtonContainer />
-                <PollButtonContainer />
-                <SpoilerButtonContainer />
-                <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
+                <button
+                  type='button'
+                  className={classNames('dropdown-button', 'compose-form__more-button', {
+                    active: isAdvancedOptionsOpen || hasSecondaryState,
+                  })}
+                  aria-expanded={isAdvancedOptionsOpen}
+                  aria-controls={this.advancedOptionsId}
+                  onClick={this.handleToggleAdvancedOptions}
+                >
+                  <Icon id='more_horiz' icon={MoreHorizIcon} />
+                  <span className='dropdown-button__label'>
+                    {intl.formatMessage(isAdvancedOptionsOpen ? messages.fewerOptions : messages.moreOptions)}
+                  </span>
+                </button>
                 <CharacterCounter max={maxChars} text={this.getFulltextForCharacterCounting()} />
               </div>
 
@@ -341,6 +364,17 @@ class ComposeForm extends ImmutablePureComponent {
                 </Button>
               </div>
             </div>
+
+            {isAdvancedOptionsOpen && (
+              <div className='compose-form__actions compose-form__actions--advanced' id={this.advancedOptionsId}>
+                <div className='compose-form__buttons compose-form__buttons--advanced'>
+                  <LanguageDropdown />
+                  <PollButtonContainer />
+                  <SpoilerButtonContainer />
+                  <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </form>
