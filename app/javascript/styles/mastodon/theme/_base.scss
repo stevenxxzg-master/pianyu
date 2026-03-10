@@ -1,3 +1,5 @@
+@use '../variables' as *;
+
 @mixin palette {
   --color-black: #000;
   --color-grey-950: #181820;
@@ -37,4 +39,141 @@
   --color-green-600: #00a63e;
   --color-green-900: #0d542b;
   --color-green-950: #032e15;
+}
+
+@mixin foundation {
+  /* TYPOGRAPHY TOKENS */
+
+  --font-family-sans: #{$font-sans-serif}, sans-serif;
+  --font-family-display: #{$font-display}, sans-serif;
+  --font-family-mono: #{$font-monospace}, monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --text-size-caption: 12px;
+  --text-line-caption: 16px;
+  --text-size-label: 13px;
+  --text-line-label: 18px;
+  --text-size-body: 14px;
+  --text-line-body: 20px;
+  --text-size-body-large: 16px;
+  --text-line-body-large: 24px;
+  --text-size-title: 17px;
+  --text-line-title: 22px;
+  --text-size-heading: 18px;
+  --text-line-heading: 24px;
+  --text-size-display: 24px;
+  --text-line-display: 30px;
+  --text-size-hero: 28px;
+  --text-line-hero: 33px;
+
+  /* SPACING TOKENS */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 30px;
+  --space-8: 40px;
+  --space-9: 50px;
+  --space-10: 64px;
+
+  /* RADIUS TOKENS */
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --radius-circle: 50%;
+  --radius-control: var(--radius-sm);
+  --radius-card: var(--radius-md);
+  --radius-panel: var(--radius-md);
+  --radius-floating: var(--radius-md);
+  --radius-overlay: var(--radius-lg);
+
+  /* CONTROL TOKENS */
+
+  --control-height-md: 41px;
+
+  /* BORDER TOKENS */
+
+  --border-width-thin: 1px;
+  --border-width-strong: 2px;
+  --border-subtle: var(--border-width-thin) solid var(--color-border-primary);
+  --border-emphasis: var(--border-width-thin) solid
+    var(--color-border-on-bg-secondary);
+  --border-interactive: var(--border-width-strong) solid var(--color-text-brand);
+
+  /* MOTION TOKENS */
+
+  --motion-duration-fast: 100ms;
+  --motion-duration-standard: 200ms;
+  --motion-duration-slow: 500ms;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* CONTAINER TOKENS */
+
+  --container-page: 700px;
+  --container-compact: 400px;
+  --container-form: 450px;
+  --container-form-wide: 566px;
+  --container-main-max: 600px;
+  --panel-width-rail: 285px;
+  --panel-drawer-peek: 70px;
+  --panel-width-drawer: calc(
+    var(--panel-width-rail) + var(--panel-drawer-peek)
+  );
+  --panel-gap: var(--space-4);
+  --panel-offset: 10px;
+  --column-width-min: 380px;
+  --column-width-max: 400px;
+  --column-width-ideal: calc((100% - 350px) / 4);
+
+  /* SURFACE TOKENS */
+
+  --surface-canvas: var(--color-bg-ambient);
+  --surface-panel: var(--color-bg-primary);
+  --surface-nav: var(--surface-panel);
+  --surface-card: var(--color-bg-primary);
+  --surface-raised: var(--color-bg-secondary);
+  --surface-raised-solid: var(--color-bg-secondary-solid);
+  --surface-field: var(--color-bg-secondary);
+  --surface-floating: var(--color-bg-primary);
+  --surface-popout: var(--surface-floating);
+  --surface-brand: var(--color-bg-brand-softer);
+  --surface-modal: var(--surface-brand);
+  --surface-brand-solid: var(--color-bg-brand-base);
+  --surface-overlay-scrim: rgb(from var(--color-bg-overlay) r g b / 50%);
+  --surface-overlay-scrim-strong: rgb(from var(--color-bg-overlay) r g b / 80%);
+  --surface-border: var(--border-subtle);
+  --surface-border-raised: var(--border-emphasis);
+
+  /* SHADOW TOKENS */
+
+  --shadow-raised: 0 0 15px var(--color-shadow-primary);
+  --shadow-floating:
+    0 20px 25px -5px var(--color-shadow-primary),
+    0 8px 10px -6px var(--color-shadow-primary);
+  --shadow-overlay:
+    0 24px 48px -24px var(--color-shadow-primary),
+    0 12px 24px -18px var(--color-shadow-primary);
+
+  /* Z-INDEX TOKENS */
+
+  --z-index-underlay: -1;
+  --z-index-base: 0;
+  --z-index-raised: 1;
+  --z-index-sticky: 2;
+  --z-index-navigation: 3;
+  --z-index-inline-alert: 10;
+  --z-index-toast: 100;
+  --z-index-drawer: 200;
+  --z-index-upload: 2000;
+  --z-index-modal: 9998;
+  --z-index-popout: 9999;
 }

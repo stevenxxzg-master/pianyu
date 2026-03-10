@@ -1,3 +1,4 @@
+@use '../variables' as *;
 @use 'base';
 @use 'dark';
 @use 'light';
@@ -5,6 +6,7 @@
 
 html {
   @include base.palette;
+  @include base.foundation;
 }
 
 [data-color-scheme='dark'],
@@ -29,5 +31,17 @@ html:not([data-color-scheme]) {
   &[data-contrast='high'],
   [data-contrast='high'] & {
     @include light.contrast-overrides;
+  }
+}
+
+@media screen and (width <= $no-gap-breakpoint) {
+  html {
+    --radius-panel: 0px;
+  }
+}
+
+@media screen and (width <= $mobile-breakpoint) {
+  html {
+    --panel-offset: 0px;
   }
 }

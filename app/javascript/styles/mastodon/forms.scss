@@ -7,24 +7,25 @@ code {
 }
 
 .form-container {
-  max-width: 450px;
-  padding: 20px;
-  padding-bottom: 50px;
-  margin: 50px auto;
+  max-width: var(--container-form);
+  padding: var(--space-5);
+  padding-bottom: var(--space-9);
+  margin: var(--space-9) auto;
 }
 
 .form-section {
-  border-radius: 8px;
-  background: var(--color-bg-secondary);
-  padding: 24px;
-  margin-bottom: 24px;
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+  border: var(--surface-border);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
 }
 
 .fade-out-top {
   position: relative;
   overflow: hidden;
   height: 160px;
-  max-width: 566px;
+  max-width: var(--container-form-wide);
   margin-inline: auto;
 
   &::after {
@@ -504,10 +505,12 @@ code {
   }
 
   .input.static .label_input__wrapper {
-    font-size: 14px;
-    padding: 10px;
-    border: 1px solid var(--color-border-primary);
-    border-radius: 4px;
+    font-size: var(--text-size-body);
+    line-height: var(--text-line-body);
+    padding: var(--space-3);
+    border: var(--surface-border);
+    border-radius: var(--radius-control);
+    background: var(--surface-field);
   }
 
   input[type='text'],
@@ -518,18 +521,20 @@ code {
   input[type='datetime-local'],
   textarea {
     box-sizing: border-box;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: var(--text-size-body);
+    line-height: var(--text-line-body);
     color: var(--color-text-primary);
     display: block;
     width: 100%;
     outline: 0;
     font-family: inherit;
     resize: vertical;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border-primary);
-    border-radius: 4px;
-    padding: 10px 16px;
+    background: var(--surface-field);
+    border: var(--surface-border);
+    border-radius: var(--radius-control);
+    padding: var(--space-3) var(--space-4);
+    transition: border-color var(--motion-duration-standard)
+      var(--motion-ease-standard);
 
     &:invalid {
       box-shadow: none;
@@ -540,7 +545,7 @@ code {
     }
 
     @media screen and (width <= 600px) {
-      font-size: 16px;
+      font-size: var(--text-size-body-large);
     }
   }
 
@@ -573,30 +578,30 @@ code {
   }
 
   .actions {
-    margin-top: 30px;
+    margin-top: var(--space-7);
     display: flex;
-    gap: 10px;
+    gap: var(--space-3);
 
     &.actions--top {
       margin-top: 0;
-      margin-bottom: 30px;
+      margin-bottom: var(--space-7);
     }
   }
 
   .stacked-actions {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 30px;
-    margin-bottom: 15px;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-4);
   }
 
   .btn {
     display: block;
     width: 100%;
     border: 0;
-    border-radius: 4px;
-    background: var(--color-bg-brand-base);
+    border-radius: var(--radius-control);
+    background: var(--surface-brand-solid);
     color: var(--color-text-on-brand-base);
     font-size: 15px;
     line-height: 22px;
@@ -606,8 +611,10 @@ code {
     text-align: center;
     box-sizing: border-box;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     outline: 0;
+    transition: background var(--motion-duration-standard)
+      var(--motion-ease-standard);
 
     &:last-child {
       margin-inline-end: 0;
@@ -639,22 +646,25 @@ code {
   select {
     appearance: none;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: var(--text-size-body);
+    line-height: var(--text-line-body);
     color: var(--color-text-primary);
     display: block;
     width: 100%;
     outline: 0;
     font-family: inherit;
     resize: vertical;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border-primary);
-    border-radius: 4px;
+    background: var(--surface-field);
+    border: var(--surface-border);
+    border-radius: var(--radius-control);
     padding-inline-start: 10px;
     padding-inline-end: 30px;
-    height: 41px;
+    height: var(--control-height-md);
+    transition: border-color var(--motion-duration-standard)
+      var(--motion-ease-standard);
 
     @media screen and (width <= 600px) {
-      font-size: 16px;
+      font-size: var(--text-size-body-large);
     }
   }
 
@@ -671,7 +681,7 @@ code {
       top: 0;
       inset-inline-start: 0;
       border: 1px solid transparent;
-      padding: 10px 16px;
+      padding: var(--space-3) var(--space-4);
       width: 100%;
     }
 
@@ -683,8 +693,8 @@ code {
       position: absolute;
       inset-inline-end: 3px;
       top: 1px;
-      padding: 10px;
-      font-size: 14px;
+      padding: var(--space-3);
+      font-size: var(--text-size-body);
       color: var(--color-text-tertiary);
       font-family: inherit;
       pointer-events: none;
@@ -709,7 +719,7 @@ code {
   .horizontal-options .label_input__wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: var(--space-5);
 
     .radio,
     .radio > label {
