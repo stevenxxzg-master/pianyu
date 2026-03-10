@@ -47,11 +47,7 @@
     var(--color-bg-primary),
     var(--color-bg-secondary-base) calc(1.8 * var(--overlay-strength-secondary))
   );
-  --color-bg-ambient: color-mix(
-    in srgb,
-    var(--color-bg-primary),
-    #0b1320 26%
-  );
+  --color-bg-ambient: color-mix(in srgb, var(--color-bg-primary), #0b1320 26%);
   --color-bg-inverted: var(--color-paper-100);
   --color-bg-media-base: var(--color-black);
   --color-bg-media-strength: 68%;

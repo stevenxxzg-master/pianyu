@@ -46,7 +46,8 @@
   --color-bg-tertiary: #{color-mix(
       in oklab,
       var(--color-bg-primary),
-      var(--color-bg-secondary-base) calc(2.1 * var(--overlay-strength-secondary))
+      var(--color-bg-secondary-base)
+        calc(2.1 * var(--overlay-strength-secondary))
     )};
   --color-bg-ambient: var(--color-paper-100);
   --color-bg-inverted: var(--color-grey-950);
@@ -110,7 +111,10 @@
     var(--color-bg-secondary),
     var(--color-grey-700) 15%
   );
-  --color-border-on-bg-brand-softer: #{utils.css-alpha(var(--color-indigo-700), 22%)};
+  --color-border-on-bg-brand-softer: #{utils.css-alpha(
+      var(--color-indigo-700),
+      22%
+    )};
   --color-border-on-bg-error-softer: #{utils.css-alpha(
       var(--color-text-error),
       50%

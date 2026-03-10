@@ -17,7 +17,7 @@ module BrandingHelper
       viewBox: PianyuBranding::WORDMARK_VIEWBOX,
       class: 'logo logo--wordmark',
       role: 'img',
-      'aria-label': PianyuBranding::NAME,
+      'aria-label': PianyuBranding::NAME
     )
   end
 
@@ -28,7 +28,7 @@ module BrandingHelper
       viewBox: PianyuBranding::ICON_VIEWBOX,
       class: 'logo logo--icon',
       role: 'img',
-      'aria-label': PianyuBranding::NAME,
+      'aria-label': PianyuBranding::NAME
     )
   end
 

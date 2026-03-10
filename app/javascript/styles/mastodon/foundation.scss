@@ -3,12 +3,8 @@
 :root {
   --font-ui-body: #{$font-sans-serif}, sans-serif;
   --font-ui-display:
-    'Iowan Old Style',
-    'Palatino Linotype',
-    'URW Palladio L',
-    'Book Antiqua',
-    Georgia,
-    serif;
+    'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', 'Book Antiqua',
+    Georgia, serif;
   --font-ui-mono: #{$font-monospace}, monospace;
   --space-0: 0;
   --space-1: 4px;
@@ -28,11 +24,9 @@
   --radius-xl: 32px;
   --radius-pill: 999px;
   --shadow-soft:
-    0 18px 40px -28px rgb(20 32 47 / 24%),
-    0 8px 18px -14px rgb(20 32 47 / 14%);
+    0 18px 40px -28px rgb(20 32 47 / 24%), 0 8px 18px -14px rgb(20 32 47 / 14%);
   --shadow-panel:
-    0 24px 40px -28px rgb(14 23 36 / 18%),
-    0 12px 24px -20px rgb(14 23 36 / 10%);
+    0 24px 40px -28px rgb(14 23 36 / 18%), 0 12px 24px -20px rgb(14 23 36 / 10%);
   --surface-panel: color-mix(
     in oklab,
     var(--color-bg-primary),

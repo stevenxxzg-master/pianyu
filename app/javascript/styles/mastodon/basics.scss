@@ -8,11 +8,8 @@ html {
     scrollbar-color: var(--color-text-secondary) var(--color-bg-secondary);
   }
 
-  --outline-focus-default: 2px solid color-mix(
-    in oklab,
-    var(--color-text-brand),
-    var(--color-bg-primary) 20%
-  );
+  --outline-focus-default: 2px solid
+    color-mix(in oklab, var(--color-text-brand), var(--color-bg-primary) 20%);
   --avatar-border-radius: var(--radius-sm);
   --max-media-height-small: 460px;
   --max-media-height-large: 566px;
@@ -52,7 +49,11 @@ body {
   font-family: var(--font-ui-body);
   background:
     radial-gradient(circle at top left, rgb(61 111 148 / 11%), transparent 34%),
-    radial-gradient(circle at top right, rgb(237 228 215 / 92%), transparent 28%),
+    radial-gradient(
+      circle at top right,
+      rgb(237 228 215 / 92%),
+      transparent 28%
+    ),
     linear-gradient(180deg, var(--color-bg-primary), var(--color-bg-secondary));
   font-size: 14px;
   line-height: 20px;
