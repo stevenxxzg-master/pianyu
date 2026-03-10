@@ -10,6 +10,7 @@ RSpec.describe 'Auth Registration' do
       visit new_user_registration_path
       expect(page)
         .to have_title(I18n.t('auth.register'))
+        .and have_css('.public-auth')
         .and have_content(rule.text)
     end
   end
@@ -24,6 +25,7 @@ RSpec.describe 'Auth Registration' do
         visit new_user_registration_path
         expect(page)
           .to have_title(I18n.t('auth.register'))
+          .and have_css('.public-auth')
 
         expect { fill_in_and_submit_form }
           .to not_change(User, :count)
@@ -39,6 +41,7 @@ RSpec.describe 'Auth Registration' do
         visit new_user_registration_path
         expect(page)
           .to have_title(I18n.t('auth.register'))
+          .and have_css('.public-auth')
 
         expect { fill_in_and_submit_form }
           .to change(User, :count).by(1)

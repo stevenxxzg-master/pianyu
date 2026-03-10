@@ -1,0 +1,21 @@
+%footer.public-footer
+  .public-footer__lead
+    = render 'shared/public/brand', compact: true
+    %p.public-footer__description= public_marketing_description
+
+  .public-footer__links
+    .public-footer__group
+      %span.public-footer__label= t('public_pages.shared.footer.product')
+      = link_to t('public_pages.shared.nav.about'), about_path
+      = link_to t('public_pages.shared.nav.examples'), examples_path
+      = link_to t('public_pages.shared.nav.help'), help_path
+    .public-footer__group
+      %span.public-footer__label= t('public_pages.shared.footer.legal')
+      = link_to t('public_pages.shared.nav.privacy'), privacy_policy_path
+      = link_to t('public_pages.shared.nav.terms'), terms_of_service_path
+    .public-footer__group
+      %span.public-footer__label= t('public_pages.shared.footer.access')
+      = link_to_login t('public_pages.shared.actions.sign_in')
+      = link_to public_sign_up_label, available_sign_up_path
+
+  %p.public-footer__eyebrow= t('public_pages.shared.footer.hosted_on', domain: site_hostname)
