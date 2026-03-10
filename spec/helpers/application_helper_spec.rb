@@ -100,8 +100,8 @@ RSpec.describe ApplicationHelper do
         allow(Setting).to receive(:[]).with('registrations_mode').and_return 'none'
       end
 
-      it 'redirects to joinmastodon site' do
-        expect(helper.available_sign_up_path).to match(/joinmastodon.org/)
+      it 'returns the local sign-up path' do
+        expect(helper.available_sign_up_path).to eq(new_user_registration_path)
       end
     end
 
@@ -112,8 +112,8 @@ RSpec.describe ApplicationHelper do
         end
       end
 
-      it 'redirects to joinmastodon site' do
-        expect(helper.available_sign_up_path).to match(/joinmastodon.org/)
+      it 'returns the local sign-up path' do
+        expect(helper.available_sign_up_path).to eq(new_user_registration_path)
       end
     end
 

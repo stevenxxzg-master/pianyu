@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import appIcon from '@/images/app-icon.svg';
 import favicon32 from '@/icons/favicon-32x32.png';
+import appIcon from '@/images/app-icon.svg';
 import { IconLogo, SymbolLogo, WordmarkLogo } from 'mastodon/components/logo';
 
 import styles from './pianyu_brand_identity.module.scss';
@@ -87,10 +87,16 @@ export const Reference: Story = {
 
         <div className={styles.heroPanel}>
           <div className={styles.appIconCard}>
-            <img src={appIcon} alt='片语 PianYu app icon' className={styles.appIcon} />
+            <img
+              src={appIcon}
+              alt='片语 PianYu app icon'
+              className={styles.appIcon}
+            />
             <div>
               <span className={styles.cardLabel}>Browser asset</span>
-              <strong>Warm sand background, indigo structure, one warm accent.</strong>
+              <strong>
+                Warm sand background, indigo structure, one warm accent.
+              </strong>
               <p>
                 The icon should feel like a stack of thoughtful notes: soft,
                 composed, and unmistakably different from the default Mastodon
@@ -117,7 +123,10 @@ export const Reference: Story = {
             <div className={styles.assetWordmark}>
               <WordmarkLogo />
             </div>
-            <p>Primary introduction mark for navigation, auth pages, and shared public headers.</p>
+            <p>
+              Primary introduction mark for navigation, auth pages, and shared
+              public headers.
+            </p>
           </article>
 
           <article className={styles.assetCard}>
@@ -126,16 +135,30 @@ export const Reference: Story = {
               <IconLogo />
               <SymbolLogo />
             </div>
-            <p>Use the monochrome SVG in shell chrome and the full-color asset for standalone previews or noscript fallbacks.</p>
+            <p>
+              Use the monochrome SVG in shell chrome and the full-color asset
+              for standalone previews or noscript fallbacks.
+            </p>
           </article>
 
           <article className={styles.assetCard}>
             <span className={styles.cardLabel}>Favicon / app icon</span>
             <div className={styles.assetBrowser}>
-              <img src={favicon32} alt='片语 PianYu favicon preview' className={styles.favicon} />
-              <img src={appIcon} alt='片语 PianYu mobile app icon preview' className={styles.appIconMini} />
+              <img
+                src={favicon32}
+                alt='片语 PianYu favicon preview'
+                className={styles.favicon}
+              />
+              <img
+                src={appIcon}
+                alt='片语 PianYu mobile app icon preview'
+                className={styles.appIconMini}
+              />
             </div>
-            <p>Always preserve the warm neutral field. It keeps the browser chrome feeling calm and editorial.</p>
+            <p>
+              Always preserve the warm neutral field. It keeps the browser
+              chrome feeling calm and editorial.
+            </p>
           </article>
         </div>
       </section>

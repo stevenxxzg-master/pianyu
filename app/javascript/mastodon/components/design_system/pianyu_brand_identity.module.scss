@@ -14,8 +14,16 @@
   --shadow-soft: 0 18px 38px -28px rgb(32 40 52 / 18%);
 
   background:
-    radial-gradient(circle at top left, rgb(255 255 255 / 84%), transparent 30%),
-    radial-gradient(circle at top right, rgb(199 215 232 / 20%), transparent 32%),
+    radial-gradient(
+      circle at top left,
+      rgb(255 255 255 / 84%),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgb(199 215 232 / 20%),
+      transparent 32%
+    ),
     linear-gradient(180deg, #f7f3eb 0%, #f0e8dc 100%);
   color: var(--text-strong);
   font-family: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', sans-serif;
@@ -71,7 +79,8 @@
 .sectionHeader h2,
 .guardrailCard h2,
 .guardrailCardWarning h2 {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-family:
+    'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
   font-weight: 600;
   letter-spacing: -0.04em;
   margin: 0;
@@ -108,7 +117,11 @@
 
 .wordmarkFrame {
   align-items: center;
-  background: linear-gradient(135deg, rgb(255 255 255 / 86%), rgb(255 255 255 / 62%));
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 86%),
+    rgb(255 255 255 / 62%)
+  );
   border: 1px solid var(--line);
   border-radius: 24px;
   display: inline-flex;
@@ -128,7 +141,11 @@
 }
 
 .appIconCard {
-  background: linear-gradient(180deg, rgb(255 255 255 / 90%), rgb(235 225 212 / 86%));
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 90%),
+    rgb(235 225 212 / 86%)
+  );
   border: 1px solid var(--line);
   border-radius: 24px;
   display: grid;
@@ -184,7 +201,11 @@
 .surfaceCard,
 .guardrailCard,
 .guardrailCardWarning {
-  background: linear-gradient(180deg, rgb(255 255 255 / 88%), rgb(255 255 255 / 68%));
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 88%),
+    rgb(255 255 255 / 68%)
+  );
   padding: 22px;
 }
 
@@ -257,7 +278,11 @@
 }
 
 .surfaceCard {
-  background: linear-gradient(180deg, rgb(255 255 255 / 88%), rgb(244 239 230 / 78%));
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 88%),
+    rgb(244 239 230 / 78%)
+  );
 }
 
 .guardrailCard ul,
@@ -272,11 +297,19 @@
 }
 
 .guardrailCard {
-  background: linear-gradient(180deg, rgb(255 255 255 / 88%), rgb(246 240 230 / 80%));
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 88%),
+    rgb(246 240 230 / 80%)
+  );
 }
 
 .guardrailCardWarning {
-  background: linear-gradient(180deg, rgb(255 255 255 / 88%), rgb(244 233 224 / 82%));
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 88%),
+    rgb(244 233 224 / 82%)
+  );
 }
 
 .guardrailCardWarning h2 {
