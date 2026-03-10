@@ -32,7 +32,7 @@ class ManifestSerializer < ActiveModel::Serializer
       src = URI.join(root_url, src).to_s if src.present?
 
       {
-        src: src || frontend_asset_url("icons/android-chrome-#{size}x#{size}.png"),
+        src: src || frontend_asset_url(PianyuBranding.android_icon_asset_path(size.to_i)),
         sizes: "#{size}x#{size}",
         type: 'image/png',
         purpose: 'any maskable',
@@ -41,11 +41,11 @@ class ManifestSerializer < ActiveModel::Serializer
   end
 
   def theme_color
-    '#191b22'
+    PianyuBranding::THEME_COLORS[:light]
   end
 
   def background_color
-    '#191b22'
+    PianyuBranding::THEME_COLORS[:light]
   end
 
   def display

@@ -117,7 +117,7 @@ module ApplicationHelper
     safe_join(
       [
         inline_svg_tag(
-          "400-24px/#{icon}.svg",
+          "material-icons/400-24px/#{icon}.svg",
           class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
           role: :img,
           data: attributes[:data]
@@ -128,7 +128,7 @@ module ApplicationHelper
   end
 
   def check_icon
-    inline_svg_tag 'check.svg'
+    inline_svg_tag 'images/check.svg'
   end
 
   def interrelationships_icon(relationships, account_id)

@@ -12,13 +12,13 @@
       %link{ rel: 'dns-prefetch', href: storage_host }/
 
     - SiteUpload::FAVICON_SIZES.each do |size|
-      %link{ rel: 'icon', sizes: "#{size}x#{size}", href: favicon_path(size.to_i) || frontend_asset_path("icons/favicon-#{size}x#{size}.png"), type: 'image/png' }/
+      %link{ rel: 'icon', sizes: "#{size}x#{size}", href: favicon_path(size.to_i) || asset_path(PianyuBranding.favicon_asset_path(size.to_i)), type: 'image/png' }/
 
     - SiteUpload::APPLE_ICON_SIZES.each do |size|
-      %link{ rel: 'apple-touch-icon', sizes: "#{size}x#{size}", href: app_icon_path(size.to_i) || frontend_asset_path("icons/apple-touch-icon-#{size}x#{size}.png") }/
+      %link{ rel: 'apple-touch-icon', sizes: "#{size}x#{size}", href: app_icon_path(size.to_i) || asset_path(PianyuBranding.apple_touch_icon_asset_path(size.to_i)) }/
 
     - if use_mask_icon?
-      %link{ rel: 'mask-icon', href: frontend_asset_path('images/logo-symbol-icon.svg'), color: '#6364FF' }/
+      %link{ rel: 'mask-icon', href: asset_path(PianyuBranding::ICON_SYMBOL_ASSET_PATH), color: PianyuBranding::MASK_ICON_COLOR }/
     %link{ rel: 'manifest', href: manifest_path(format: :json) }/
     = javascript_inline_tag 'theme-selection.js'
     = theme_color_tags color_scheme
@@ -46,5 +46,5 @@
     = content_for?(:content) ? yield(:content) : yield
 
     .logo-resources{ 'tabindex' => '-1', 'inert' => true, 'aria-hidden' => 'true' }
-      = inline_svg_tag 'logo-symbol-icon.svg'
-      = inline_svg_tag 'logo-symbol-wordmark.svg'
+      = inline_svg_tag PianyuBranding::ICON_SYMBOL_ASSET_PATH
+      = inline_svg_tag PianyuBranding::WORDMARK_SYMBOL_ASSET_PATH

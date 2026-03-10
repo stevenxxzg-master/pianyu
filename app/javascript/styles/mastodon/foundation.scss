@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+:root {
+  --font-ui-body: #{$font-sans-serif}, sans-serif;
+  --font-ui-display:
+    'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', 'Book Antiqua',
+    Georgia, serif;
+  --font-ui-mono: #{$font-monospace}, monospace;
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+  --shadow-soft:
+    0 18px 40px -28px rgb(20 32 47 / 24%), 0 8px 18px -14px rgb(20 32 47 / 14%);
+  --shadow-panel:
+    0 24px 40px -28px rgb(14 23 36 / 18%), 0 12px 24px -20px rgb(14 23 36 / 10%);
+  --surface-panel: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    var(--color-bg-secondary) 58%
+  );
+  --surface-panel-raised: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    var(--color-bg-secondary) 42%
+  );
+  --surface-overlay: rgb(255 255 255 / 72%);
+  --container-auth: 720px;
+  --container-form: 470px;
+  --container-content: 1040px;
+  --page-gutter: clamp(16px, 3vw, 32px);
+  --motion-fast: 160ms;
+  --motion-base: 240ms;
+  --motion-slow: 360ms;
+  --motion-emphasis: cubic-bezier(0.22, 1, 0.36, 1);
+  --icon-size-sm: 20px;
+  --icon-size-md: 24px;
+  --icon-button-size: 40px;
+  --icon-button-radius: 14px;
+}

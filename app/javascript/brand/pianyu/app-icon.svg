@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="pianyu-card" x1="14" x2="114" y1="8" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf9"/>
+      <stop offset="1" stop-color="#eef3f7"/>
+    </linearGradient>
+    <linearGradient id="pianyu-accent" x1="50" x2="100" y1="34" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4b7da2"/>
+      <stop offset="1" stop-color="#274560"/>
+    </linearGradient>
+    <filter id="pianyu-shadow" width="120" height="120" x="4" y="6" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="8"/>
+      <feGaussianBlur stdDeviation="6"/>
+      <feColorMatrix values="0 0 0 0 0.0941176 0 0 0 0 0.12549 0 0 0 0 0.172549 0 0 0 0.18 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="100" height="100" x="14" y="10" fill="url(#pianyu-card)" rx="28"/>
+  <g filter="url(#pianyu-shadow)">
+    <path fill="#efe5d8" fill-rule="evenodd" d="M30 36c0-6.627 5.373-12 12-12h18.343L70 33.657V74c0 6.627-5.373 12-12 12H42c-6.627 0-12-5.373-12-12V36Zm26 0h10.343L56 25.657V36Z" clip-rule="evenodd"/>
+    <path fill="url(#pianyu-accent)" fill-rule="evenodd" d="M50 50c0-6.627 5.373-12 12-12h15.343L88 48.657V90c0 6.627-5.373 12-12 12H62c-6.627 0-12-5.373-12-12V50Zm22 0h12.343L72 37.657V50Z" clip-rule="evenodd"/>
+  </g>
+</svg>

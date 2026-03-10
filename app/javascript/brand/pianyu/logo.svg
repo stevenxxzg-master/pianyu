@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <defs>
+    <linearGradient id="pianyu-ink" x1="26" x2="62" y1="18" y2="74" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3e6f93"/>
+      <stop offset="1" stop-color="#26445e"/>
+    </linearGradient>
+  </defs>
+  <path fill="#ede4d7" fill-rule="evenodd" d="M16 18c0-6.627 5.373-12 12-12h14.343L52 15.657V50c0 6.627-5.373 12-12 12H28c-6.627 0-12-5.373-12-12V18Zm22 0h10.343L38 7.657V18Z" clip-rule="evenodd"/>
+  <path fill="url(#pianyu-ink)" fill-rule="evenodd" d="M34 30c0-6.627 5.373-12 12-12h11.343L68 28.657V62c0 6.627-5.373 12-12 12H46c-6.627 0-12-5.373-12-12V30Zm18 0h12.343L52 17.657V30Z" clip-rule="evenodd"/>
+</svg>

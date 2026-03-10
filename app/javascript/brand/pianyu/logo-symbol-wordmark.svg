@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 282 72">
+  <symbol id="pianyu-symbol-wordmark" viewBox="0 0 282 72">
+    <g fill="currentColor">
+      <path fill-rule="evenodd" d="M8 18c0-6.627 5.373-12 12-12h14.343L44 15.657V50c0 6.627-5.373 12-12 12H20C13.373 62 8 56.627 8 50V18Zm22 0h10.343L30 7.657V18Z" clip-rule="evenodd"/>
+      <path fill-rule="evenodd" d="M26 30c0-6.627 5.373-12 12-12h11.343L60 28.657V62c0 6.627-5.373 12-12 12H38c-6.627 0-12-5.373-12-12V30Zm18 0h12.343L44 17.657V30Z" clip-rule="evenodd"/>
+    </g>
+    <text x="84" y="43" fill="currentColor" font-family="Iowan Old Style, Palatino Linotype, Book Antiqua, URW Palladio L, Georgia, serif" font-size="34" font-weight="600" letter-spacing="0.02em">PianYu</text>
+  </symbol>
+  <use href="#pianyu-symbol-wordmark"/>
+</svg>

@@ -2,4 +2,26 @@
 
 .logo {
   color: var(--color-text-primary);
+  transform-origin: center;
+  transition:
+    color var(--motion-fast) ease,
+    transform var(--motion-base) var(--motion-emphasis),
+    filter var(--motion-base) ease;
+
+  &--wordmark {
+    width: auto;
+    max-width: min(100%, 282px);
+  }
+
+  &--icon {
+    filter: drop-shadow(0 10px 18px rgb(20 32 47 / 10%));
+  }
+}
+
+.logo-container a:hover .logo,
+.logo-container a:focus-visible .logo,
+.redirect__logo a:hover .logo,
+.redirect__logo a:focus-visible .logo {
+  color: var(--color-text-brand);
+  transform: translateY(-1px);
 }
