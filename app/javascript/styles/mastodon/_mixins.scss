@@ -4,42 +4,44 @@
   width: 100%;
   box-shadow: none;
   font-family: inherit;
-  background: var(--color-bg-secondary);
+  background: var(--surface-field);
   color: var(--color-text-primary);
-  border-radius: 4px;
-  border: 1px solid var(--color-border-on-bg-secondary);
-  font-size: 17px;
-  line-height: normal;
+  border-radius: var(--radius-control);
+  border: var(--surface-border-raised);
+  font-size: var(--text-size-title);
+  line-height: var(--text-line-title);
   margin: 0;
 }
 
 @mixin search-popout {
-  background: var(--color-bg-primary);
-  border-radius: 4px;
-  padding: 10px 14px;
-  padding-bottom: 14px;
-  margin-top: 10px;
+  background: var(--surface-floating);
+  border-radius: var(--radius-floating);
+  padding: var(--space-3) var(--space-4);
+  padding-bottom: var(--space-4);
+  margin-top: var(--space-3);
   color: var(--color-text-secondary);
-  box-shadow: 2px 4px 15px var(--color-shadow-primary);
+  box-shadow: var(--shadow-floating);
+  border: var(--surface-border);
 
   h4 {
     text-transform: uppercase;
     color: var(--color-text-secondary);
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 10px;
+    font-size: var(--text-size-label);
+    line-height: var(--text-line-label);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-3);
   }
 
   li {
-    padding: 4px 0;
+    padding: var(--space-1) 0;
   }
 
   ul {
-    margin-bottom: 10px;
+    margin-bottom: var(--space-3);
   }
 
   em {
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
   }
 }
