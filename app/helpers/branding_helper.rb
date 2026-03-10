@@ -34,7 +34,7 @@ module BrandingHelper
 
   def render_logo
     image_tag(
-      frontend_asset_path(PianyuBranding::LOGO_ASSET_PATH),
+      asset_path(PianyuBranding::LOGO_ASSET_PATH),
       alt: PianyuBranding::NAME,
       class: 'logo logo--icon'
     )
