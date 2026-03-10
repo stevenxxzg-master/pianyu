@@ -1,7 +1,6 @@
 ---
 fy:
   about:
-    about_mastodon_html: Mastodon is in sosjaal netwurk dat gebrûk makket fan iepen webprotokollen en frije software. It is krekt lykas desintralisearre e-mail!
     contact_missing: Net ynsteld
     contact_unavailable: Net fan tapassing
     hosted_on: Mastodon op %{domain}
@@ -1386,7 +1385,6 @@ fy:
       content: It spyt ús, der is oan ús kant wat fout gien.
       title: Dizze side is skansearre
     '503': De side koe troch in tydlike serversteuring net laden wurde.
-    noscript_html: Skeakelje JavaScript yn om de webapp fan Mastodon brûke te kinnen. As alternatyf kinne jo in <a href="%{apps_path}">Mastodon-app</a> sykje foar jo platfoarm.
   existing_username_validator:
     not_found: koe gjin lokale brûker mei dy brûkersnamme fine
     not_found_multiple: koe %{usernames} net fine

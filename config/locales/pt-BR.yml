@@ -1,7 +1,6 @@
 ---
 pt-BR:
   about:
-    about_mastodon_html: 'A rede social do futuro: Sem anúncios, sem vigilância corporativa, com design ético e muita descentralização! Possua seus próprios dados com o Mastodon!'
     contact_missing: Não definido
     contact_unavailable: Não disponível
     hosted_on: Mastodon hospedado em %{domain}
@@ -1431,7 +1430,6 @@ pt-BR:
       content: Desculpe, algo deu errado por aqui.
       title: Esta página não está certa
     '503': A página não pôde ser carregada devido a uma falha temporária do servidor.
-    noscript_html: Para usar o aplicativo web do Mastodon, ative o JavaScript. Ou, se quiser, experimente um dos <a href="%{apps_path}">aplicativos nativos</a> para o Mastodon em sua plataforma.
   existing_username_validator:
     not_found: não foi possível encontrar um usuário local com esse nome de usuário
     not_found_multiple: não foi possível encontrar %{usernames}

@@ -1,7 +1,6 @@
 ---
 cy:
   about:
-    about_mastodon_html: 'Rhwydwaith cymdeithasol y dyfodol: Dim hysbysebion, dim gwyliadwriaeth gorfforaethol, dylunio moesegol a datganoli! Chi sy berchen eich data gyda Mastodon!'
     contact_missing: Heb ei osodF
     contact_unavailable: Ddim yn berthnasol
     hosted_on: Mastodon wedi ei weinyddu ar %{domain}
@@ -1517,7 +1516,6 @@ cy:
       content: Ymddiheuriadau, ond fe aeth rhywbeth o'i le ar ein pen ni.
       title: Nid yw'r dudalen hon yn gywir
     '503': Ni fu modd gwasanaethu'r dudalen oherwydd methiant gweinydd dros dro.
-    noscript_html: I ddefnyddio ap gwe Mastodon, galluogwch JavaScript os gwelwch yn dda. Fel arall, gallwch drio un o'r <a href="%{apps_path}">apiau cynhenid</a> ar gyfer Mastodon ar eich platfform.
   existing_username_validator:
     not_found: methu dod o hyd i ddefnyddiwr lleol gyda'r enw defnyddiwr hwnnw
     not_found_multiple: methu dod o hyd i %{usernames}

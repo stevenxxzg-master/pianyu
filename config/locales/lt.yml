@@ -1,7 +1,6 @@
 ---
 lt:
   about:
-    about_mastodon_html: 'Ateities socialinis tinklas: jokių reklamų ir įmonių sekimo, etiškas dizainas bei decentralizacija! Turėkite savo duomenis su „Mastodon“!'
     contact_missing: Nenustatyta
     contact_unavailable: Nėra
     hosted_on: "„Mastodon“ talpinamas domene %{domain}"
@@ -977,7 +976,6 @@ lt:
     '500':
       content: Atsiprašome, bet kažkas nutiko ne taip mūsų pusėje.
       title: Netinkamas puslapis
-    noscript_html: Kad naudotumėtės Mastodon web aplikacija, prašome įsijungti JavaScript. Alternatyviai, pabandykite viena iš <a href="%{apps_path}">vietinių aplikacijų</a> Mastodon savo platformai.
   exports:
     archive_takeout:
       date: Data

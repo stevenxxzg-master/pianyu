@@ -1,7 +1,6 @@
 ---
 an:
   about:
-    about_mastodon_html: 'Lo ret social d''o futuro: Sin anuncios, sin vichilancia corporativa, disenyo etico, y descentralización! Sé duenyo d''a tuya información con Mastodon!'
     contact_missing: No especificau
     contact_unavailable: No disponible
     hosted_on: Mastodon alochau en %{domain}
@@ -1019,7 +1018,6 @@ an:
       content: Lo sentimos, bella cosa ha funcionau malament per la nuestra parte.
       title: Esta pachina no ye correcta
     '503': La pachina no s'ha puesto cargar a causa d'un fallo temporal d'o servidor.
-    noscript_html: Pa usar l'aplicación web de Mastodon, per favor activa Javascript. Alternativament, preba bella d'as <a href="%{apps_path}">aplicacions nativas</a> pa Mastodon pa la tuya plataforma.
   existing_username_validator:
     not_found: no podió trobar un usuario local con ixe nombre d'usuario
     not_found_multiple: no podió trobar %{usernames}

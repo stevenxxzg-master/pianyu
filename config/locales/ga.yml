@@ -1,7 +1,6 @@
 ---
 ga:
   about:
-    about_mastodon_html: 'Líonra sóisialta a sheasfaidh an aimsir: Gan fógraíocht, gan faire chorparáideach, le leagan amach eiticiúil agus dílárú. Bíodh do chuid sonraí agatsa féin le Mastodon!'
     contact_missing: Gan socrú
     contact_unavailable: N/A
     hosted_on: Mastodon arna óstáil ar %{domain}
@@ -1498,7 +1497,6 @@ ga:
       content: Tá brón orainn, ach chuaigh rud éigin mícheart ar ár deireadh.
       title: Níl an leathanach seo ceart
     '503': Níorbh fhéidir an leathanach a sheirbheáil mar gheall ar theip shealadach ar an bhfreastalaí.
-    noscript_html: Chun feidhmchlár gréasáin Mastodon a úsáid, cumasaigh JavaScript le do thoil. Nó, bain triail as ceann de na <a href="%{apps_path}">aipeanna dúchasacha</a> do Mastodon do d'ardán.
   existing_username_validator:
     not_found: níorbh fhéidir úsáideoir áitiúil a aimsiú leis an ainm úsáideora sin
     not_found_multiple: níorbh fhéidir %{usernames} a aimsiú

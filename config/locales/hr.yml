@@ -1,7 +1,6 @@
 ---
 hr:
   about:
-    about_mastodon_html: 'Društvena mreža budućnosti: bez oglasa, bez korporativnog nadzora, etički dizajn i decentralizacija! Budite u vlasništvu svojih podataka pomoću Mastodona!'
     contact_missing: Nije postavljeno
     title: O aplikaciji
   accounts:

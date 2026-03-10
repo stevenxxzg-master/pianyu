@@ -1,7 +1,6 @@
 ---
 lad:
   about:
-    about_mastodon_html: 'La red sosyala del avenir: Sin reklamas, sin vijilansia korporativa, kon desen etiko, i desentralizasyon! Seas patron de tu enformasyon kon Mastodon!'
     contact_missing: No espesifikado
     contact_unavailable: No desponivle
     hosted_on: Mastodon balabayado en %{domain}
@@ -1326,7 +1325,6 @@ lad:
       content: Pardon, algo tiene fonksionado mal por muestra parte.
       title: Esta pajina no es djusta
     '503': La pajina no se tiene podido desbarkar por un yerro temporal del sirvidor.
-    noscript_html: Para uzar la aplikasyon web de Mastodon, por favor aktiva Javascript. Alternativamente, aprova alguna de las <a href="%{apps_path}">aplikasyones nativas</a> para Mastodon para tu platforma.
   existing_username_validator:
     not_found: no se pudo topar un utilizador lokal kon akel nombre de utilizador
     not_found_multiple: no se pudo topar %{usernames}

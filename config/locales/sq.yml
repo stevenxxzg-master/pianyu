@@ -1,7 +1,6 @@
 ---
 sq:
   about:
-    about_mastodon_html: 'Rrjeti social i së ardhmes: Pa reklama, pa sy vëzhguese nga korporata, etik dhe i decentralizuar! Merrni sërisht zotësinë e të dhënave tuaja, me Mastodon!'
     contact_missing: E pacaktuar
     contact_unavailable: N/A
     hosted_on: Server Mastodon i strehuar në %{domain}
@@ -1418,7 +1417,6 @@ sq:
       content: Na ndjeni, diçka shkoi ters në anën tonë.
       title: Kjo faqe s’është e saktë
     '503': Kjo faqe s’u shërbye dot për shkak të një dështimi të përkohshëm të shërbyesit.
-    noscript_html: Që të përdorni aplikacionin web Mastodon, ju lutemi, aktivizoni JavaScript-in. Ndryshe, provoni për Mastodon-in një nga <a href="%{apps_path}">aplikacionet e brendshëm</a> të platformës tuaj.
   existing_username_validator:
     not_found: s’u gjet dot përdorues vendor me atë emër përdoruesi
     not_found_multiple: s’u gjet dot %{usernames}

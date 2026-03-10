@@ -1,7 +1,6 @@
 ---
 zh-HK:
   about:
-    about_mastodon_html: Mastodon（萬象）是屬於未來的社交網路︰無廣告煩擾、無企業監控、設計講道義、分散無大台！立即重奪個人資料的控制權，使用 Mastodon 吧！
     contact_missing: 未設定
     contact_unavailable: 不適用
     hosted_on: 在 %{domain} 運作的 Mastodon 伺服器
@@ -1179,7 +1178,6 @@ zh-HK:
       content: 抱歉，我們的後台出錯了。
       title: 這個頁面有問題
     '503': 因短暫的伺服器錯誤而未能提供此頁面
-    noscript_html: 使用 Mastodon 網頁版應用需要啟用 JavaScript。你也可以選擇適用於你的平台的 <a href="%{apps_path}">Mastodon 應用</a>。
   existing_username_validator:
     not_found: 無法找到位於本伺服器的用戶
     not_found_multiple: 無法找到%{usernames}

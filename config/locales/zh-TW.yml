@@ -1,7 +1,6 @@
 ---
 zh-TW:
   about:
-    about_mastodon_html: Mastodon （長毛象）是一個<em>自由、開放原始碼</em>的社群網站。它是一個分散式的服務，避免您的通訊被單一商業機構壟斷操控。請您選擇一家您信任的 Mastodon 站點，於其建立帳號，您就能與任一 Mastodon 站點上的使用者互通，享受無縫的<em>社群網路</em>交流。
     contact_missing: 未設定
     contact_unavailable: 未公開
     hosted_on: 於 %{domain} 託管之 Mastodon 站點
@@ -1414,7 +1413,6 @@ zh-TW:
       content: 抱歉，我們的後台出現問題了。
       title: 這個頁面有問題
     '503': 此頁面因伺服器暫時發生錯誤而無法提供。
-    noscript_html: 使用 Mastodon 網頁版應用需要啟用 JavaScript。您也可以選擇適用於您的平台的 <a href="%{apps_path}">Mastodon 應用</a>。
   existing_username_validator:
     not_found: 無法於本伺服器找到此使用者帳號
     not_found_multiple: 揣嘸 %{usernames}

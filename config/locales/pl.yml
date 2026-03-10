@@ -1,7 +1,6 @@
 ---
 pl:
   about:
-    about_mastodon_html: 'Sieć społecznościowa przyszłości: Bez reklam, bez inwigilacji, zaprojektowana etycznie i zdecentralizowanie! Władaj swoimi danymi z Mastodonem!'
     contact_missing: Nie ustawiono
     contact_unavailable: Nie dotyczy
     hosted_on: Mastodon prowadzony na %{domain}
@@ -1434,7 +1433,6 @@ pl:
       content: Przepraszamy, coś poszło nie tak, po naszej stronie.
       title: Ta strona jest nieprawidłowa
     '503': Strona nie może zostać wyświetlona z powodu tymczasowego niepowodzenia serwera.
-    noscript_html: Aby korzystać z aplikacji Mastodon, włącz JavaScript. Możesz też skorzystać z jednej z <a href="%{apps_path}">natywnych aplikacji</a> obsługującej Twoje urządzenie.
   existing_username_validator:
     not_found: nie znaleziono lokalnego użytkownika o tej nazwie
     not_found_multiple: nie znaleziono %{usernames}

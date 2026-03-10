@@ -1,7 +1,6 @@
 ---
 ms:
   about:
-    about_mastodon_html: 'Rangkaian sosial masa hadapan: Tiada iklan, tiada pengawasan korporat, reka bentuk beretika, dan desentralisasi! Miliki data anda dengan Mastodon!'
     contact_missing: Tidak ditetapkan
     contact_unavailable: Tidak tersedia
     hosted_on: Mastodon dihoskan di %{domain}
@@ -1125,7 +1124,6 @@ ms:
       content: Kami minta maaf, tetapi ada masalah di pihak kami.
       title: Halaman ini tidak betul
     '503': Halaman tidak dapat disampaikan kerana kegagalan pelayan sementara.
-    noscript_html: Untuk menggunakan aplikasi web Mastodon, sila dayakan JavaScript. Sebagai alternatif, cuba salah satu <a href="%{apps_path}">apl asli</a> untuk Mastodon untuk platform anda.
   existing_username_validator:
     not_found: tidak dapat mencari pengguna tempatan dengan nama pengguna itu
     not_found_multiple: tidak dapat mencari %{usernames}

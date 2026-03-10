@@ -1,7 +1,6 @@
 ---
 de:
   about:
-    about_mastodon_html: 'Das soziale Netzwerk der Zukunft: Keine Werbung, keine Überwachung durch Unternehmen – dafür dezentral und mit Anstand! Behalte mit Mastodon die Kontrolle über deine Daten!'
     contact_missing: Nicht festgelegt
     contact_unavailable: Nicht verfügbar
     hosted_on: Mastodon, eingerichtet auf %{domain}
@@ -1433,7 +1432,6 @@ de:
       content: Wir bitten um Verzeihung, aber etwas ist bei uns schiefgegangen.
       title: Diese Seite enthält einen Fehler
     '503': Die Seite konnte wegen eines temporären Serverfehlers nicht angezeigt werden.
-    noscript_html: Bitte aktiviere JavaScript, um das Webinterface von Mastodon zu verwenden. Alternativ kannst du auch eine der <a href="%{apps_path}">nativen Apps</a> für Mastodon verwenden.
   existing_username_validator:
     not_found: kann kein lokales Konto mit diesem Profilnamen finden
     not_found_multiple: "%{usernames} konnten nicht gefunden werden"

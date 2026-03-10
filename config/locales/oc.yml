@@ -1,7 +1,6 @@
 ---
 oc:
   about:
-    about_mastodon_html: Mastodon es un malhum social bastit amb de protocòls liures e gratuits. Es descentralizat coma los corrièls.
     contact_missing: Pas parametrat
     contact_unavailable: Pas disponible
     hosted_on: Mastodon albergat sus %{domain}
@@ -543,7 +542,6 @@ oc:
     '500':
       content: Un quicomet a pas foncionat coma caliá.
       title: Aquesta pagina es pas corrècta
-    noscript_html: Per utilizar l’aplicacion web de Mastodon, mercés d’activar JavaScript. O podètz utilizar <a href="%{apps_path}">una aplicacion</a> per vòstra plataforma coma alernativa.
   existing_username_validator:
     not_found: impossible de trobar un utilizaire local amb aqueste nom d’utilizaire
     not_found_multiple: impossible de trobar %{usernames}

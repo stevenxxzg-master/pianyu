@@ -1,7 +1,6 @@
 ---
 hu:
   about:
-    about_mastodon_html: 'A jövő közösségi hálózata: Hirdetések és céges megfigyelés nélkül, etikus dizájnnal és decentralizációval! Legyél a saját adataid ura a Mastodonnal!'
     contact_missing: Nincs megadva
     contact_unavailable: N/A
     hosted_on: "%{domain} Mastodon-kiszolgáló"
@@ -1433,7 +1432,6 @@ hu:
       content: Sajnáljuk, valami hiba történt a mi oldalunkon.
       title: Az oldal nem megfelelő
     '503': Az oldalt átmeneti kiszolgálóprobléma miatt nem lehet kiszolgálni.
-    noscript_html: A Mastodon webalkalmazás használatához engedélyezned kell a JavaScriptet. A másik megoldás, hogy kipróbálsz egy platformodnak megfelelő <a href="%{apps_path}">alkalmazást</a>.
   existing_username_validator:
     not_found: ezzel a névvel nem találtunk helyi felhasználót
     not_found_multiple: nem találtuk %{usernames} felhasználó(ka)t

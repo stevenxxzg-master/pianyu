@@ -1,7 +1,6 @@
 ---
 nan-TW:
   about:
-    about_mastodon_html: 社交網路ê未來：Bô廣告、bô企業監控、設計有道德，兼非中心化！加入Mastodon，保有lí ê資料！
     contact_missing: Iáu bē設定
     contact_unavailable: 無開放
     hosted_on: 佇 %{domain} 運作 ê Mastodon站
@@ -1412,7 +1411,6 @@ nan-TW:
       content: 歹勢，guán ê後臺出問題ah。
       title: Tsit頁無正確
     '503': Tsit頁bē當提供，因為服侍器暫時出tshê。
-    noscript_html: Beh用Mastodon web app，請拍開JavaScript。另外，請試Mastodon hōo lí ê平臺用ê <a href="%{apps_path}">app</a>。
   existing_username_validator:
     not_found: bē當用tsit ê名tshuē著本地ê用者
     not_found_multiple: tshuē無 %{usernames}

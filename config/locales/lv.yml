@@ -1,7 +1,6 @@
 ---
 lv:
   about:
-    about_mastodon_html: 'Nākotnes sabiedriskais tīkls: bez reklāmām, bez korporatīvās novērošanas, ētiska projektēšana un decentralizēšana. Pārvaldi savus datus ar Mastodon!'
     contact_missing: Nav iestatīts
     contact_unavailable: N/A
     hosted_on: Mastodon mitināts %{domain}
@@ -1367,7 +1366,6 @@ lv:
       content: Atvainojamies, bet mūsu pusē kaut kas nogāja greizi.
       title: Šī lapa nav pareiza
     '503': Lapu nevarēja apkalpot īslaicīgas servera kļūmes dēļ.
-    noscript_html: Lai izmantotu Mastodon web lietojumu, lūdzu, iespējo JavaScript. Vai arī izmēģini kādu no <a href="%{apps_path}">vietējām lietotnēm</a> Mastodon savai platformai.
   existing_username_validator:
     not_found: nevarēja atrast lokālo lietotāju ar šādu lietotājvārdu
     not_found_multiple: nevarēja atrast %{usernames}

@@ -1,7 +1,6 @@
 ---
 fo:
   about:
-    about_mastodon_html: 'Framtíðar sosiali miðilin: ongar lýsingar, eingin stórfyritøku-yvirvøka, etiskt snið og desentralisering! Eig tínar dátur við Mastodon!'
     contact_missing: Ikki sett
     contact_unavailable: Ikki tøk/ur
     hosted_on: Mastodon hýst á %{domain}
@@ -1433,7 +1432,6 @@ fo:
       content: Vit eru kedd av tí, men okkurt gekk galið hjá okkum.
       title: Hendan síðan er ikki røtt
     '503': Ikki var til at veita hesa síðuna vegna ein bráðfeingis feil á ambætaranum.
-    noscript_html: Fyri at brúka vevskipanina hjá Mastodon, vinarliga ger JavaScript virkið. Um ikki, royn so eina <a href="%{apps_path}">uppruna-app</a> til Mastodon á tínum tøkniliga palli.
   existing_username_validator:
     not_found: eydnaðist ikki at finna ein lokalan brúkara við hasum brúkaranavninum
     not_found_multiple: fann ikki %{usernames}

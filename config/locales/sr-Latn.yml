@@ -1,7 +1,6 @@
 ---
 sr-Latn:
   about:
-    about_mastodon_html: 'Društvena mreža budućnosti: bez reklama, bez korporativnog praćenja, etički dizajn, i decentralizacija! Posedujte svoje podatke sa Mastodon-om!'
     contact_missing: Nije postavljeno
     contact_unavailable: Nije dostupno
     hosted_on: Mastodon hostovan na %{domain}
@@ -1179,7 +1178,6 @@ sr-Latn:
       content: Izvinjavamo se, nešto je pošlo po zlu sa ove strane.
       title: Strana nije ispravna
     '503': Stranicu nije bilo moguće dostaviti usled privremenog pada servera.
-    noscript_html: Da biste koristili Mastodon veb aplikaciju, omogućite JavaScript. U suprotnom, probajte neku od <a href="%{apps_path}">originalnih aplikacija</a> za Mastodon za vašu platformu.
   existing_username_validator:
     not_found: nije bilo moguće pronaći lokalnog korisnika sa tim korisničkim imenom
     not_found_multiple: nije bilo moguće pronaći %{usernames}

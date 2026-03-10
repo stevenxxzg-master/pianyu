@@ -1,7 +1,6 @@
 ---
 da:
   about:
-    about_mastodon_html: 'Fremtidens sociale netværk: Ingen annoncer, ingen virksomhedsovervågning, etisk design og decentralisering! Vær ejer af egne data med Mastodon!'
     contact_missing: Ikke angivet
     contact_unavailable: Utilgængelig
     hosted_on: Mastodon hostet på %{domain}
@@ -1433,7 +1432,6 @@ da:
       content: Beklager, noget gik galt hos os.
       title: Denne side er forkert
     '503': Siden kunne ikke vises grundet en midlertidig serverfejl.
-    noscript_html: For brug af Mastodon-webapplikationen, så aktivér JavaScript. Alternativt, prøv en af disse <a href="%{apps_path}">apps</a> til Mastodon til din platform.
   existing_username_validator:
     not_found: kunne ikke finde en lokal bruger med dette brugenavn
     not_found_multiple: kunne ikke finde %{usernames}

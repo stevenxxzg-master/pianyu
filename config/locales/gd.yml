@@ -1,7 +1,6 @@
 ---
 gd:
   about:
-    about_mastodon_html: 'An lìonra sòisealta dhan àm ri teachd: Gun sanasachd, gun chaithris corporra, dealbhadh beusail agus dì-mheadhanachadh! Gabh sealbh air an dàta agad fhèin le Mastodon!'
     contact_missing: Cha deach a shuidheachadh
     contact_unavailable: Chan eil seo iomchaidh
     hosted_on: Mastodon ’ga òstadh air %{domain}
@@ -1452,7 +1451,6 @@ gd:
       content: Tha sinn duilich ach chaidh rudeigin ceàrr a-bhos an-seo.
       title: Chan eil an duilleag seo mar bu chòir
     '503': Cha b’ urrainn an duilleag fhrithealadh ri linn mearachd sealach an fhrithealaiche.
-    noscript_html: Airson aplacaid-lìn Mastodon a chleachdadh, cuir JavaScript an comas. Mar roghainn eile, ’s urrainn dhut fear dhe na <a href="%{apps_path}">cliantan tùsail</a> airson Mastodon dhan ùrlar agad fheuchainn.
   existing_username_validator:
     not_found: cha b’ urrainn dhuinn cleachdaiche ionadail a lorg air a bheil an t-ainm-cleachdaiche seo
     not_found_multiple: cha b’ urrainn dhuinn %{usernames} a lorg

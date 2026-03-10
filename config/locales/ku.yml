@@ -1,7 +1,6 @@
 ---
 ku:
   about:
-    about_mastodon_html: 'Tora civakî ya pêşerojê: Ne reklam, ne şopandina şîrketan, dîzayna nenavendî! Bi Mastodon re bibe xwediyê daneyên xwe!'
     contact_missing: Nehate sazkirin
     contact_unavailable: Tune
     hosted_on: Mastodon li ser %{domain} tê pêşkêşkirin
@@ -1017,7 +1016,6 @@ ku:
       content: Em xemgîn in, lê tiştek di aliyê me de şaş çû.
       title: Ev rûpel ne rast e
     '503': Ji ber têkçûna rajekar a demkî rûpel nayê bikaranîn.
-    noscript_html: Ji bo ku tu sepanaa Mastodon a tevnê bi kar bîne, jkx JavaScript-ê çalak bike. Wekî din, yek ji <a href="%{apps_path}">sepanên xwemalî</a> ji bo Mastodon ji bo platforma xwe biceribîne.
   existing_username_validator:
     not_found: nikaribû bikarhênerek herêmî bi wê navê bikarhêner bibîne
     not_found_multiple: "%{usernames} nehat dîtin"
