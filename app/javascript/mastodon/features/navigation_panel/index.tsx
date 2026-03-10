@@ -203,7 +203,19 @@ const isFirehoseActive = (
   return !!match || pathname.startsWith('/public');
 };
 
-const MENU_WIDTH = 284;
+const getRootCssPxToken = (tokenName: string, fallback: number) => {
+  if (typeof document === 'undefined') {
+    return fallback;
+  }
+
+  const tokenValue = Number.parseFloat(
+    getComputedStyle(document.documentElement)
+      .getPropertyValue(tokenName)
+      .trim(),
+  );
+
+  return Number.isFinite(tokenValue) ? tokenValue : fallback;
+};
 
 export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
   multiColumn = false,
@@ -425,7 +437,9 @@ export const CollapsibleNavigationPanel: React.FC = () => {
 
   const isLtrDir = getComputedStyle(document.body).direction !== 'rtl';
 
-  const OPEN_MENU_OFFSET = isLtrDir ? MENU_WIDTH : -MENU_WIDTH;
+  const menuWidth = getRootCssPxToken('--panel-width-rail', 285);
+  const drawerPeek = getRootCssPxToken('--panel-drawer-peek', 70);
+  const OPEN_MENU_OFFSET = isLtrDir ? menuWidth : -menuWidth;
 
   const [{ x }, spring] = useSpring(
     () => ({
@@ -453,14 +467,14 @@ export const CollapsibleNavigationPanel: React.FC = () => {
     }) => {
       const logicalXDirection = isLtrDir ? xDirection : -xDirection;
       const logicalXOffset = isLtrDir ? xOffset : -xOffset;
-      const hasReachedDragThreshold = logicalXOffset < -70;
+      const hasReachedDragThreshold = logicalXOffset < -drawerPeek;
 
       if (hasReachedDragThreshold) {
         cancel();
       }
 
       if (last) {
-        const isAboveOpenThreshold = logicalXOffset > MENU_WIDTH / 2;
+        const isAboveOpenThreshold = logicalXOffset > menuWidth / 2;
         const isQuickFlick = xVelocity > 0.5 && logicalXDirection > 0;
 
         if (isAboveOpenThreshold || isQuickFlick) {
