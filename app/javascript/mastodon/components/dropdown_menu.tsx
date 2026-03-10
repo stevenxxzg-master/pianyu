@@ -28,6 +28,7 @@ import {
 import { openModal, closeModal } from 'mastodon/actions/modal';
 import { fetchStatus } from 'mastodon/actions/statuses';
 import { CircularProgress } from 'mastodon/components/circular_progress';
+import type { PianyuIconName, PianyuIconState } from 'mastodon/icons';
 import { isUserTouching } from 'mastodon/is_mobile';
 import {
   isMenuItem,
@@ -296,6 +297,9 @@ interface DropdownProps<Item extends object | null = MenuItem> {
   children?: React.ReactElement;
   icon?: string;
   iconComponent?: IconProp;
+  iconName?: PianyuIconName;
+  iconState?: PianyuIconState;
+  iconClassName?: string;
   items?: Item[];
   loading?: boolean;
   title?: string;
@@ -312,6 +316,7 @@ interface DropdownProps<Item extends object | null = MenuItem> {
   needsStatusRefresh?: boolean;
   forceDropdown?: boolean;
   className?: string;
+  buttonClassName?: string;
   renderItem?: RenderItemFn<Item>;
   renderHeader?: RenderHeaderFn<Item>;
   onOpen?: // Must use a union type for the full function as a union with void is not allowed.
@@ -326,6 +331,9 @@ export const Dropdown = <Item extends object | null = MenuItem>({
   children,
   icon,
   iconComponent,
+  iconName,
+  iconState,
+  iconClassName,
   items,
   loading,
   title = 'Menu',
@@ -337,6 +345,7 @@ export const Dropdown = <Item extends object | null = MenuItem>({
   needsStatusRefresh,
   forceDropdown = false,
   className,
+  buttonClassName,
   renderItem,
   renderHeader,
   onOpen,
@@ -492,11 +501,15 @@ export const Dropdown = <Item extends object | null = MenuItem>({
 
   if (children) {
     button = cloneElement(Children.only(children), buttonProps);
-  } else if (icon && iconComponent) {
+  } else if (icon && (iconComponent || iconName)) {
     button = (
       <IconButton
+        className={buttonClassName}
         icon={!open ? icon : 'close'}
         iconComponent={iconComponent}
+        iconName={iconName}
+        iconState={iconState}
+        iconClassName={iconClassName}
         title={title}
         active={open}
         {...buttonProps}

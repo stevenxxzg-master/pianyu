@@ -14,6 +14,7 @@ import type { ActionMenuItem } from '@/mastodon/models/dropdown_menu';
 import type { Status } from '@/mastodon/models/status';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 import type { SomeRequired } from '@/mastodon/utils/types';
+import { getPianyuIcon, getPianyuIconId } from 'mastodon/icons';
 
 import type { RenderItemFn } from '../dropdown_menu';
 import { Dropdown, DropdownMenuItemContent } from '../dropdown_menu';
@@ -33,7 +34,7 @@ const StandaloneBoostButton: FC<ReblogButtonProps> = ({ status, counters }) => {
   const statusState = useAppSelector((state) =>
     selectStatusState(state, status),
   );
-  const { title, meta, iconComponent, disabled } = useMemo(
+  const { title, meta, iconName, iconState, disabled } = useMemo(
     () => boostItemState(statusState),
     [statusState],
   );
@@ -62,9 +63,10 @@ const StandaloneBoostButton: FC<ReblogButtonProps> = ({ status, counters }) => {
       disabled={disabled}
       active={!!status.get('reblogged')}
       title={intl.formatMessage(meta ?? title)}
-      icon='retweet'
-      iconComponent={iconComponent}
-      className='status__action-bar__button'
+      icon={getPianyuIconId(iconName)}
+      iconName={iconName}
+      iconState={iconState}
+      className='status__action-bar__button icon-button--pianyu'
       onClick={!disabled ? handleClick : undefined}
       counter={
         counters
@@ -105,6 +107,10 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
     isQuoteAutomaticallyAccepted,
     isQuoteManuallyAccepted,
   } = statusState;
+  const boostButtonState = useMemo(
+    () => boostItemState(statusState),
+    [statusState],
+  );
 
   const isMenuDisabled =
     !isQuoteAutomaticallyAccepted &&
@@ -128,7 +134,7 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
   }, [dispatch, status]);
 
   const items = useMemo(() => {
-    const boostItem = boostItemState(statusState);
+    const boostItem = boostButtonState;
     const quoteItem = quoteItemState(statusState);
     return [
       {
@@ -136,7 +142,8 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
         description: boostItem.meta
           ? intl.formatMessage(boostItem.meta)
           : undefined,
-        icon: boostItem.iconComponent,
+        icon: getPianyuIcon(boostItem.iconName, boostItem.iconState),
+        iconId: getPianyuIconId(boostItem.iconName),
         highlighted: wasBoosted,
         disabled: boostItem.disabled,
         action: (event) => {
@@ -148,16 +155,15 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
         description: quoteItem.meta
           ? intl.formatMessage(quoteItem.meta)
           : undefined,
-        icon: quoteItem.iconComponent,
+        icon: getPianyuIcon(quoteItem.iconName, quoteItem.iconState),
+        iconId: getPianyuIconId(quoteItem.iconName),
         disabled: quoteItem.disabled,
         action: () => {
           dispatch(quoteComposeById(statusId));
         },
       },
     ] satisfies [ActionMenuItemWithIcon, ActionMenuItemWithIcon];
-  }, [dispatch, intl, statusId, statusState, wasBoosted]);
-
-  const boostIcon = items[0].icon;
+  }, [boostButtonState, dispatch, intl, statusId, statusState, wasBoosted]);
 
   const handleDropdownOpen = useCallback(
     (event: MouseEvent | KeyboardEvent) => {
@@ -185,7 +191,7 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
   return (
     <Dropdown
       placement='bottom-start'
-      offset={[-19, 5]} // This aligns button icon with menu icons
+      offset={[-19, 5]}
       items={items}
       renderItem={renderMenuItem}
       onOpen={handleDropdownOpen}
@@ -195,9 +201,10 @@ const BoostOrQuoteMenu: FC<ReblogButtonProps> = ({ status, counters }) => {
         title={intl.formatMessage(
           isMenuDisabled ? messages.all_disabled : messages.reblog_or_quote,
         )}
-        icon='retweet'
-        className='status__action-bar__button'
-        iconComponent={boostIcon}
+        icon={getPianyuIconId(boostButtonState.iconName)}
+        iconName={boostButtonState.iconName}
+        iconState={boostButtonState.iconState}
+        className='status__action-bar__button icon-button--pianyu'
         counter={
           counters
             ? (status.get('reblogs_count') as number) +
@@ -238,8 +245,6 @@ const ReblogMenuItem: FC<ReblogMenuItemProps> = ({ index, item, onClick }) => {
   );
 };
 
-// Switch between the standalone boost button or the
-// "Boost or quote" menu based on the quickBoosting preference
 export const BoostButton = quickBoosting
   ? StandaloneBoostButton
   : BoostOrQuoteMenu;

@@ -1,11 +1,10 @@
 import { useState, useCallback, useId } from 'react';
 
-import KeyboardArrowDownIcon from '@/material-icons/400-24px/keyboard_arrow_down.svg?react';
-import KeyboardArrowUpIcon from '@/material-icons/400-24px/keyboard_arrow_up.svg?react';
 import type { IconProp } from 'mastodon/components/icon';
 import { IconButton } from 'mastodon/components/icon_button';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import { ColumnLink } from 'mastodon/features/ui/components/column_link';
+import type { PianyuIconName } from 'mastodon/icons';
 
 export const CollapsiblePanel: React.FC<{
   children: React.ReactNode[];
@@ -14,15 +13,19 @@ export const CollapsiblePanel: React.FC<{
   collapseTitle: string;
   expandTitle: string;
   icon: string;
-  iconComponent: IconProp;
+  iconComponent?: IconProp;
+  iconName?: PianyuIconName;
   activeIconComponent?: IconProp;
+  activeIconName?: PianyuIconName;
   loading?: boolean;
 }> = ({
   children,
   to,
   icon,
   iconComponent,
+  iconName,
   activeIconComponent,
+  activeIconName,
   title,
   collapseTitle,
   expandTitle,
@@ -43,7 +46,9 @@ export const CollapsiblePanel: React.FC<{
           to={to}
           icon={icon}
           iconComponent={iconComponent}
+          iconName={iconName}
           activeIconComponent={activeIconComponent}
+          activeIconName={activeIconName}
           text={title}
           id={`${accessibilityId}-title`}
         />
@@ -53,15 +58,12 @@ export const CollapsiblePanel: React.FC<{
             <div className='navigation-panel__list-panel__header__sep' />
 
             <IconButton
+              className='icon-button--pianyu'
               icon='down'
               expanded={expanded}
-              iconComponent={
-                loading
-                  ? LoadingIndicator
-                  : expanded
-                    ? KeyboardArrowUpIcon
-                    : KeyboardArrowDownIcon
-              }
+              iconComponent={loading ? LoadingIndicator : undefined}
+              iconName={loading ? undefined : 'action.disclose'}
+              iconState={expanded ? 'active' : 'default'}
               title={expanded ? collapseTitle : expandTitle}
               onClick={handleClick}
               aria-controls={`${accessibilityId}-content`}

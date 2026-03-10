@@ -4,16 +4,11 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
-import AddIcon from '@/material-icons/400-24px/add.svg?react';
-import ArrowBackIcon from '@/material-icons/400-24px/arrow_back.svg?react';
-import ChevronLeftIcon from '@/material-icons/400-24px/chevron_left.svg?react';
-import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
-import CloseIcon from '@/material-icons/400-24px/close.svg?react';
-import UnfoldLessIcon from '@/material-icons/400-24px/unfold_less.svg?react';
-import UnfoldMoreIcon from '@/material-icons/400-24px/unfold_more.svg?react';
 import type { IconProp } from 'mastodon/components/icon';
 import { Icon } from 'mastodon/components/icon';
 import { ButtonInTabsBar } from 'mastodon/features/ui/util/columns_context';
+import type { PianyuIconName, PianyuIconState } from 'mastodon/icons';
+import { PianyuIcon } from 'mastodon/icons';
 import { useIdentity } from 'mastodon/identity_context';
 
 import { useColumnIndexContext } from '../features/ui/components/columns_area';
@@ -53,18 +48,18 @@ const BackButton: React.FC<{
   return (
     <button
       onClick={handleBackClick}
-      className={classNames('column-header__back-button', {
-        compact: hasTitle,
-      })}
+      className={classNames(
+        'column-header__back-button',
+        'column-header__button--pianyu',
+        {
+          compact: hasTitle,
+        },
+      )}
       id={!hasTitle ? getColumnSkipLinkId(columnIndex) : undefined}
       aria-label={intl.formatMessage(messages.back)}
       type='button'
     >
-      <Icon
-        id='chevron-left'
-        icon={ArrowBackIcon}
-        className='column-back-button__icon'
-      />
+      <PianyuIcon name='action.back' className='column-back-button__icon' />
       {!hasTitle && (
         <FormattedMessage id='column_back_button.label' defaultMessage='Back' />
       )}
@@ -76,6 +71,9 @@ export interface Props {
   title?: string;
   icon?: string;
   iconComponent?: IconProp;
+  iconName?: PianyuIconName;
+  iconState?: PianyuIconState;
+  iconClassName?: string;
   active?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -95,6 +93,9 @@ export const ColumnHeader: React.FC<Props> = ({
   title,
   icon,
   iconComponent,
+  iconName,
+  iconState = 'default',
+  iconClassName,
   active,
   children,
   className,
@@ -161,9 +162,13 @@ export const ColumnHeader: React.FC<Props> = ({
     animating,
   });
 
-  const collapsibleButtonClassName = classNames('column-header__button', {
-    active: !collapsed,
-  });
+  const collapsibleButtonClassName = classNames(
+    'column-header__button',
+    'column-header__button--pianyu',
+    {
+      active: !collapsed,
+    },
+  );
 
   let extraContent, pinButton, moveButtons, backButton, collapseButton;
 
@@ -178,11 +183,11 @@ export const ColumnHeader: React.FC<Props> = ({
   if (multiColumn && pinned) {
     pinButton = (
       <button
-        className='text-btn column-header__setting-btn'
+        className='text-btn column-header__setting-btn column-header__button--pianyu'
         onClick={handlePin}
         type='button'
       >
-        <Icon id='times' icon={CloseIcon} />{' '}
+        <PianyuIcon name='action.close' />{' '}
         <FormattedMessage id='column_header.unpin' defaultMessage='Unpin' />
       </button>
     );
@@ -192,31 +197,31 @@ export const ColumnHeader: React.FC<Props> = ({
         <button
           title={intl.formatMessage(messages.moveLeft)}
           aria-label={intl.formatMessage(messages.moveLeft)}
-          className='icon-button column-header__setting-btn'
+          className='icon-button icon-button--pianyu column-header__setting-btn'
           onClick={handleMoveLeft}
           type='button'
         >
-          <Icon id='chevron-left' icon={ChevronLeftIcon} />
+          <PianyuIcon name='action.moveLeft' />
         </button>
         <button
           title={intl.formatMessage(messages.moveRight)}
           aria-label={intl.formatMessage(messages.moveRight)}
-          className='icon-button column-header__setting-btn'
+          className='icon-button icon-button--pianyu column-header__setting-btn'
           onClick={handleMoveRight}
           type='button'
         >
-          <Icon id='chevron-right' icon={ChevronRightIcon} />
+          <PianyuIcon name='action.moveRight' />
         </button>
       </div>
     );
   } else if (multiColumn && onPin) {
     pinButton = (
       <button
-        className='text-btn column-header__setting-btn'
+        className='text-btn column-header__setting-btn column-header__button--pianyu'
         onClick={handlePin}
         type='button'
       >
-        <Icon id='plus' icon={AddIcon} />{' '}
+        <PianyuIcon name='action.pin' />{' '}
         <FormattedMessage id='column_header.pin' defaultMessage='Pin' />
       </button>
     );
@@ -252,19 +257,16 @@ export const ColumnHeader: React.FC<Props> = ({
         type='button'
       >
         <i className='icon-with-badge'>
-          <Icon
-            id='sliders'
-            icon={collapsed ? UnfoldMoreIcon : UnfoldLessIcon}
-          />
+          <PianyuIcon name={collapsed ? 'action.expand' : 'action.collapse'} />
           {collapseIssues && <i className='icon-with-badge__issue-badge' />}
         </i>
       </button>
     );
   }
 
-  const hasIcon = icon && iconComponent;
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  const hasTitle = (hasIcon || backButton) && title;
+  const hasNamedIcon = iconName !== undefined;
+  const hasIcon = hasNamedIcon || (icon && iconComponent);
+  const hasTitle = hasIcon && title ? true : Boolean(backButton && title);
   const columnIndex = useColumnIndexContext();
 
   const component = (
@@ -280,11 +282,18 @@ export const ColumnHeader: React.FC<Props> = ({
               type='button'
               id={getColumnSkipLinkId(columnIndex)}
             >
-              {!backButton && hasIcon && (
+              {!backButton && iconName && (
+                <PianyuIcon
+                  name={iconName}
+                  state={iconState}
+                  className={classNames('column-header__icon', iconClassName)}
+                />
+              )}
+              {!backButton && !hasNamedIcon && icon && iconComponent && (
                 <Icon
                   id={icon}
                   icon={iconComponent}
-                  className='column-header__icon'
+                  className={classNames('column-header__icon', iconClassName)}
                 />
               )}
               {title}

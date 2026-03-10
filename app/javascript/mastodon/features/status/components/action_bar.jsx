@@ -6,13 +6,6 @@ import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-import BookmarkIcon from '@/material-icons/400-24px/bookmark-fill.svg?react';
-import BookmarkBorderIcon from '@/material-icons/400-24px/bookmark.svg?react';
-import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarBorderIcon from '@/material-icons/400-24px/star.svg?react';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 
@@ -311,31 +304,22 @@ class ActionBar extends PureComponent {
       }
     }
 
-    let replyIcon;
-    let replyIconComponent;
-
-    if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
-      replyIconComponent = ReplyIcon;
-    } else {
-      replyIcon = 'reply-all';
-      replyIconComponent = ReplyAllIcon;
-    }
-
     const bookmarkTitle = intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark);
     const favouriteTitle = intl.formatMessage(status.get('favourited') ? messages.removeFavourite : messages.favourite);
+    const isReply = status.get('in_reply_to_account_id') === status.getIn(['account', 'id']);
+    const replyIconState = !isReply && status.get('in_reply_to_id', null) !== null ? 'active' : 'default';
 
     return (
       <div className='detailed-status__action-bar'>
-        <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} iconComponent={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? ReplyIcon : replyIconComponent}  onClick={this.handleReplyClick} /></div>
+        <div className='detailed-status__button'><IconButton className='icon-button--pianyu' title={intl.formatMessage(status.get('in_reply_to_id', null) === null ? messages.reply : messages.replyAll)} icon='reply' iconName='action.reply' iconState={replyIconState} onClick={this.handleReplyClick} /></div>
         <div className='detailed-status__button'>
           <BoostButton status={status} />
         </div>
-        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} /></div>
-        <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} /></div>
+        <div className='detailed-status__button'><IconButton className='icon-button--pianyu star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconName='action.favourite' iconState={status.get('favourited') ? 'active' : 'default'} onClick={this.handleFavouriteClick} /></div>
+        <div className='detailed-status__button'><IconButton className='icon-button--pianyu bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconName='action.bookmark' iconState={status.get('bookmarked') ? 'active' : 'default'} onClick={this.handleBookmarkClick} /></div>
 
         <div className='detailed-status__action-bar-dropdown'>
-          <Dropdown icon='ellipsis-h' iconComponent={MoreHorizIcon} status={status} items={menu} direction='left' title={intl.formatMessage(messages.more)} />
+          <Dropdown icon='ellipsis-h' iconName='action.more' buttonClassName='icon-button--pianyu' status={status} items={menu} direction='left' title={intl.formatMessage(messages.more)} />
         </div>
       </div>
     );
