@@ -3,6 +3,12 @@
 
 = vite_typescript_tag 'two_factor_authentication.ts', crossorigin: 'anonymous'
 
+- active_scheme = webauthn_enabled? && @scheme_type == 'webauthn' ? :webauthn : :otp
+
+.two-factor-intro
+  %h1.title= t('auth.security')
+  %p.lead= t("simple_form.hints.sessions.#{active_scheme}")
+
 - if webauthn_enabled?
   = render partial: 'auth/sessions/two_factor/webauthn_form', locals: { hidden: @scheme_type != 'webauthn' }
 

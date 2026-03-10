@@ -1,19 +1,41 @@
+- content_for :body_classes, 'auth-layout'
+
 - content_for :header_tags do
   = vite_typescript_tag 'public.tsx', crossorigin: 'anonymous'
 
+- auth_description = instance_presenter.description.presence || t('auth.description.suffix')
+- auth_highlights = [t('auth.login'), t('auth.register'), t('auth.progress.confirm'), t('auth.security')]
+
 - content_for :content do
   .container-alt
-    .logo-container
-      %h1
-        - if within_authorization_flow?
-          = logo_as_symbol(:wordmark)
-        - else
-          = link_to root_path do
-            = logo_as_symbol(:wordmark)
+    .auth-shell
+      .auth-shell__panel.auth-shell__panel--brand
+        .logo-container
+          %h1
+            - if within_authorization_flow?
+              = logo_as_symbol(:wordmark)
+            - else
+              = link_to root_path do
+                = logo_as_symbol(:wordmark)
 
-    .form-container
-      = render 'flashes'
+        .auth-brand
+          %p.auth-brand__eyebrow= site_hostname
 
-      = yield
+          - if auth_description.present?
+            %p.auth-brand__summary= auth_description
+
+          %ul.auth-brand__chips.no-list
+            - auth_highlights.each do |highlight|
+              %li.auth-brand__chip= highlight
+
+          .auth-brand__status
+            %span.auth-brand__status-label= t('auth.register')
+            %strong.auth-brand__status-value= sign_up_message.presence || t('auth.register')
+
+      .auth-shell__panel.auth-shell__panel--main
+        .form-container
+          .auth-panel
+            = render 'flashes'
+            = yield
 
 = render template: 'layouts/application'
