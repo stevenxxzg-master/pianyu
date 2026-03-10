@@ -1377,7 +1377,7 @@ eo:
     '500':
       content: Ni bedaŭras, io malsukcesis niaflanke.
       title: Ĉi tiu paĝo ne estas ĝusta
-    '503': La paĝo ne povas montritis pro malpermanenta servilmalfunkcio. Por uzi la retan aplikaĵon de Mastodon, bonvolu ebligi JavaScript. Alimaniere, provu unu el la <a href="%{apps_path}">operaciumaj aplikaĵoj</a> por Mastodon por via platformo.
+    '503': La paĝo ne povas montritis pro malpermanenta servilmalfunkcio.
   existing_username_validator:
     not_found: ne povas trovi lokaj uzanto kun tiu uzantnomo
     not_found_multiple: ne povas trovi %{usernames}
