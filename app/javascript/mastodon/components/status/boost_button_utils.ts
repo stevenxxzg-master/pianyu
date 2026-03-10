@@ -3,15 +3,7 @@ import type { MessageDescriptor } from 'react-intl';
 
 import type { Status, StatusVisibility } from '@/mastodon/models/status';
 import { createAppSelector } from '@/mastodon/store';
-import FormatQuote from '@/material-icons/400-24px/format_quote-fill.svg?react';
-import FormatQuoteOff from '@/material-icons/400-24px/format_quote_off-fill.svg?react';
-import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
-import RepeatActiveIcon from '@/svg-icons/repeat_active.svg?react';
-import RepeatDisabledIcon from '@/svg-icons/repeat_disabled.svg?react';
-import RepeatPrivateIcon from '@/svg-icons/repeat_private.svg?react';
-import RepeatPrivateActiveIcon from '@/svg-icons/repeat_private_active.svg?react';
-
-import type { IconProp } from '../icon';
+import type { PianyuIconName, PianyuIconState } from 'mastodon/icons';
 
 export const messages = defineMessages({
   all_disabled: {
@@ -101,7 +93,8 @@ export type StatusState = ReturnType<typeof selectStatusState>;
 export interface MenuItemState {
   title: MessageDescriptor;
   meta?: MessageDescriptor;
-  iconComponent: IconProp;
+  iconName: PianyuIconName;
+  iconState?: PianyuIconState;
   disabled?: boolean;
 }
 
@@ -113,20 +106,21 @@ export function boostItemState({
   if (isReblogged) {
     return {
       title: messages.reblog_cancel,
-      iconComponent: isPublic ? RepeatActiveIcon : RepeatPrivateActiveIcon,
+      iconName: 'action.boost',
+      iconState: isPublic ? 'active' : 'privateActive',
     };
   }
   const iconText: MenuItemState = {
     title: messages.reblog,
-    iconComponent: RepeatIcon,
+    iconName: 'action.boost',
   };
 
   if (isPrivateReblog) {
     iconText.meta = messages.reblog_private;
-    iconText.iconComponent = RepeatPrivateIcon;
+    iconText.iconState = 'private';
   } else if (!isPublic) {
     iconText.meta = messages.reblog_cannot;
-    iconText.iconComponent = RepeatDisabledIcon;
+    iconText.iconState = 'disabled';
     iconText.disabled = true;
   }
   return iconText;
@@ -142,22 +136,21 @@ export function quoteItemState({
 }: StatusState): MenuItemState {
   const iconText: MenuItemState = {
     title: messages.quote,
-    iconComponent: FormatQuote,
+    iconName: 'action.quote',
   };
 
   if (!isPublic && !isMine) {
     iconText.disabled = true;
-    iconText.iconComponent = FormatQuoteOff;
+    iconText.iconState = 'disabled';
     iconText.meta = messages.quote_private;
   } else if (isQuoteAutomaticallyAccepted) {
     iconText.title = messages.quote;
   } else if (isQuoteManuallyAccepted) {
     iconText.title = messages.request_quote;
     iconText.meta = messages.quote_manual_review;
-    // We don't show the disabled state when logged out
   } else if (isLoggedIn) {
     iconText.disabled = true;
-    iconText.iconComponent = FormatQuoteOff;
+    iconText.iconState = 'disabled';
     iconText.meta = isQuoteFollowersOnly
       ? messages.quote_followers_only
       : messages.quote_cannot;

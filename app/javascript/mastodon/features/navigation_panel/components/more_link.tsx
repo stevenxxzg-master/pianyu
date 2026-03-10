@@ -2,10 +2,9 @@ import { useMemo } from 'react';
 
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import { openModal } from 'mastodon/actions/modal';
 import { Dropdown } from 'mastodon/components/dropdown_menu';
-import { Icon } from 'mastodon/components/icon';
+import { PianyuIcon } from 'mastodon/icons';
 import { useIdentity } from 'mastodon/identity_context';
 import type { MenuItem } from 'mastodon/models/dropdown_menu';
 import { canManageReports, canViewAdminDashboard } from 'mastodon/permissions';
@@ -113,8 +112,11 @@ export const MoreLink: React.FC = () => {
 
   return (
     <Dropdown items={menu} placement='bottom-start'>
-      <button className='column-link column-link--transparent' type='button'>
-        <Icon id='' icon={MoreHorizIcon} className='column-link__icon' />
+      <button
+        className='column-link column-link--transparent column-link--pianyu'
+        type='button'
+      >
+        <PianyuIcon name='navigation.more' className='column-link__icon' />
 
         <FormattedMessage id='navigation_bar.more' defaultMessage='More' />
       </button>

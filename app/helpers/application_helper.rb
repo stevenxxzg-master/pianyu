@@ -8,6 +8,18 @@ module ApplicationHelper
     he
   ).freeze
 
+  PIANYU_ICON_CATALOG = {
+    'settings.about' => { default: 'description', group: 'settings' },
+    'settings.appearance' => { default: 'computer', group: 'settings' },
+    'settings.branding' => { default: 'edit', group: 'settings' },
+    'settings.contentRetention' => { default: 'history', group: 'settings' },
+    'settings.discovery' => { default: 'search', group: 'settings' },
+    'settings.editProfile' => { default: 'person', group: 'settings' },
+    'settings.featuredTags' => { default: 'inventory_2', group: 'settings' },
+    'settings.registrations' => { default: 'group', group: 'settings' },
+    'settings.verification' => { default: 'check', group: 'settings' },
+  }.freeze
+
   def friendly_number_to_human(number, **options)
     # By default, the number of precision digits used by number_to_human
     # is looked up from the locales definition, and rails-i18n comes with
@@ -110,6 +122,21 @@ module ApplicationHelper
     else
       content_tag(:span, name, html_options)
     end
+  end
+
+  def pianyu_icon(name, state: :default, **attributes)
+    entry = PIANYU_ICON_CATALOG.fetch(name.to_s) do
+      raise ArgumentError, "Unknown Pianyu icon: #{name}"
+    end
+
+    icon = entry.fetch(state.to_sym, entry.fetch(:default))
+    classes = [
+      'icon--pianyu',
+      "icon--pianyu-#{entry.fetch(:group)}",
+    ]
+    classes << "icon--pianyu-#{state}" unless state.to_sym == :default
+
+    material_symbol(icon, attributes.merge(class: classes.concat(attributes[:class].to_s.split)))
   end
 
   def material_symbol(icon, attributes = {})

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { useIntl, defineMessages } from 'react-intl';
 
-import TagIcon from '@/material-icons/400-24px/tag.svg?react';
 import { fetchFollowedHashtags } from 'mastodon/actions/tags_typed';
 import { ColumnLink } from 'mastodon/features/ui/components/column_link';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
@@ -43,7 +42,7 @@ export const FollowedTagsPanel: React.FC = () => {
     <CollapsiblePanel
       to='/followed_tags'
       icon='hashtag'
-      iconComponent={TagIcon}
+      iconName='navigation.tags'
       title={intl.formatMessage(messages.followedTags)}
       collapseTitle={intl.formatMessage(messages.collapse)}
       expandTitle={intl.formatMessage(messages.expand)}
@@ -54,7 +53,7 @@ export const FollowedTagsPanel: React.FC = () => {
           transparent
           icon='hashtag'
           key={tag.name}
-          iconComponent={TagIcon}
+          iconName='navigation.tags'
           text={`#${tag.name}`}
           to={`/tags/${tag.name}`}
         />

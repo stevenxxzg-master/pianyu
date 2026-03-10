@@ -2,6 +2,13 @@ import { useCallback, forwardRef } from 'react';
 
 import classNames from 'classnames';
 
+import type { PianyuIconName, PianyuIconState } from 'mastodon/icons';
+import {
+  getPianyuIcon,
+  getPianyuIconClassName,
+  getPianyuIconId,
+} from 'mastodon/icons';
+
 import { usePrevious } from '../hooks/usePrevious';
 
 import { AnimatedNumber } from './animated_number';
@@ -12,7 +19,10 @@ interface Props {
   className?: string;
   title: string;
   icon: string;
-  iconComponent: IconProp;
+  iconComponent?: IconProp;
+  iconName?: PianyuIconName;
+  iconState?: PianyuIconState;
+  iconClassName?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
@@ -38,6 +48,9 @@ export const IconButton = forwardRef<HTMLButtonElement, Props>(
       expanded,
       icon,
       iconComponent,
+      iconName,
+      iconState = 'default',
+      iconClassName,
       inverted,
       title,
       counter,
@@ -106,9 +119,29 @@ export const IconButton = forwardRef<HTMLButtonElement, Props>(
       'icon-button--with-counter': typeof counter !== 'undefined',
     });
 
+    const resolvedIcon =
+      iconName === undefined
+        ? iconComponent
+        : getPianyuIcon(iconName, iconState);
+    const resolvedIconClassName =
+      iconName === undefined
+        ? iconClassName
+        : getPianyuIconClassName(iconName, iconState, iconClassName);
+    const resolvedIconId =
+      iconName === undefined ? icon : getPianyuIconId(iconName);
+
+    if (resolvedIcon === undefined) {
+      return null;
+    }
+
     let contents = (
       <>
-        <Icon id={icon} icon={iconComponent} aria-hidden='true' />{' '}
+        <Icon
+          id={resolvedIconId}
+          icon={resolvedIcon}
+          className={resolvedIconClassName}
+          aria-hidden='true'
+        />{' '}
         {typeof counter !== 'undefined' && (
           <span className='icon-button__counter'>
             <AnimatedNumber value={counter} />

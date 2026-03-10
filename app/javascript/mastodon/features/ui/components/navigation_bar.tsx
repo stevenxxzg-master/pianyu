@@ -5,18 +5,11 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
-import AddIcon from '@/material-icons/400-24px/add.svg?react';
-import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
-import HomeIcon from '@/material-icons/400-24px/home.svg?react';
-import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
-import NotificationsActiveIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
-import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
-import SearchIcon from '@/material-icons/400-24px/search.svg?react';
 import { openModal } from 'mastodon/actions/modal';
 import { toggleNavigation } from 'mastodon/actions/navigation';
 import { fetchServer } from 'mastodon/actions/server';
-import { Icon } from 'mastodon/components/icon';
 import { IconWithBadge } from 'mastodon/components/icon_with_badge';
+import { PianyuIcon } from 'mastodon/icons';
 import { useIdentity } from 'mastodon/identity_context';
 import { registrationsOpen, sso_redirect } from 'mastodon/initial_state';
 import { selectUnreadNotificationGroupsCount } from 'mastodon/selectors/notifications';
@@ -63,17 +56,18 @@ const NotificationsButton = () => {
       icon={
         <IconWithBadge
           id='bell'
-          icon={NotificationsIcon}
+          iconName='navigation.notifications'
           count={count}
-          className=''
+          className='ui__navigation-bar__icon'
         />
       }
       activeIcon={
         <IconWithBadge
           id='bell'
-          icon={NotificationsActiveIcon}
+          iconName='navigation.notifications'
+          iconState='active'
           count={count}
-          className=''
+          className='ui__navigation-bar__icon'
         />
       }
       title={intl.formatMessage(messages.notifications)}
@@ -178,18 +172,39 @@ export const NavigationBar: React.FC = () => {
             <IconLabelButton
               title={intl.formatMessage(messages.home)}
               to='/home'
-              icon={<Icon id='' icon={HomeIcon} />}
-              activeIcon={<Icon id='' icon={HomeActiveIcon} />}
+              icon={
+                <PianyuIcon
+                  name='navigation.home'
+                  className='ui__navigation-bar__icon'
+                />
+              }
+              activeIcon={
+                <PianyuIcon
+                  name='navigation.home'
+                  state='active'
+                  className='ui__navigation-bar__icon'
+                />
+              }
             />
             <IconLabelButton
               title={intl.formatMessage(messages.search)}
               to='/explore'
-              icon={<Icon id='' icon={SearchIcon} />}
+              icon={
+                <PianyuIcon
+                  name='navigation.search'
+                  className='ui__navigation-bar__icon'
+                />
+              }
             />
             <IconLabelButton
               title={intl.formatMessage(messages.publish)}
               to='/publish'
-              icon={<Icon id='' icon={AddIcon} />}
+              icon={
+                <PianyuIcon
+                  name='navigation.compose'
+                  className='ui__navigation-bar__icon'
+                />
+              }
             />
             <NotificationsButton />
           </>
@@ -201,7 +216,10 @@ export const NavigationBar: React.FC = () => {
           aria-label={intl.formatMessage(messages.menu)}
           type='button'
         >
-          <Icon id='' icon={MenuIcon} />
+          <PianyuIcon
+            name='navigation.menu'
+            className='ui__navigation-bar__icon'
+          />
         </button>
       </div>
     </div>
