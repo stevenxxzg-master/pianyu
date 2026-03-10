@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import ArrowBackIcon from '@/material-icons/400-24px/arrow_back.svg?react';
 import { Icon } from 'mastodon/components/icon';
+import { MobileNavigationButton } from 'mastodon/components/mobile_navigation_button';
 import { getColumnSkipLinkId } from 'mastodon/features/ui/components/skip_links';
 import { ButtonInTabsBar } from 'mastodon/features/ui/util/columns_context';
 
@@ -34,19 +35,25 @@ export const ColumnBackButton: React.FC<{ onClick?: OnClickCallback }> = ({
   const columnIndex = useColumnIndexContext();
 
   const component = (
-    <button
-      onClick={handleClick}
-      id={getColumnSkipLinkId(columnIndex)}
-      className='column-back-button'
-      type='button'
-    >
-      <Icon
-        id='chevron-left'
-        icon={ArrowBackIcon}
-        className='column-back-button__icon'
-      />
-      <FormattedMessage id='column_back_button.label' defaultMessage='Back' />
-    </button>
+    <div className='column-back-button'>
+      <button
+        onClick={handleClick}
+        id={getColumnSkipLinkId(columnIndex)}
+        className='column-back-button__button'
+        type='button'
+      >
+        <Icon
+          id='chevron-left'
+          icon={ArrowBackIcon}
+          className='column-back-button__icon'
+        />
+        <FormattedMessage id='column_back_button.label' defaultMessage='Back' />
+      </button>
+
+      <div className='column-back-button__actions'>
+        <MobileNavigationButton className='column-header__button--menu' />
+      </div>
+    </div>
   );
 
   return <ButtonInTabsBar>{component}</ButtonInTabsBar>;

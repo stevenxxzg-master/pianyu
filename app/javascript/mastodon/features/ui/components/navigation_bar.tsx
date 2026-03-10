@@ -3,14 +3,17 @@ import { useCallback, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
+import AccountCircleActiveIcon from '@/material-icons/400-24px/account_circle-fill.svg?react';
+import AccountCircleIcon from '@/material-icons/400-24px/account_circle.svg?react';
 import AddIcon from '@/material-icons/400-24px/add.svg?react';
 import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home.svg?react';
 import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import NotificationsActiveIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
+import SearchActiveIcon from '@/material-icons/400-24px/search-fill.svg?react';
 import SearchIcon from '@/material-icons/400-24px/search.svg?react';
 import { openModal } from 'mastodon/actions/modal';
 import { toggleNavigation } from 'mastodon/actions/navigation';
@@ -30,6 +33,7 @@ export const messages = defineMessages({
     id: 'tabs_bar.notifications',
     defaultMessage: 'Notifications',
   },
+  profile: { id: 'report.category.title_account', defaultMessage: 'Profile' },
   menu: { id: 'tabs_bar.menu', defaultMessage: 'Menu' },
 });
 
@@ -38,22 +42,32 @@ const IconLabelButton: React.FC<{
   icon?: React.ReactNode;
   activeIcon?: React.ReactNode;
   title: string;
-}> = ({ to, icon, activeIcon, title }) => {
-  const match = useRouteMatch(to);
+  forceActive?: boolean;
+  className?: string;
+}> = ({ to, icon, activeIcon, title, forceActive, className }) => {
+  const { pathname } = useLocation();
+  const isActive =
+    forceActive ?? (pathname === to || pathname.startsWith(`${to}/`));
 
   return (
-    <NavLink
-      className='ui__navigation-bar__item'
-      activeClassName='active'
+    <Link
+      className={classNames('ui__navigation-bar__item', className, {
+        active: isActive,
+      })}
       to={to}
       aria-label={title}
     >
-      {match && activeIcon ? activeIcon : icon}
-    </NavLink>
+      <span className='ui__navigation-bar__icon'>
+        {isActive && activeIcon ? activeIcon : icon}
+      </span>
+      <span className='ui__navigation-bar__label'>{title}</span>
+    </Link>
   );
 };
 
-const NotificationsButton = () => {
+const NotificationsButton: React.FC<{ forceActive: boolean }> = ({
+  forceActive,
+}) => {
   const count = useAppSelector(selectUnreadNotificationGroupsCount);
   const intl = useIntl();
 
@@ -77,6 +91,7 @@ const NotificationsButton = () => {
         />
       }
       title={intl.formatMessage(messages.notifications)}
+      forceActive={forceActive}
     />
   );
 };
@@ -155,14 +170,36 @@ const LoginOrSignUp: React.FC = () => {
 };
 
 export const NavigationBar: React.FC = () => {
-  const { signedIn } = useIdentity();
+  const { signedIn, accountId } = useIdentity();
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.navigation.open);
+  const currentAccount = useAppSelector((state) =>
+    accountId ? state.accounts.get(accountId) : undefined,
+  );
   const intl = useIntl();
+  const { pathname } = useLocation();
 
   const handleClick = useCallback(() => {
     dispatch(toggleNavigation());
   }, [dispatch]);
+
+  const profilePath = currentAccount?.acct
+    ? `/@${currentAccount.acct}`
+    : '/settings/preferences';
+
+  const isHomeActive =
+    pathname === '/home' || pathname.startsWith('/timelines/home');
+  const isSearchActive =
+    pathname === '/explore' ||
+    pathname.startsWith('/explore/') ||
+    pathname === '/search' ||
+    pathname.startsWith('/search/');
+  const isNotificationsActive =
+    pathname === '/notifications' || pathname.startsWith('/notifications/');
+  const isPublishActive =
+    pathname === '/publish' || pathname.startsWith('/publish/');
+  const isProfileActive =
+    pathname === profilePath || pathname.startsWith(`${profilePath}/`);
 
   return (
     <div className='ui__navigation-bar'>
@@ -180,29 +217,49 @@ export const NavigationBar: React.FC = () => {
               to='/home'
               icon={<Icon id='' icon={HomeIcon} />}
               activeIcon={<Icon id='' icon={HomeActiveIcon} />}
+              forceActive={isHomeActive}
             />
             <IconLabelButton
               title={intl.formatMessage(messages.search)}
               to='/explore'
               icon={<Icon id='' icon={SearchIcon} />}
+              activeIcon={<Icon id='' icon={SearchActiveIcon} />}
+              forceActive={isSearchActive}
             />
             <IconLabelButton
               title={intl.formatMessage(messages.publish)}
               to='/publish'
               icon={<Icon id='' icon={AddIcon} />}
+              activeIcon={<Icon id='' icon={AddIcon} />}
+              className='ui__navigation-bar__item--compose'
+              forceActive={isPublishActive}
             />
-            <NotificationsButton />
+            <NotificationsButton forceActive={isNotificationsActive} />
+            <IconLabelButton
+              title={intl.formatMessage(messages.profile)}
+              to={profilePath}
+              icon={<Icon id='' icon={AccountCircleIcon} />}
+              activeIcon={<Icon id='' icon={AccountCircleActiveIcon} />}
+              forceActive={isProfileActive}
+            />
           </>
         )}
 
-        <button
-          className={classNames('ui__navigation-bar__item', { active: open })}
-          onClick={handleClick}
-          aria-label={intl.formatMessage(messages.menu)}
-          type='button'
-        >
-          <Icon id='' icon={MenuIcon} />
-        </button>
+        {!signedIn && (
+          <button
+            className={classNames('ui__navigation-bar__item', { active: open })}
+            onClick={handleClick}
+            aria-label={intl.formatMessage(messages.menu)}
+            type='button'
+          >
+            <span className='ui__navigation-bar__icon'>
+              <Icon id='' icon={MenuIcon} />
+            </span>
+            <span className='ui__navigation-bar__label'>
+              {intl.formatMessage(messages.menu)}
+            </span>
+          </button>
+        )}
       </div>
     </div>
   );
