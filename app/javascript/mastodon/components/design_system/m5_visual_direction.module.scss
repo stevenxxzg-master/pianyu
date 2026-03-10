@@ -1,0 +1,540 @@
+.page {
+  --page-bg: #f5f1e8;
+  --panel-bg: rgb(255 255 255 / 82%);
+  --panel-strong: #fcfaf6;
+  --panel-muted: #eee7db;
+  --line: rgb(47 58 74 / 13%);
+  --line-strong: rgb(41 66 93 / 18%);
+  --text-strong: #1f2530;
+  --text-body: #4e596c;
+  --text-muted: #6d7586;
+  --accent: #29425d;
+  --accent-soft: rgb(41 66 93 / 8%);
+  --accent-warm: #a47643;
+  --danger-soft: rgb(138 83 70 / 8%);
+  --danger-line: rgb(138 83 70 / 20%);
+  --sage-soft: rgb(102 116 95 / 10%);
+  --shadow: 0 40px 80px -56px rgb(33 43 54 / 35%);
+  --shadow-soft: 0 24px 48px -36px rgb(33 43 54 / 22%);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgb(255 255 255 / 88%),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgb(199 215 232 / 26%),
+      transparent 34%
+    ),
+    linear-gradient(180deg, #f6f2ea 0%, #f0e9de 100%);
+  color: var(--text-strong);
+  font-family: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  min-height: 100vh;
+  padding: 48px clamp(20px, 4vw, 48px) 72px;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.hero,
+.section,
+.sectionSplit {
+  margin: 0 auto 28px;
+  max-width: 1200px;
+}
+
+.hero {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+  align-items: stretch;
+}
+
+.heroCopy,
+.heroPanel,
+.section,
+.sectionSplit {
+  position: relative;
+}
+
+.heroCopy,
+.heroPanel,
+.section,
+.sectionSplit {
+  overflow: hidden;
+}
+
+.heroCopy,
+.heroPanel {
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow);
+}
+
+.heroCopy {
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 92%), rgb(255 255 255 / 66%)),
+    linear-gradient(180deg, rgb(255 255 255 / 55%), transparent);
+  padding: clamp(28px, 5vw, 52px);
+}
+
+.heroCopy h1 {
+  font-family:
+    'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  margin: 0 0 18px;
+  max-width: 13ch;
+}
+
+.heroCopy p,
+.sectionHeader p,
+.signalCard p,
+.principleCard p,
+.swatch p,
+.ruleCard p,
+.motionCard p,
+.recipeCard p,
+.guardrailCard li,
+.guardrailCardAvoid li,
+.referenceCard li,
+.referenceCardWarning li,
+.cardExample p {
+  color: var(--text-body);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.eyebrow,
+.cardKicker,
+.ruleLabel,
+.compositionHeader span,
+.cardMetaRow span,
+.cardExampleHeader span,
+.swatch span {
+  color: var(--text-muted);
+  display: inline-flex;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.heroPanel {
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 80%),
+    rgb(238 231 219 / 92%)
+  );
+  padding: 22px;
+}
+
+.compositionCard {
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 85%),
+    rgb(255 255 255 / 65%)
+  );
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100%;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.compositionHeader,
+.cardExampleHeader,
+.cardMetaRow,
+.cardActionRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.compositionBody {
+  align-items: stretch;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(120px, 0.8fr);
+}
+
+.compositionPrimary,
+.cardExample {
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  padding: 22px;
+}
+
+.compositionPrimary strong,
+.cardExample strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  margin: 12px 0 10px;
+}
+
+.compositionRail {
+  background: linear-gradient(
+    180deg,
+    var(--panel-muted),
+    rgb(255 255 255 / 74%)
+  );
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.compositionRail div,
+.recipeLine,
+.recipeLineLg,
+.recipeBlock {
+  background: linear-gradient(
+    90deg,
+    rgb(41 66 93 / 11%),
+    rgb(164 118 67 / 10%)
+  );
+  border-radius: 999px;
+}
+
+.compositionRail div:nth-child(1),
+.recipeLineLg {
+  height: 12px;
+  width: 78%;
+}
+
+.compositionRail div:nth-child(2),
+.recipeLine {
+  height: 10px;
+  width: 100%;
+}
+
+.compositionRail div:nth-child(3) {
+  height: 64px;
+  width: 100%;
+}
+
+.section,
+.sectionSplit {
+  background: rgb(255 255 255 / 68%);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow-soft);
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.sectionSplit {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sectionHeader {
+  margin-bottom: 24px;
+  max-width: 760px;
+}
+
+.sectionHeader h2 {
+  font-family:
+    'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-size: clamp(1.8rem, 2.6vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  margin: 10px 0 12px;
+}
+
+.signalGrid,
+.principleGrid,
+.paletteGrid,
+.motionGrid,
+.recipeGrid,
+.guardrailGrid,
+.referenceGrid {
+  display: grid;
+  gap: 18px;
+}
+
+.signalGrid,
+.principleGrid,
+.motionGrid,
+.guardrailGrid,
+.referenceGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.paletteGrid,
+.recipeGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.signalCard,
+.principleCard,
+.swatch,
+.ruleCard,
+.motionCard,
+.recipeCard,
+.guardrailCard,
+.guardrailCardAvoid,
+.referenceCard,
+.referenceCardWarning {
+  background: var(--panel-bg);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%);
+  padding: 20px;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.signalCard:hover,
+.principleCard:hover,
+.swatch:hover,
+.ruleCard:hover,
+.motionCard:hover,
+.recipeCard:hover,
+.guardrailCard:hover,
+.guardrailCardAvoid:hover,
+.referenceCard:hover,
+.referenceCardWarning:hover,
+.cardExample:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 18px 32px -24px rgb(33 43 54 / 25%);
+  transform: translateY(-3px);
+}
+
+.signalCard h3,
+.principleCard h3,
+.swatch h3,
+.recipeCard h3,
+.guardrailCard h3,
+.guardrailCardAvoid h3,
+.referenceCard h3,
+.referenceCardWarning h3,
+.motionCard span,
+.ruleCard strong {
+  color: var(--text-strong);
+  font-size: 1.04rem;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.signalCard h3,
+.principleCard h3,
+.swatch h3,
+.recipeCard h3,
+.guardrailCard h3,
+.guardrailCardAvoid h3,
+.referenceCard h3,
+.referenceCardWarning h3 {
+  font-size: 1.12rem;
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.swatchColor {
+  border-radius: 18px;
+  box-shadow: inset 0 1px 1px rgb(255 255 255 / 24%);
+  min-height: 88px;
+}
+
+.ruleStack {
+  display: grid;
+  gap: 16px;
+}
+
+.ruleCard {
+  align-items: start;
+  display: grid;
+  gap: 10px;
+}
+
+.cardExample {
+  display: grid;
+  gap: 14px;
+  height: 100%;
+}
+
+.cardMetaRow span {
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  padding: 8px 12px;
+}
+
+.cardActionRow button {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text-strong);
+  cursor: default;
+  font: inherit;
+  padding: 10px 16px;
+}
+
+.cardActionRow button:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fefcf8;
+}
+
+.motionCard strong {
+  display: block;
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+}
+
+.recipeCard {
+  display: grid;
+  gap: 16px;
+}
+
+.recipeFrame {
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 85%),
+    rgb(236 230 219 / 75%)
+  );
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(112px, 0.8fr);
+  min-height: 144px;
+  padding: 14px;
+}
+
+.recipeColumn,
+.recipeRail {
+  display: grid;
+  gap: 10px;
+}
+
+.recipeBlock {
+  border-radius: 16px;
+  min-height: 68px;
+  width: 100%;
+}
+
+.recipeCard ul,
+.guardrailCard ul,
+.guardrailCardAvoid ul,
+.referenceCard ul,
+.referenceCardWarning ul {
+  color: var(--text-body);
+  display: grid;
+  gap: 10px;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.guardrailCard {
+  background: linear-gradient(
+    180deg,
+    rgb(102 116 95 / 8%),
+    rgb(255 255 255 / 82%)
+  );
+}
+
+.guardrailCardAvoid,
+.referenceCardWarning {
+  background: linear-gradient(
+    180deg,
+    rgb(164 118 67 / 6%),
+    rgb(255 255 255 / 84%)
+  );
+  border-color: var(--danger-line);
+}
+
+.referenceCard {
+  background: linear-gradient(
+    180deg,
+    rgb(41 66 93 / 6%),
+    rgb(255 255 255 / 84%)
+  );
+}
+
+@media (width <= 1120px) {
+  .hero,
+  .sectionSplit,
+  .paletteGrid,
+  .recipeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 760px) {
+  .page {
+    padding: 20px 14px 36px;
+  }
+
+  .hero,
+  .sectionSplit,
+  .signalGrid,
+  .principleGrid,
+  .paletteGrid,
+  .motionGrid,
+  .recipeGrid,
+  .guardrailGrid,
+  .referenceGrid,
+  .compositionBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroCopy,
+  .heroPanel,
+  .section,
+  .sectionSplit {
+    border-radius: 24px;
+    padding: 20px;
+  }
+
+  .compositionCard,
+  .compositionPrimary,
+  .cardExample,
+  .signalCard,
+  .principleCard,
+  .swatch,
+  .ruleCard,
+  .motionCard,
+  .recipeCard,
+  .guardrailCard,
+  .guardrailCardAvoid,
+  .referenceCard,
+  .referenceCardWarning {
+    border-radius: 20px;
+  }
+
+  .cardActionRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+.sectionColumn {
+  display: grid;
+  gap: 24px;
+}
