@@ -1,12 +1,13 @@
 - content_for :body_classes, 'public-page-body'
-- content_for :page_title, t('public_pages.about.title')
+- content_for :page_title, t('about.title')
 - content_for :header_tags do
   = render partial: 'shared/og', locals: { description: t('public_pages.about.description', site: public_brand_name) }
 
-- extended_description = public_extended_description_html
-- rules = public_rules
-- contact_email = instance_presenter.contact.email.presence
-- contact_account = instance_presenter.contact.account
+:ruby
+  extended_description = public_extended_description_html
+  rules = public_rules
+  contact_email = instance_presenter.contact.email.presence
+  contact_account = instance_presenter.contact.account
 
 .public-page.public-page--about
   .public-page__ambient
@@ -27,7 +28,7 @@
         .public-card-grid
           - t('public_pages.about.principles').each do |principle|
             %article.public-card
-              %div.public-card__icon= material_symbol(public_copy(principle, :icon), whitespace: false)
+              .public-card__icon= material_symbol(public_copy(principle, :icon), whitespace: false)
               %h3= public_copy(principle, :title)
               %p= public_copy(principle, :text)
 

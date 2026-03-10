@@ -1,6 +1,7 @@
-- policy = PrivacyPolicy.current
-- content_for :body_classes, 'public-page-body'
-- content_for :page_title, t('public_pages.shared.nav.privacy')
+:ruby
+  policy = PrivacyPolicy.current
+  content_for :body_classes, 'public-page-body'
+  content_for :page_title, t('privacy_policy.title')
 - content_for :header_tags do
   = render partial: 'shared/og', locals: { description: t('public_pages.privacy.heading') }
 

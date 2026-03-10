@@ -24,7 +24,6 @@ module PublicPagesHelper
     link_to t(label_key), path, html_options.merge(class: classes)
   end
 
-
   def public_copy(item, key)
     item[key.to_s] || item[key.to_sym]
   end

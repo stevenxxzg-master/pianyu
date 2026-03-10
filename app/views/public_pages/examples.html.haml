@@ -22,7 +22,7 @@
         .public-card-grid.public-card-grid--examples
           - t('public_pages.examples.scenarios').each do |scenario|
             %article.public-card.public-card--accent
-              %div.public-card__icon= material_symbol(public_copy(scenario, :icon), whitespace: false)
+              .public-card__icon= material_symbol(public_copy(scenario, :icon), whitespace: false)
               %h3= public_copy(scenario, :title)
               %p= public_copy(scenario, :text)
 

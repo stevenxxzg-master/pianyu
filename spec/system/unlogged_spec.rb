@@ -9,9 +9,10 @@ RSpec.describe 'UnloggedBrowsing', :js, :streaming do
     visit root_path
   end
 
-  it 'loads the home page' do
-    expect(subject).to have_css('div.app-holder')
-
-    expect(subject).to have_css('div.columns-area__panels__main')
+  it 'loads the branded landing page' do
+    expect(subject)
+      .to have_css('body', class: 'public-page-body')
+      .and have_css('.public-page--landing')
+      .and have_link(I18n.t('public_pages.shared.actions.sign_in'))
   end
 end

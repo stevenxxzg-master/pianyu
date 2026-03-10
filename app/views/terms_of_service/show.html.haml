@@ -1,7 +1,8 @@
-- terms_of_service = params[:date].present? ? TermsOfService.published.find_by(effective_date: params[:date]) : TermsOfService.current
-- effective_date = terms_of_service&.effective_date || terms_of_service&.published_at
-- content_for :body_classes, 'public-page-body'
-- content_for :page_title, t('public_pages.shared.nav.terms')
+:ruby
+  terms_of_service = params[:date].present? ? TermsOfService.published.find_by(effective_date: params[:date]) : TermsOfService.current
+  effective_date = terms_of_service&.effective_date || terms_of_service&.published_at
+  content_for :body_classes, 'public-page-body'
+  content_for :page_title, t('terms_of_service.title')
 - content_for :header_tags do
   = render partial: 'shared/og', locals: { description: t('public_pages.terms.heading', site: public_brand_name) }
 

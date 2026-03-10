@@ -50,7 +50,7 @@
           .public-card-grid
             - t('public_pages.landing.feature_cards').each do |card|
               %article.public-card
-                %div.public-card__icon= material_symbol(public_copy(card, :icon), whitespace: false)
+                .public-card__icon= material_symbol(public_copy(card, :icon), whitespace: false)
                 %h3= public_copy(card, :title)
                 %p= public_copy(card, :text)
 
