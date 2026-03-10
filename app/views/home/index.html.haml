@@ -1,7 +1,67 @@
-- content_for :header_tags do
-  - unless request.path == '/'
-    %meta{ name: 'robots', content: 'noindex' }/
+- if user_signed_in? || single_user_mode?
+  - content_for :header_tags do
+    - unless request.path == '/'
+      %meta{ name: 'robots', content: 'noindex' }/
 
-  = render partial: 'shared/og'
+    = render partial: 'shared/og'
 
-= render 'shared/web_app'
+  = render 'shared/web_app'
+- else
+  - content_for :body_classes, 'public-page-body'
+  - content_for :header_tags do
+    = render partial: 'shared/og', locals: { description: t('public_pages.landing.description', site: public_brand_name) }
+
+  .public-page.public-page--landing
+    .public-page__ambient
+    .public-page__frame
+      = render 'shared/public/header'
+
+      %main.public-page__main
+        %section.public-hero
+          .public-hero__copy
+            %p.public-kicker= t('public_pages.landing.eyebrow')
+            %h1.public-title= t('public_pages.landing.heading', site: public_brand_name)
+            %p.public-intro= t('public_pages.landing.description', site: public_brand_name)
+
+            .public-actions
+              = link_to public_sign_up_label, available_sign_up_path, class: 'public-button'
+              = link_to_login t('public_pages.shared.actions.sign_in'), class: 'public-button public-button--ghost'
+              = link_to t('public_pages.shared.nav.examples'), examples_path, class: 'public-button public-button--ghost'
+
+          .public-hero__panel
+            %div
+              %p.public-panel__eyebrow= t('public_pages.landing.panel_eyebrow')
+              %h2.public-panel__title= t('public_pages.landing.panel_title')
+            .public-stat-grid
+              - public_metrics.each do |metric|
+                %article.public-stat
+                  %span.public-stat__value= metric[:value]
+                  %span.public-stat__label= metric[:label]
+            %ul.public-panel-list
+              - t('public_pages.landing.panel_points').each do |point|
+                %li
+                  = material_symbol(public_copy(point, :icon), whitespace: false)
+                  %span= public_copy(point, :text)
+
+        %section.public-section
+          .public-section__header
+            %p.public-section__eyebrow= t('public_pages.landing.feature_eyebrow')
+            %h2.public-section__title= t('public_pages.landing.feature_title')
+          .public-card-grid
+            - t('public_pages.landing.feature_cards').each do |card|
+              %article.public-card
+                %div.public-card__icon= material_symbol(public_copy(card, :icon), whitespace: false)
+                %h3= public_copy(card, :title)
+                %p= public_copy(card, :text)
+
+        %section.public-band
+          %div
+            %p.public-band__eyebrow= t('public_pages.landing.band_eyebrow')
+            %h2.public-band__title= t('public_pages.landing.band_title')
+            %p.public-band__body= t('public_pages.landing.band_body')
+          .public-band__actions
+            = link_to t('public_pages.shared.nav.about'), about_path, class: 'public-button public-button--ghost'
+            = link_to t('public_pages.shared.actions.read_help'), help_path, class: 'public-button public-button--ghost'
+            = link_to public_sign_up_label, available_sign_up_path, class: 'public-button'
+
+      = render 'shared/public/footer'

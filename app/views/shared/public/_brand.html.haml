@@ -1,0 +1,6 @@
+= link_to root_path, class: ['public-brand', local_assigns[:compact] && 'public-brand--compact'].compact.join(' ') do
+  %span.public-brand__mark
+    = logo_as_symbol(:icon)
+  %span.public-brand__copy
+    %span.public-brand__name= public_brand_name
+    %span.public-brand__meta= site_hostname

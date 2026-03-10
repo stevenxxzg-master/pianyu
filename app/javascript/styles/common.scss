@@ -2,6 +2,7 @@
 @use 'mastodon/mixins';
 @use 'fonts/roboto';
 @use 'fonts/roboto-mono';
+@use 'fonts/silkscreen';
 
 @use 'mastodon/reset';
 @use 'mastodon/theme';
@@ -17,6 +18,7 @@
 @use 'mastodon/modal';
 @use 'mastodon/emoji_picker';
 @use 'mastodon/about';
+@use 'mastodon/public_pages';
 @use 'mastodon/tables';
 @use 'mastodon/admin';
 @use 'mastodon/dashboard';

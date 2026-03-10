@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Privacy policy page' do
-  it 'visits the privacy policy page and renders the web app' do
+  it 'renders the branded privacy page shell' do
     visit privacy_policy_path
 
     expect(page)
-      .to have_css('noscript', text: /Mastodon/)
-      .and have_css('body', class: 'app-body')
+      .to have_css('body', class: 'public-page-body')
+      .and have_content('How data, consent, and visibility are handled')
+      .and have_content('Last updated')
   end
 end

@@ -1,0 +1,154 @@
+en:
+  public_pages:
+    shared:
+      description: "%{site} brings landing pages, guidance, and authentication into one calmer public front door."
+      nav:
+        aria_label: Public navigation
+        about: About
+        examples: Examples
+        help: Help
+        privacy: Privacy
+        terms: Terms
+      actions:
+        sign_in: Sign in
+        sign_up: Create account
+        find_server: Find a server
+        apply: Apply for access
+        read_help: Read help
+      stats:
+        members: confirmed members
+        posts: local posts
+        servers: connected servers
+      footer:
+        product: Product
+        legal: Legal
+        access: Access
+        hosted_on: "Hosted on %{domain}"
+      meta:
+        last_updated: "Last updated %{date}"
+        effective_as_of: "Effective %{date}"
+      auth_panel:
+        eyebrow: Shared brand system
+        title: One visual language from the very first visit
+        body: Keep the public promise, the account journey, and the trust signals inside one coherent shell.
+        points:
+          - icon: article
+            text: Learn what the community is for before you are asked to commit.
+          - icon: chat_bubble
+            text: Move from landing page to sign-up without visual whiplash.
+          - icon: safety_check
+            text: Surface legal and moderation context where people actually need it.
+    landing:
+      eyebrow: Softer entry, sharper intent
+      heading: "%{site} turns the public front door into a calm, modern invitation"
+      description: Meet the community, understand how it works, and start the right auth flow without getting lost between mismatched surfaces.
+      panel_eyebrow: Public overview
+      panel_title: One visitor path from first glance to first account
+      panel_points:
+        - icon: explore
+          text: The public entry focuses on orientation, trust, and clear calls to action.
+        - icon: diamond
+          text: Brand marks, editorial type, and icon rhythm stay consistent across every public page.
+        - icon: key
+          text: Sign in, sign up, and password recovery feel like part of the same product, not a detached utility.
+      feature_eyebrow: What changes in the new entrance
+      feature_title: A public layer designed like a product, not an afterthought
+      feature_cards:
+        - icon: article
+          title: Explain the value fast
+          text: The landing page frames the community, the tone, and the expected participation style in one scan.
+        - icon: group
+          title: Show living social proof
+          text: Member, content, and federation signals help visitors understand the scale of the space before joining.
+        - icon: safety_check
+          title: Keep trust close
+          text: Rules, privacy, terms, and help stay visible throughout the journey instead of disappearing into footnotes.
+      band_eyebrow: Continue the walkthrough
+      band_title: Learn, compare, ask, then join
+      band_body: Move into concrete examples, practical help, or the right auth action without leaving the branded shell.
+    about:
+      title: About
+      eyebrow: Brand and community context
+      heading: Why this public space feels different
+      description: The public side of %{site} is built to make the first few minutes feel confident, readable, and intentional.
+      principle_eyebrow: Design principles
+      principle_title: The front door follows three simple rules
+      principles:
+        - icon: quiet_time
+          title: Calm over noise
+          text: Structure, spacing, and copy hierarchy help visitors orient themselves before they decide to act.
+        - icon: link
+          title: Context before commitment
+          text: Examples, rules, and help explain how the community works before any form asks for details.
+        - icon: diamond
+          title: One brand language
+          text: Public pages and auth surfaces share the same typography, materials, and icon treatment.
+      story_title: Extended description
+      story_fallback: This server has not published a longer description yet.
+      meta_title: Trust signals
+      meta_admin: Administered by
+      meta_contact: Contact
+      meta_contact_missing: Contact details have not been published yet.
+      rules_title: Community rules
+      rules_empty: No public rules have been published yet.
+    examples:
+      title: Examples
+      eyebrow: Example journeys
+      heading: The conversations %{site} is best at hosting
+      description: Concrete patterns help visitors understand whether this is the right place for their pace, topics, and level of participation.
+      grid_eyebrow: Use cases
+      grid_title: Four ways the public front door can guide the right people in
+      scenarios:
+        - icon: sync_alt
+          title: Working circles
+          text: A compact community for peers who want thoughtful updates, shared notes, and slow recurring discussions.
+        - icon: bookmarks
+          title: Reading salons
+          text: A home for serial recommendations, annotated links, and calm conversations that keep context over time.
+        - icon: edit_square
+          title: Creative showcases
+          text: A branded public layer that introduces the space before inviting people into workshops, prompts, or review threads.
+        - icon: public
+          title: Cause-led communities
+          text: A trusted place for publishing principles, moderation promises, and calls to action without sounding corporate.
+      path_eyebrow: Need practical guidance?
+      path_title: Examples are strongest when paired with clear help
+      path_body: Use the help page to answer onboarding questions, then move into the right account flow when the visitor is ready.
+    help:
+      title: Help
+      eyebrow: Public support
+      heading: The shortest path from curiosity to confidence
+      description: The public help surface answers the questions a new visitor has before, during, and after account creation.
+      quickstart_eyebrow: Quick start
+      quickstart_title: A three-step onboarding path
+      quickstart:
+        - index: 01
+          title: Read the front page
+          text: Start with the landing page to understand the community’s tone, values, and entry points.
+        - index: 02
+          title: Compare examples
+          text: Check example scenarios to see how the product fits different groups and participation styles.
+        - index: 03
+          title: Pick the right auth flow
+          text: Sign in, create an account, or recover access inside the same branded shell.
+      faq_eyebrow: FAQ
+      faq_title: Questions visitors ask most often
+      faqs:
+        - question: Do I need an account to read the public pages?
+          answer: No. Landing, about, examples, help, privacy, and terms stay accessible so visitors can evaluate the community first.
+        - question: What if registrations are limited or closed?
+          answer: The entry CTAs adapt to the current registration mode, so the public shell still points people to the right next step.
+        - question: Where do I find privacy and terms details?
+          answer: Legal links stay available in both the header journey and the footer so they are never buried.
+      support_eyebrow: Still deciding?
+      support_title: Keep trust signals nearby
+      support_body: Review legal details for %{domain}, then return to sign in or account creation when you are ready.
+    privacy:
+      eyebrow: Privacy policy
+      heading: How data, consent, and visibility are handled
+    terms:
+      eyebrow: Terms of service
+      heading: The shared agreement for participating in %{site}
+      empty: No published terms of service are available yet.
+    auth:
+      reset_password_lead: Enter the email connected to %{domain} and we will send a reset link.
