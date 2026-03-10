@@ -58,13 +58,17 @@
   color: var(--color-text-on-brand-base);
   background: var(--color-bg-brand-base);
   border: 0;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow-soft);
+  transition:
+    background-color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
 
   &:active,
   &:focus,
@@ -85,21 +89,21 @@
 .button {
   background-color: var(--color-bg-brand-base);
   border: 10px none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   box-sizing: border-box;
   color: var(--color-text-on-brand-base);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-2);
   font-family: inherit;
   font-size: 15px;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
   line-height: 22px;
   overflow: hidden;
-  padding: 7px 18px;
+  padding: 9px 18px;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -122,8 +126,8 @@
     font-size: 14px;
     line-height: normal;
     font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
   }
 
   &--dangerous {
@@ -271,8 +275,8 @@
 
 .icon {
   flex: 0 0 auto;
-  width: 24px;
-  height: 24px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   aspect-ratio: 1;
 
   &:not(.icon--no-fill) path {
@@ -291,13 +295,13 @@
   color: var(--default-icon-color);
   border: 0;
   padding: 0;
-  border-radius: 4px;
+  border-radius: var(--icon-button-radius);
   background: var(--default-bg-color);
   cursor: pointer;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  gap: 4px;
+  gap: var(--space-1);
   flex: 0 0 auto;
 
   a {
@@ -305,6 +309,11 @@
     color: inherit;
     text-decoration: none;
   }
+
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
 
   &:hover,
   &:active,
@@ -1988,7 +1997,7 @@ body > [data-popper-placement] {
   align-items: center;
   color: inherit;
   text-decoration: none;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .domain {
@@ -10261,7 +10270,7 @@ noscript {
     &__title {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: var(--space-2);
       font-size: 17px;
       font-weight: 600;
       line-height: 22px;
@@ -10494,7 +10503,7 @@ noscript {
   flex-wrap: wrap;
   font-size: 12px;
   line-height: 16px;
-  gap: 6px;
+  gap: var(--space-2);
   color: color-mix(
     in oklab,
     var(--color-text-primary),
@@ -10818,7 +10827,7 @@ noscript {
     &__display-name {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: var(--space-2);
       font-size: 16px;
       letter-spacing: 0.5px;
       line-height: 24px;

@@ -2,22 +2,24 @@
 @use 'variables' as *;
 
 code {
-  font-family: $font-monospace, monospace;
+  font-family: var(--font-ui-mono);
   font-weight: 400;
 }
 
 .form-container {
-  max-width: 450px;
-  padding: 20px;
-  padding-bottom: 50px;
-  margin: 50px auto;
+  max-width: var(--container-form);
+  padding: var(--space-5);
+  padding-bottom: var(--space-12);
+  margin: var(--space-10) auto;
 }
 
 .form-section {
-  border-radius: 8px;
-  background: var(--color-bg-secondary);
-  padding: 24px;
-  margin-bottom: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-primary);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
 }
 
 .fade-out-top {

@@ -11,10 +11,10 @@
   --color-text-brand-soft: color-mix(
     in oklab,
     var(--color-text-primary),
-    var(--color-text-brand)
+    var(--color-text-brand) 52%
   );
   --color-text-on-brand-base: var(--color-white);
-  --color-text-brand-on-inverted: var(--color-indigo-600);
+  --color-text-brand-on-inverted: var(--color-indigo-700);
   --color-text-error: var(--color-red-300);
   --color-text-on-error-base: var(--color-white);
   --color-text-warning: var(--color-yellow-400);
@@ -26,17 +26,12 @@
   --color-text-bookmark-highlight: var(--color-text-error);
   --color-text-favourite-highlight: var(--color-text-warning);
   --color-text-on-media: var(--color-white);
-  --color-text-status-links: color-mix(
-    in oklab,
-    var(--color-text-primary),
-    var(--color-text-secondary)
-  );
+  --color-text-status-links: var(--color-indigo-200);
 
   /* BACKGROUND TOKENS */
 
-  // Neutrals
   --color-bg-primary: var(--color-grey-950);
-  --overlay-strength-secondary: 4%;
+  --overlay-strength-secondary: 8%;
   --color-bg-secondary-base: var(--color-white);
   --color-bg-secondary: #{utils.css-alpha(
       var(--color-bg-secondary-base),
@@ -50,39 +45,31 @@
   --color-bg-tertiary: color-mix(
     in oklab,
     var(--color-bg-primary),
-    var(--color-bg-secondary-base) calc(2 * var(--overlay-strength-secondary))
+    var(--color-bg-secondary-base) calc(1.8 * var(--overlay-strength-secondary))
   );
-
-  // Utility
-  --color-bg-ambient: var(--color-bg-primary);
-  --color-bg-inverted: var(--color-grey-50);
+  --color-bg-ambient: color-mix(
+    in srgb,
+    var(--color-bg-primary),
+    #0b1320 26%
+  );
+  --color-bg-inverted: var(--color-paper-100);
   --color-bg-media-base: var(--color-black);
-  --color-bg-media-strength: 65%;
+  --color-bg-media-strength: 68%;
   --color-bg-media: #{utils.css-alpha(
       var(--color-bg-media-base),
       var(--color-bg-media-strength)
     )};
-  --color-bg-overlay: var(--color-black);
+  --color-bg-overlay: #{utils.css-alpha(var(--color-black), 72%)};
   --color-bg-disabled: var(--color-grey-700);
-
-  // Brand
-  --overlay-strength-brand: 22%;
+  --overlay-strength-brand: 24%;
   --color-bg-brand-base: var(--color-indigo-700);
   --color-bg-brand-base-hover: color-mix(
     in oklab,
     var(--color-bg-brand-base),
     var(--color-bg-primary) var(--overlay-strength-brand)
   );
-  --color-bg-brand-soft: #{utils.css-alpha(
-      #6f4df5,
-      calc(var(--overlay-strength-brand) * 2)
-    )};
-  --color-bg-brand-softer: #{utils.css-alpha(
-      var(--color-bg-brand-base),
-      var(--overlay-strength-brand)
-    )};
-
-  // Error
+  --color-bg-brand-soft: #{utils.css-alpha(#7aa8c6, 18%)};
+  --color-bg-brand-softer: #{utils.css-alpha(#7aa8c6, 12%)};
   --overlay-strength-error: 10%;
   --color-bg-error-base: var(--color-red-800);
   --color-bg-error-base-hover: color-mix(
@@ -92,8 +79,6 @@
   );
   --color-bg-error-soft: var(--color-red-900);
   --color-bg-error-softer: var(--color-red-950);
-
-  // Warning
   --overlay-strength-warning: 10%;
   --color-bg-warning-base: var(--color-yellow-700);
   --color-bg-warning-base-hover: color-mix(
@@ -103,8 +88,6 @@
   );
   --color-bg-warning-soft: var(--color-yellow-900);
   --color-bg-warning-softer: var(--color-yellow-950);
-
-  // Success
   --overlay-strength-success: 15%;
   --color-bg-success-base: var(--color-green-600);
   --color-bg-success-base-hover: color-mix(
@@ -123,9 +106,9 @@
       var(--border-strength-primary)
     )};
   --color-border-media: rgb(252 248 255 / 15%);
-  --color-border-verified: rgb(220, 3, 240);
+  --color-border-verified: var(--color-indigo-300);
   --color-border-on-bg-secondary: #{utils.css-alpha(
-      var(--color-indigo-200),
+      var(--color-indigo-100),
       calc(var(--border-strength-primary) / 1.5)
     )};
   --color-border-on-bg-brand-softer: var(--color-border-primary);
@@ -145,15 +128,15 @@
 
   /* SHADOW TOKENS */
 
-  --shadow-strength-primary: 80%;
+  --shadow-strength-primary: 72%;
   --color-shadow-primary: #{utils.css-alpha(
       var(--color-black),
       var(--shadow-strength-primary)
     )};
   --dropdown-shadow:
-    0 20px 25px -5px var(--color-shadow-primary),
-    0 8px 10px -6px var(--color-shadow-primary);
-  --overlay-icon-shadow: drop-shadow(0 0 8px var(--color-shadow-primary));
+    0 24px 40px -20px var(--color-shadow-primary),
+    0 14px 22px -18px var(--color-shadow-primary);
+  --overlay-icon-shadow: drop-shadow(0 0 10px var(--color-shadow-primary));
 
   /* GRAPHS/CHARTS TOKENS */
 
@@ -166,18 +149,13 @@
 
   /* LEGACY TOKENS */
 
-  --rich-text-container-color: rgb(87 24 60 / 100%);
-  --rich-text-text-color: rgb(255 175 212 / 100%);
-  --rich-text-decorations-color: rgb(128 58 95 / 100%);
+  --rich-text-container-color: rgb(77 31 52 / 100%);
+  --rich-text-text-color: rgb(255 208 225 / 100%);
+  --rich-text-decorations-color: rgb(115 55 77 / 100%);
 }
 
 @mixin contrast-overrides {
-  /* TEXT TOKENS */
-
   --color-text-primary: var(--color-grey-50);
-  --color-text-status-links: var(--color-text-brand);
-
-  /* BORDER TOKENS */
-
-  --border-strength-primary: 30%;
+  --color-text-status-links: var(--color-indigo-100);
+  --border-strength-primary: 28%;
 }
