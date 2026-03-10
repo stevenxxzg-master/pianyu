@@ -1,7 +1,6 @@
 ---
 sc:
   about:
-    about_mastodon_html: 'Sa rete sotziale de su benidore: sena publitzidade, sena vigilàntzia corporativa, disinnu èticu e detzentralizatzione! Sias mere de is datos tuos cun Mastodon!'
     contact_missing: No cunfiguradu
     contact_unavailable: No a disponimentu
     hosted_on: Mastodon allogiadu in %{domain}
@@ -787,7 +786,6 @@ sc:
       content: Faddina dae s'ala nostra.
       title: Custa pàgina no est curreta
     '503': Faddina in sa trasmissione de sa pàgina pro more de una faddina temporànea de su serbidore.
-    noscript_html: Pro impreare s'aplicatzione web de Mastodon, ativa JavaScript. In alternativa, proa una de is <a href="%{apps_path}">aplicatziones nativas</a> pro Mastodon in sa prataforma tua.
   existing_username_validator:
     not_found: impossìbile agatare utentes locales cun cussu nòmine
     not_found_multiple: impossìbile agatare %{usernames}

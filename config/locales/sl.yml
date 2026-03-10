@@ -1,7 +1,6 @@
 ---
 sl:
   about:
-    about_mastodon_html: 'Družbeno omrežje prihodnosti: brez oglasov, brez nadzora korporacij, etično oblikovano in decentralizirano! Ohranite lastništvo nad svojimi podatki z Mastodonom!'
     contact_missing: Ni nastavljeno
     contact_unavailable: Ni na voljo
     hosted_on: Mastodon gostuje na %{domain}
@@ -1430,7 +1429,6 @@ sl:
       content: Žal nam je, toda na našem koncu je prišlo do napake.
       title: Ta stran ni pravilna
     '503': Strani ni mogoče postreči zaradi začasne odpovedi strežnika.
-    noscript_html: Če želite uporabljati spletno aplikacijo Mastodon, omogočite JavaScript. Druga možnost je, da za svojo platformo poskusite eno od <a href="%{apps_path}">lastnih aplikacij</a> za Mastodon.
   existing_username_validator:
     not_found: s tem uporabniškim imenom ni bilo mogoče najti lokalnega uporabnika
     not_found_multiple: ni bilo mogoče najti %{usernames}

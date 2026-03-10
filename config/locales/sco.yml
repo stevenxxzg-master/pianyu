@@ -1,7 +1,6 @@
 ---
 sco:
   about:
-    about_mastodon_html: 'The social network o wir future: Nae adverts, nae corporate surveillance; ethical design, an decentralization! Ain yer ain data wi Mastodon!'
     contact_missing: No set
     contact_unavailable: N/A
     hosted_on: Mastodon hostit on %{domain}
@@ -1007,7 +1006,6 @@ sco:
       content: We're sorry, but somethin went wrang on oor en.
       title: This page isnae correct
     '503': The page cuidnae be served doon tae a temporary server failure.
-    noscript_html: Fir tae uise the Mastodon wab application, please turn on JavaScript. Alternatively, try ane o the <a href="%{apps_path}">native apps</a> fir Mastodon fir yer platform.
   existing_username_validator:
     not_found: cuidnae fin a local uiser wi that uisernemm
     not_found_multiple: cuidnae fin %{usernames}

@@ -1,7 +1,6 @@
 ---
 ca:
   about:
-    about_mastodon_html: 'La xarxa social del futur: sense anuncis, sense vigilància corporativa, amb un disseny ètic i descentralització. Amb Mastodon controles les teves dades!'
     contact_missing: No configurat
     contact_unavailable: N/D
     hosted_on: Mastodon allotjat a %{domain}
@@ -1397,7 +1396,6 @@ ca:
       content: Ho sentim, però alguna cosa ha fallat a la nostra banda.
       title: Aquesta pàgina no es correcta
     '503': La pàgina no podria ser servida a causa d'un error temporal del servidor.
-    noscript_html: Per a usar Mastodon, activa el JavaScript. També pots provar una de les <a href="%{apps_path}"> aplicacions natives</a> de Mastodon per a la teva plataforma.
   existing_username_validator:
     not_found: no s'ha pogut trobar cap usuari local amb aquest nom d'usuari
     not_found_multiple: no s'ha pogut trobar %{usernames}

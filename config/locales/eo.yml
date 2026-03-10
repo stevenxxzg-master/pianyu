@@ -1,7 +1,6 @@
 ---
 eo:
   about:
-    about_mastodon_html: 'La socia retejo de la estonteco: sen reklamo, sen observado por firmao, etika desegno, kaj malcentrigo! Regu viajn informojn per Mastodon!'
     contact_missing: Ne elektita
     contact_unavailable: Ne disponebla
     hosted_on: "%{domain} estas nodo de Mastodon"
@@ -1379,9 +1378,6 @@ eo:
       content: Ni bedaŭras, io malsukcesis niaflanke.
       title: Ĉi tiu paĝo ne estas ĝusta
     '503': La paĝo ne povas montritis pro malpermanenta servilmalfunkcio.
-    noscript_html: |-
-      Por uzi la retan aplikaĵon de Mastodon, bonvolu ebligi JavaScript. Alimaniere, provu unu el la
-      <a href="%{apps_path}">operaciumaj aplikaĵoj</a> por Mastodon por via platformo.
   existing_username_validator:
     not_found: ne povas trovi lokaj uzanto kun tiu uzantnomo
     not_found_multiple: ne povas trovi %{usernames}

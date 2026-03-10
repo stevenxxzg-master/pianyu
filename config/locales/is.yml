@@ -1,7 +1,6 @@
 ---
 is:
   about:
-    about_mastodon_html: 'Samfélagsnet framtíðarinnar: Engar auglýsingar, ekkert eftirlit stórfyrirtækja, siðleg hönnun og engin miðstýring! Þú átt þín eigin gögn í Mastodon!'
     contact_missing: Ekki skilgreint
     contact_unavailable: Ekki til staðar
     hosted_on: Mastodon hýst á %{domain}
@@ -1437,7 +1436,6 @@ is:
       content: Því miður, en eitthvað fór úrskeiðis á okkar enda.
       title: Þessi síða er ekki rétt
     '503': Ekki var hægt að afgreiða síðuna vegna tímabundinnar bilunar á vefþjóni.
-    noscript_html: Til að nota vefútgáfu Mastodon þarftu að virkja JavaScript. Þú getur líka prófað eitt af Mastodon <a href="%{apps_path}">forritunum</a> fyrir stýrikerfið þitt.
   existing_username_validator:
     not_found: Fann ekki staðværan notanda með þetta notandanafn
     not_found_multiple: tókst ekki að finna %{usernames}

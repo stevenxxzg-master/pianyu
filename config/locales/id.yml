@@ -1,7 +1,6 @@
 ---
 id:
   about:
-    about_mastodon_html: 'Jaringan sosial masa depan: Tanpa iklan, tanpa pemantauan perusahaan, desain etis, dan terdesentralisasi! Miliki data Anda dengan Mastodon!'
     contact_missing: Belum ditetapkan
     contact_unavailable: Tidak Tersedia
     hosted_on: Mastodon dihosting di %{domain}
@@ -1003,7 +1002,6 @@ id:
       content: Maaf, ada sesuatu yang salah pada sistem kami.
       title: Halaman ini tidak benar
     '503': Halaman ini tidak dapat ditampilkan karena kegagalan server sementara.
-    noscript_html: Untuk menggunakan aplikasi web Mastodon, tolong aktifkan JavaScript. Sebagai alternatif, cobalah <a href="%{apps_path}">aplikasi murni</a> Mastodon untuk platform Anda.
   existing_username_validator:
     not_found: tidak dapat menemukan pengguna lokal dengan nama pengguna tersebut
     not_found_multiple: tidak dapat menemukan %{usernames}

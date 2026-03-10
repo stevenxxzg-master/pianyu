@@ -1,7 +1,6 @@
 ---
 nn:
   about:
-    about_mastodon_html: 'Framtidas sosiale nettverk: Ingen annonsar, ingen verksemder som overvaker deg, etisk design og desentralisering! Eig dataene dine med Mastodon!'
     contact_missing: Ikkje sett
     contact_unavailable: I/T
     hosted_on: "%{domain} er vert for Mastodon"
@@ -1433,7 +1432,6 @@ nn:
       content: Orsak. Vi har gjort noko feil.
       title: Denne sida er ikkje rett
     '503': Siden kunne ikke vises på grunn av en midlertidig serverfeil.
-    noscript_html: For å bruke Mastodon webapplikasjon må du aktivere JavaScript. Alternativt kan du forsøke en av de mange <a href="%{apps_path}">integrerte appene</a> for Mastodon til din plattform.
   existing_username_validator:
     not_found: fann ingen lokalbrukar med det namnet
     not_found_multiple: fann ikkje %{usernames}

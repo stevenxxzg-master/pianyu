@@ -2,9 +2,9 @@
 # important settings can be changed from the admin interface.
 
 defaults: &defaults
-  site_title: Mastodon
-  site_short_description: ''
-  site_description: ''
+  site_title: 片语 PianYu
+  site_short_description: Quiet notes. Thoughtful company.
+  site_description: 片语 PianYu is a calm social space for thoughtful posts, slower conversation, and low-pressure discovery.
   site_extended_description: ''
   site_terms: ''
   site_contact_username: ''

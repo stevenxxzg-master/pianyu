@@ -1,7 +1,6 @@
 ---
 'no':
   about:
-    about_mastodon_html: Mastodon er et sosialt nettverk laget med <em>fri programvare</em>. Et <em>desentralisert</em> alternativ til kommersielle plattformer. Slik kan det unngå risikoene ved å ha et enkelt selskap som monopoliserer din kommunikasjon. Velg en tjener du stoler på &mdash; uansett hvilken du velger så kan du kommunisere med alle andre. Alle kan kjøre sin egen Mastodon og delta sømløst i det sosiale nettverket.
     contact_missing: Ikke innstilt
     contact_unavailable: Ikke tilgjengelig
     hosted_on: Mastodon driftet på %{domain}
@@ -1174,7 +1173,6 @@
       content: Beklager men noe gikk galt ved vår ende.
       title: Denne siden er ikke korrekt
     '503': Siden kunne ikke vises på grunn av en midlertidig serverfeil.
-    noscript_html: For å bruke Mastodon webapplikasjon må du aktivere JavaScript. Alternativt kan du forsøke en av de mange <a href="%{apps_path}">integrerte appene</a> for Mastodon til din plattform.
   existing_username_validator:
     not_found: kunne ikke finne en lokal bruker med det brukernavnet
     not_found_multiple: klarte ikke å finne %{usernames}

@@ -1,7 +1,6 @@
 ---
 ie:
   about:
-    about_mastodon_html: 'Li social rete del futur: sin reclams, sin supervision de corporationes, con un dessine etical e decentralisation! Repossede vor data med Mastodon!'
     contact_missing: Ne assignat
     contact_unavailable: Ne disponibil
     hosted_on: Mastodon logiat che %{domain}
@@ -1158,7 +1157,6 @@ ie:
       content: Pardona nos, alquo errat in nor servitor.
       title: Ti-ci págine ne es corect
     '503': On ne posset servir li págine pro un falliment temporari del servitor.
-    noscript_html: Por usar li web-aplication de Mastodon, ples activisar JavaScript. Alternativmen, prova un del <a href="%{apps_path}">nativ aplicationes</a> por Mastodon por tui platform.
   existing_username_validator:
     not_found: ne posset trovar un local usator con ti usator-nómine
     not_found_multiple: ne posset trovar %{usernames}

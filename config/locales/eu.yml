@@ -1,7 +1,6 @@
 ---
 eu:
   about:
-    about_mastodon_html: 'Etorkizuneko sare soziala: ez iragarkirik eta ez zelatatze korporatiborik, diseinu etikoa eta deszentralizazioa! Izan zure datuen jabea Mastodonekin!'
     contact_missing: Ezarri gabe
     contact_unavailable: E/E
     hosted_on: Mastodon %{domain} domeinuan ostatatua
@@ -1358,7 +1357,6 @@ eu:
       content: Sentitzen dugu, zerbait okerra gertatu da gure aldean.
       title: Orri hau ez da zuzena
     '503': Orria ezin izan da zerbitzatu zerbitzariaren behin behineko arazo bat dela eta.
-    noscript_html: Mastodon web aplikazioa erabiltzeko, gaitu JavaScript. Bestela, probatu Mastodon plataformarako <a href="%{apps_path}">aplikazio natibo</a>ren bat.
   existing_username_validator:
     not_found: ezin izan da izen hori duen kide lokalik aurkitu
     not_found_multiple: ezin izan dira aurkitu %{usernames}

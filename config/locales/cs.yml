@@ -1,7 +1,6 @@
 ---
 cs:
   about:
-    about_mastodon_html: 'Sociální síť budoucnosti: žádné reklamy, žádné korporátní sledování, etický design a decentralizace! S Mastodonem vlastníte svoje data!'
     contact_missing: Nenastaveno
     contact_unavailable: Neuvedeno
     hosted_on: Mastodon na doméně %{domain}
@@ -1471,7 +1470,6 @@ cs:
       content: Omlouváme se, ale něco se u nás pokazilo.
       title: Tato stránka není správná
     '503': Stránku nelze načíst kvůli dočasnému selhání serveru.
-    noscript_html: Pro použití webové aplikace Mastodon prosím povolte JavaScript. Nebo zkuste jednu z <a href="%{apps_path}">nativních aplikací</a> pro Mastodon pro vaši platformu.
   existing_username_validator:
     not_found: nelze najít místního uživatele s tímto uživatelským jménem
     not_found_multiple: nelze najít %{usernames}

@@ -1,7 +1,6 @@
 ---
 sk:
   about:
-    about_mastodon_html: Mastodon je sociálna sieť založená na otvorených webových protokoloch a na slobodnom softvéri. Je decentralizovaná, podobne ako email.
     contact_missing: Nezadaný
     contact_unavailable: Neuvedený/á
     hosted_on: Mastodon hostovaný na %{domain}
@@ -952,7 +951,6 @@ sk:
       content: Ospravedlňujem sa. Niečo sa pokazilo na našom konci.
       title: Táto stránka nieje v poriadku
     '503': Táto stránka nemôže byť načítaná, kvôli dočasnému výpadku servera.
-    noscript_html: Aby bolo možné používať Mastodon web aplikáciu, povoľ prosím JavaScript. Alebo skús jednu z <a href="%{apps_path}"> aplikácii </a> dostupných pre vašu platformu.
   existing_username_validator:
     not_found: nepodarilo sa nájsť miestného užívateľa s takouto prezývkou
     not_found_multiple: nepodarilo sa nájsť %{usernames}

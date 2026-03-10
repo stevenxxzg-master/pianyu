@@ -82,8 +82,8 @@ class About extends PureComponent {
         <div className='scrollable about'>
           <div className='about__header'>
             <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} srcSet={server.getIn(['thumbnail', 'versions'])?.map((value, key) => `${value} ${key.replace('@', '')}`).join(', ')} className='about__header__hero' />
-            <h1>{isLoading ? <Skeleton width='10ch' /> : server.get('domain')}</h1>
-            <p><FormattedMessage id='about.powered_by' defaultMessage='Decentralized social media powered by {mastodon}' values={{ mastodon: <a href='https://joinmastodon.org' className='about__mail' target='_blank' rel='noopener'>Mastodon</a> }} /></p>
+            <h1>{isLoading ? <Skeleton width='10ch' /> : (server.get('title') || server.get('domain'))}</h1>
+            <p><FormattedMessage id='about.powered_by' defaultMessage='Quiet social writing and thoughtful conversation, connected through the fediverse.' /></p>
           </div>
 
           <div className='about__meta'>
@@ -134,7 +134,7 @@ class About extends PureComponent {
               </>
             ) : (domainBlocks.get('isAvailable') ? (
               <>
-                <p><FormattedMessage id='about.domain_blocks.preamble' defaultMessage='Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.' /></p>
+                <p><FormattedMessage id='about.domain_blocks.preamble' defaultMessage='片语通常允许你浏览联邦宇宙中其他社区的内容并与之互动。以下是本站当前设置的例外。' /></p>
 
                 {domainBlocks.get('items').size > 0 && (
                   <div className='about__domain-blocks'>

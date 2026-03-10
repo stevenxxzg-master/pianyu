@@ -1,7 +1,6 @@
 ---
 fi:
   about:
-    about_mastodon_html: 'Tulevaisuuden sosiaalinen verkosto: ei mainoksia, ei valvontaa, toteutettu avoimilla protokollilla ja hajautettu rakenne! Pidä tietosi ominasi Mastodonin avulla!'
     contact_missing: Ei asetettu
     contact_unavailable: Ei saatavilla
     hosted_on: Mastodon palvelimella %{domain}
@@ -1433,7 +1432,6 @@ fi:
       content: Valitettavasti jotain meni pieleen meidän päässämme.
       title: Sivu ei ole oikein
     '503': Sivua ei voitu näyttää palvelimen väliaikaisen vian vuoksi.
-    noscript_html: Käyttääksesi Mastodonin verkkosovellusta, ota JavaScript käyttöön. Vaihtoehtoisesti voit kokeilla käyttämällesi alustalle kehitettyjä Mastodonin <a href="%{apps_path}">natiivisovelluksia</a>.
   existing_username_validator:
     not_found: paikallista käyttäjää ei löydy kyseisellä käyttäjänimellä
     not_found_multiple: käyttäjänimiä %{usernames} ei löytynyt

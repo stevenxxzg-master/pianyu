@@ -7,7 +7,7 @@
 = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { novalidate: false }) do |f|
   = render 'auth/shared/progress', stage: 'details'
 
-  %h1.title= t('auth.sign_up.title', domain: site_hostname)
+  %h1.title= t('auth.sign_up.title', domain: site_title)
   %p.lead= t('auth.sign_up.preamble')
 
   = render 'shared/error_messages', object: resource
@@ -61,7 +61,7 @@
                 wrapper: :with_block_label
 
   - if approved_registrations? && @invite.blank?
-    %p.lead= t('auth.sign_up.manual_review', domain: site_hostname)
+    %p.lead= t('auth.sign_up.manual_review', domain: site_title)
 
     .fields-group
       = f.simple_fields_for :invite_request, resource.invite_request || resource.build_invite_request do |invite_request_fields|

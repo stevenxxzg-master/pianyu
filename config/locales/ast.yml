@@ -1,7 +1,6 @@
 ---
 ast:
   about:
-    about_mastodon_html: 'La rede social del futuru: ¡ensin anuncios nin vixilancia, con un diseñu éticu y descentralizáu! Controla los tos datos con Mastodon.'
     contact_unavailable: N/D
     hosted_on: 'Mastodon ta agospiáu en: %{domain}'
     title: Tocante a
@@ -540,7 +539,6 @@ ast:
       content: Sentímoslo, mas prodúxose dalgún error nel sirvidor.
       title: La páxina nun ye correuta
     '503': Nun se pudo sirvir la páxina pola mor d'un fallu temporal del sirvidor.
-    noscript_html: Pa usar l'aplicación web de Mastodon, activa JavaScript. Tamién pues probar una de les <a href="%{apps_path}">aplicaciones natives</a> de Mastodon pa la to plataforma.
   exports:
     archive_takeout:
       date: Data

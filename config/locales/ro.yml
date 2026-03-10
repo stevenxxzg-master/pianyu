@@ -1,7 +1,6 @@
 ---
 ro:
   about:
-    about_mastodon_html: 'Rețeaua socială a viitorului: Fără reclame, fără supraveghere corporativă, design etic și descentralizare! Dețineți-vă datele cu Mastodon!'
     contact_missing: Nesetat
     contact_unavailable: Indisponibil
     hosted_on: Mastodon găzduit de %{domain}
@@ -513,7 +512,6 @@ ro:
     '500':
       content: Ne pare rău, dar ceva a funcționat greșit. Încercați din nou!?
       title: Această pagină nu este corectă
-    noscript_html: Pentru a utiliza o aplicație web Mastodon, te rog activează JavaScript. Alternativ, încearcă una din <a href="%{apps_path}">aplicațiile native</a> Mastodon pentru platforma ta.
   exports:
     archive_takeout:
       date: Data
