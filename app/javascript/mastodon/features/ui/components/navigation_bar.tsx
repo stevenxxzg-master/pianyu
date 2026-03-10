@@ -33,23 +33,75 @@ export const messages = defineMessages({
   menu: { id: 'tabs_bar.menu', defaultMessage: 'Menu' },
 });
 
-const IconLabelButton: React.FC<{
-  to: string;
+const NavigationBarItemContent: React.FC<{
   icon?: React.ReactNode;
   activeIcon?: React.ReactNode;
   title: string;
-}> = ({ to, icon, activeIcon, title }) => {
-  const match = useRouteMatch(to);
+  active: boolean;
+}> = ({ icon, activeIcon, title, active }) => (
+  <>
+    <span className='ui__navigation-bar__item-icon'>
+      {active && activeIcon ? activeIcon : icon}
+    </span>
+    <span className='ui__navigation-bar__item-label'>{title}</span>
+  </>
+);
+
+const IconLabelButton: React.FC<{
+  to?: string;
+  icon?: React.ReactNode;
+  activeIcon?: React.ReactNode;
+  title: string;
+  accent?: boolean;
+  active?: boolean;
+  onClick?: () => void;
+}> = ({
+  to,
+  icon,
+  activeIcon,
+  title,
+  accent = false,
+  active = false,
+  onClick,
+}) => {
+  const match = useRouteMatch(to ?? '');
+  const itemClassName = classNames('ui__navigation-bar__item', {
+    active,
+    'ui__navigation-bar__item--accent': accent,
+  });
+
+  if (to) {
+    return (
+      <NavLink
+        className={itemClassName}
+        activeClassName='active'
+        to={to}
+        aria-label={title}
+      >
+        <NavigationBarItemContent
+          active={!!match}
+          activeIcon={activeIcon}
+          icon={icon}
+          title={title}
+        />
+      </NavLink>
+    );
+  }
 
   return (
-    <NavLink
-      className='ui__navigation-bar__item'
-      activeClassName='active'
-      to={to}
+    <button
+      className={itemClassName}
+      onClick={onClick}
       aria-label={title}
+      type='button'
     >
-      {match && activeIcon ? activeIcon : icon}
-    </NavLink>
+      <NavigationBarItemContent
+        active={active}
+        activeIcon={activeIcon}
+        icon={icon}
+        title={title}
+      />
+    </button>
   );
 };
 
@@ -65,7 +117,7 @@ const NotificationsButton = () => {
           id='bell'
           icon={NotificationsIcon}
           count={count}
-          className=''
+          className='ui__navigation-bar__icon'
         />
       }
       activeIcon={
@@ -73,7 +125,7 @@ const NotificationsButton = () => {
           id='bell'
           icon={NotificationsActiveIcon}
           count={count}
-          className=''
+          className='ui__navigation-bar__icon'
         />
       }
       title={intl.formatMessage(messages.notifications)}
@@ -178,31 +230,67 @@ export const NavigationBar: React.FC = () => {
             <IconLabelButton
               title={intl.formatMessage(messages.home)}
               to='/home'
-              icon={<Icon id='' icon={HomeIcon} />}
-              activeIcon={<Icon id='' icon={HomeActiveIcon} />}
+              icon={
+                <Icon
+                  id='home'
+                  icon={HomeIcon}
+                  className='ui__navigation-bar__icon'
+                />
+              }
+              activeIcon={
+                <Icon
+                  id='home-fill'
+                  icon={HomeActiveIcon}
+                  className='ui__navigation-bar__icon'
+                />
+              }
             />
             <IconLabelButton
               title={intl.formatMessage(messages.search)}
               to='/explore'
-              icon={<Icon id='' icon={SearchIcon} />}
+              icon={
+                <Icon
+                  id='search'
+                  icon={SearchIcon}
+                  className='ui__navigation-bar__icon'
+                />
+              }
             />
             <IconLabelButton
               title={intl.formatMessage(messages.publish)}
               to='/publish'
-              icon={<Icon id='' icon={AddIcon} />}
+              icon={
+                <Icon
+                  id='plus'
+                  icon={AddIcon}
+                  className='ui__navigation-bar__icon'
+                />
+              }
+              activeIcon={
+                <Icon
+                  id='plus'
+                  icon={AddIcon}
+                  className='ui__navigation-bar__icon'
+                />
+              }
+              accent
             />
             <NotificationsButton />
           </>
         )}
 
-        <button
-          className={classNames('ui__navigation-bar__item', { active: open })}
+        <IconLabelButton
+          active={open}
+          icon={
+            <Icon
+              id='menu'
+              icon={MenuIcon}
+              className='ui__navigation-bar__icon'
+            />
+          }
           onClick={handleClick}
-          aria-label={intl.formatMessage(messages.menu)}
-          type='button'
-        >
-          <Icon id='' icon={MenuIcon} />
-        </button>
+          title={intl.formatMessage(messages.menu)}
+        />
       </div>
     </div>
   );
