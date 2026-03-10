@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import {
   domain,
+  title as siteTitle,
   version,
   source_url,
   statusPageUrl,
@@ -74,14 +75,10 @@ export const LinkFooter: React.FC<{
       </p>
 
       <p>
-        <strong>Mastodon</strong>:{' '}
-        <a href='https://joinmastodon.org' target='_blank' rel='noopener'>
+        <strong>{siteTitle}</strong>:{' '}
+        <Link to='/about' target={multiColumn ? '_blank' : undefined}>
           <FormattedMessage id='footer.about' defaultMessage='About' />
-        </a>
-        <DividingCircle />
-        <a href='https://joinmastodon.org/apps' target='_blank' rel='noopener'>
-          <FormattedMessage id='footer.get_app' defaultMessage='Get the app' />
-        </a>
+        </Link>
         <DividingCircle />
         <Link to='/keyboard-shortcuts'>
           <FormattedMessage

@@ -1,9 +1,9 @@
 - thumbnail     = instance_presenter.thumbnail
-- description ||= instance_presenter.description.presence || strip_tags(t('about.about_mastodon_html'))
+- description ||= instance_presenter.description.presence || brand_meta_description
 
 %meta{ name: 'description', content: description }/
 
-= opengraph 'og:site_name', t('about.hosted_on', domain: site_hostname)
+= opengraph 'og:site_name', site_title
 = opengraph 'og:url', url_for(only_path: false)
 = opengraph 'og:type', 'website'
 = opengraph 'og:title', instance_presenter.title
