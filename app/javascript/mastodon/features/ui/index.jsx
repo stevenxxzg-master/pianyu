@@ -604,7 +604,7 @@ class UI extends PureComponent {
 
   render () {
     const { draggingOver } = this.state;
-    const { children, isComposing, location, layout, firstLaunch, newAccount } = this.props;
+    const { children, identity, isComposing, location, layout, firstLaunch, newAccount } = this.props;
 
     const handlers = {
       help: this.handleHotkeyToggleHelp,
@@ -636,7 +636,10 @@ class UI extends PureComponent {
 
     return (
       <Hotkeys global handlers={handlers}>
-        <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef}>
+        <div className={classNames('ui', {
+          'ui--app-shell': identity.signedIn,
+          'is-composing': isComposing,
+        })} ref={this.setRef}>
           <SkipLinks
             multiColumn={layout === 'multi-column'}
             onFocusGettingStartedColumn={this.handleHotkeyGoToStart}

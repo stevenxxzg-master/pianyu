@@ -29,10 +29,11 @@ export const ColumnLink: React.FC<{
   method,
   badge,
   transparent,
+  className,
   ...other
 }) => {
   const match = useRouteMatch(to ?? '');
-  const className = classNames('column-link', {
+  const linkClassName = classNames('column-link', className, {
     'column-link--transparent': transparent,
   });
   const badgeElement =
@@ -63,7 +64,7 @@ export const ColumnLink: React.FC<{
 
   if (href) {
     return (
-      <a href={href} className={className} data-method={method} {...other}>
+      <a href={href} className={linkClassName} data-method={method} {...other}>
         {active ? activeIconElement : iconElement}
         <span>{text}</span>
         {badgeElement}
@@ -71,7 +72,7 @@ export const ColumnLink: React.FC<{
     );
   } else if (to) {
     return (
-      <NavLink to={to} className={className} {...other}>
+      <NavLink to={to} className={linkClassName} {...other}>
         {active ? activeIconElement : iconElement}
         <span>{text}</span>
         {badgeElement}
