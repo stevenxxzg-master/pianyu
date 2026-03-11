@@ -11,6 +11,8 @@ import type { MenuItem } from 'mastodon/models/dropdown_menu';
 import { canManageReports, canViewAdminDashboard } from 'mastodon/permissions';
 import { useAppDispatch } from 'mastodon/store';
 
+import classes from '../styles.module.scss';
+
 const messages = defineMessages({
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domainBlocks: {
@@ -112,7 +114,11 @@ export const MoreLink: React.FC = () => {
   }, [intl, dispatch, permissions]);
 
   return (
-    <Dropdown items={menu} placement='bottom-start'>
+    <Dropdown
+      className={classes.moreMenu}
+      items={menu}
+      placement='bottom-start'
+    >
       <button className='column-link column-link--transparent' type='button'>
         <Icon id='' icon={MoreHorizIcon} className='column-link__icon' />
 
