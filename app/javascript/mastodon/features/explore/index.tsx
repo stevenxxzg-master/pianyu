@@ -54,7 +54,9 @@ const messages = defineMessages({
   },
 });
 
-const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
+export const Explore: React.FC<{ multiColumn: boolean }> = ({
+  multiColumn,
+}) => {
   const { signedIn } = useIdentity();
   const intl = useIntl();
   const columnRef = useRef<ColumnRef>(null);

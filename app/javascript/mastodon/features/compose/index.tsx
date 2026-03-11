@@ -49,7 +49,9 @@ const messages = defineMessages({
 
 type ColumnMap = ImmutableMap<'id' | 'uuid' | 'params', string>;
 
-const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
+export const Compose: React.FC<{ multiColumn: boolean }> = ({
+  multiColumn,
+}) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const columns = useAppSelector(
