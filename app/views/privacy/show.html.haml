@@ -1,6 +1,27 @@
-- content_for :page_title, t('privacy_policy.title')
-
+:ruby
+  policy = PrivacyPolicy.current
+  content_for :body_classes, 'public-page-body'
+  content_for :page_title, t('privacy_policy.title')
 - content_for :header_tags do
-  = render partial: 'shared/og'
+  = render partial: 'shared/og', locals: { description: t('public_pages.privacy.heading') }
 
-= render 'shared/web_app'
+.public-page.public-page--privacy
+  .public-page__ambient
+  .public-page__frame
+    = render 'shared/public/header'
+
+    %main.public-page__main
+      %section.public-legal
+        .public-legal__header
+          %p.public-kicker= t('public_pages.privacy.eyebrow')
+          %h1.public-legal__title= t('public_pages.privacy.heading')
+          %p.public-intro= public_marketing_description
+          %p.public-legal__meta
+            = t('public_pages.shared.meta.last_updated', date: l(policy.updated_at.to_date))
+            %span •
+            = t('public_pages.shared.footer.hosted_on', domain: site_hostname)
+
+        .public-detail-card.prose
+          = public_markdown_content(policy.text)
+
+    = render 'shared/public/footer'

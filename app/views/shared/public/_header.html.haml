@@ -1,0 +1,11 @@
+%header.public-header
+  = render 'shared/public/brand'
+
+  %nav.public-header__nav{ 'aria-label' => t('public_pages.shared.nav.aria_label') }
+    = public_nav_link('public_pages.shared.nav.about', about_path)
+    = public_nav_link('public_pages.shared.nav.examples', examples_path)
+    = public_nav_link('public_pages.shared.nav.help', help_path)
+
+  .public-header__actions
+    = link_to_login t('public_pages.shared.actions.sign_in'), class: 'public-button public-button--ghost'
+    = link_to public_sign_up_label, available_sign_up_path, class: 'public-button'

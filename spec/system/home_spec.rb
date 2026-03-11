@@ -16,48 +16,15 @@ RSpec.describe 'Home page' do
   end
 
   context 'when not signed in' do
-    it 'visits the homepage and renders the web app' do
+    it 'renders the branded landing page regardless of legacy landing-page settings' do
+      Setting.landing_page = 'trends'
+
       visit root_path
 
       expect(page)
-        .to have_css('noscript', text: /Mastodon/)
-        .and have_css('body', class: 'app-body')
-    end
-
-    context 'when the landing page is set to about' do
-      before do
-        Setting.landing_page = 'about'
-      end
-
-      it 'visits the root path and is redirected to the about page', :js do
-        visit root_path
-
-        expect(page).to have_current_path('/about')
-      end
-    end
-
-    context 'when the landing page is set to trends' do
-      before do
-        Setting.landing_page = 'trends'
-      end
-
-      it 'visits the root path and is redirected to the trends page', :js do
-        visit root_path
-
-        expect(page).to have_current_path('/explore')
-      end
-    end
-
-    context 'when the landing page is set to local_feed' do
-      before do
-        Setting.landing_page = 'local_feed'
-      end
-
-      it 'visits the root path and is redirected to the local live feed page', :js do
-        visit root_path
-
-        expect(page).to have_current_path('/public/local')
-      end
+        .to have_current_path(root_path)
+        .and have_css('body', class: 'public-page-body')
+        .and have_content('turns the public front door into a calm, modern invitation')
     end
   end
 end
