@@ -8,23 +8,72 @@ import { Helmet } from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'mastodon/actions/server';
+import {
+  fetchServer,
+  fetchExtendedDescription,
+  fetchDomainBlocks,
+} from 'mastodon/actions/server';
 import { Account } from 'mastodon/components/account';
 import Column from 'mastodon/components/column';
 import { ServerHeroImage } from 'mastodon/components/server_hero_image';
 import { Skeleton } from 'mastodon/components/skeleton';
-import { LinkFooter} from 'mastodon/features/ui/components/link_footer';
+import {
+  termsOfServiceEnabled,
+} from 'mastodon/initial_state';
+import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
+import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
 
 const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
+  eyebrow: { id: 'about.eyebrow', defaultMessage: 'Public server guide' },
+  lede: {
+    id: 'about.lede',
+    defaultMessage:
+      'Moderation standards, admin contacts, and federation context for {server}.',
+  },
+  navTitle: {
+    id: 'public_page.nav_title',
+    defaultMessage: 'Public pages',
+  },
+  navDescription: {
+    id: 'public_page.nav_description',
+    defaultMessage:
+      'Cross-check the server overview, privacy commitments, and participation terms without losing your reading context.',
+  },
+  aboutDescription: {
+    id: 'public_page.about_description',
+    defaultMessage: 'Brand, moderation, and contact overview',
+  },
+  privacyDescription: {
+    id: 'public_page.privacy_description',
+    defaultMessage: 'Data collection, storage, and disclosure',
+  },
+  termsDescription: {
+    id: 'public_page.terms_description',
+    defaultMessage: 'Participation rules and service expectations',
+  },
   blocks: { id: 'about.blocks', defaultMessage: 'Moderated servers' },
-  silenced: { id: 'about.domain_blocks.silenced.title', defaultMessage: 'Limited' },
-  silencedExplanation: { id: 'about.domain_blocks.silenced.explanation', defaultMessage: 'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.' },
-  suspended: { id: 'about.domain_blocks.suspended.title', defaultMessage: 'Suspended' },
-  suspendedExplanation: { id: 'about.domain_blocks.suspended.explanation', defaultMessage: 'No data from this server will be processed, stored or exchanged, making any interaction or communication with users from this server impossible.' },
+  silenced: {
+    id: 'about.domain_blocks.silenced.title',
+    defaultMessage: 'Limited',
+  },
+  silencedExplanation: {
+    id: 'about.domain_blocks.silenced.explanation',
+    defaultMessage:
+      'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.',
+  },
+  suspended: {
+    id: 'about.domain_blocks.suspended.title',
+    defaultMessage: 'Suspended',
+  },
+  suspendedExplanation: {
+    id: 'about.domain_blocks.suspended.explanation',
+    defaultMessage:
+      'No data from this server will be processed, stored or exchanged, making any interaction or communication with users from this server impossible.',
+  },
 });
 
 const severityMessages = {
@@ -39,18 +88,15 @@ const severityMessages = {
   },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   server: state.getIn(['server', 'server']),
-  locale: state.getIn(['meta', 'locale']),
   extendedDescription: state.getIn(['server', 'extendedDescription']),
   domainBlocks: state.getIn(['server', 'domainBlocks']),
 });
 
 class About extends PureComponent {
-
   static propTypes = {
     server: ImmutablePropTypes.map,
-    locale: ImmutablePropTypes.string,
     extendedDescription: ImmutablePropTypes.map,
     domainBlocks: ImmutablePropTypes.contains({
       isLoading: PropTypes.bool,
@@ -62,7 +108,7 @@ class About extends PureComponent {
     multiColumn: PropTypes.bool,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchServer());
     dispatch(fetchExtendedDescription());
@@ -73,95 +119,206 @@ class About extends PureComponent {
     dispatch(fetchDomainBlocks());
   };
 
-  render () {
-    const { multiColumn, intl, server, extendedDescription, domainBlocks, locale } = this.props;
+  render() {
+    const { multiColumn, intl, server, extendedDescription, domainBlocks } =
+      this.props;
     const isLoading = server.get('isLoading');
+    const serverDomain = server.get('domain');
+    const contactAccountId = server.getIn(['contact', 'account', 'id']);
+    const navItems = [
+      {
+        to: '/about',
+        label: intl.formatMessage(messages.title),
+        description: intl.formatMessage(messages.aboutDescription),
+        active: true,
+      },
+      {
+        to: '/privacy-policy',
+        label: intl.formatMessage({
+          id: 'privacy_policy.title',
+          defaultMessage: 'Privacy Policy',
+        }),
+        description: intl.formatMessage(messages.privacyDescription),
+        rel: 'privacy-policy',
+      },
+      ...(termsOfServiceEnabled
+        ? [
+            {
+              to: '/terms-of-service',
+              label: intl.formatMessage({
+                id: 'terms_of_service.title',
+                defaultMessage: 'Terms of Service',
+              }),
+              description: intl.formatMessage(messages.termsDescription),
+              rel: 'terms-of-service',
+            },
+          ]
+        : []),
+    ];
 
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
-        <div className='scrollable about'>
-          <div className='about__header'>
-            <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} srcSet={server.getIn(['thumbnail', 'versions'])?.map((value, key) => `${value} ${key.replace('@', '')}`).join(', ')} className='about__header__hero' />
-            <h1>{isLoading ? <Skeleton width='10ch' /> : server.get('domain')}</h1>
-            <p><FormattedMessage id='about.powered_by' defaultMessage='Decentralized social media powered by {mastodon}' values={{ mastodon: <a href='https://joinmastodon.org' className='about__mail' target='_blank' rel='noopener'>Mastodon</a> }} /></p>
-          </div>
+        <PublicPageLayout
+          asideDescription={intl.formatMessage(messages.navDescription)}
+          asideTitle={intl.formatMessage(messages.navTitle)}
+          className='about'
+          eyebrow={intl.formatMessage(messages.eyebrow)}
+          feature={
+            <div className='about__meta about__meta--featured'>
+              <div className='about__meta__column'>
+                <h4>
+                  <FormattedMessage
+                    id='server_banner.administered_by'
+                    defaultMessage='Administered by:'
+                  />
+                </h4>
 
-          <div className='about__meta'>
-            <div className='about__meta__column'>
-              <h4><FormattedMessage id='server_banner.administered_by' defaultMessage='Administered by:' /></h4>
+                {contactAccountId ? (
+                  <Account id={contactAccountId} size={36} minimal />
+                ) : (
+                  <Skeleton width='15ch' />
+                )}
+              </div>
 
-              <Account id={server.getIn(['contact', 'account', 'id'])} size={36} minimal />
+              <hr className='about__meta__divider' />
+
+              <div className='about__meta__column'>
+                <h4>
+                  <FormattedMessage id='about.contact' defaultMessage='Contact:' />
+                </h4>
+
+                {isLoading ? (
+                  <Skeleton width='14ch' />
+                ) : (
+                  <a className='about__mail' href={`mailto:${server.getIn(['contact', 'email'])}`}>
+                    {server.getIn(['contact', 'email'])}
+                  </a>
+                )}
+              </div>
             </div>
-
-            <hr className='about__meta__divider' />
-
-            <div className='about__meta__column'>
-              <h4><FormattedMessage id='about.contact' defaultMessage='Contact:' /></h4>
-
-              {isLoading ? <Skeleton width='10ch' /> : <a className='about__mail' href={`mailto:${server.getIn(['contact', 'email'])}`}>{server.getIn(['contact', 'email'])}</a>}
-            </div>
-          </div>
-
+          }
+          footer={
+            <footer className='public-page__footer about__footer'>
+              <LinkFooter multiColumn={multiColumn} />
+              <p>
+                <FormattedMessage
+                  id='about.disclaimer'
+                  defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.'
+                />
+              </p>
+            </footer>
+          }
+          lede={
+            <FormattedMessage
+              id='about.lede'
+              defaultMessage='Moderation standards, admin contacts, and federation context for {server}.'
+              values={{ server: serverDomain || 'this server' }}
+            />
+          }
+          media={
+            <ServerHeroImage
+              blurhash={server.getIn(['thumbnail', 'blurhash'])}
+              className='about__hero-media'
+              src={server.getIn(['thumbnail', 'url'])}
+              srcSet={server
+                .getIn(['thumbnail', 'versions'])
+                ?.map((value, key) => `${value} ${key.replace('@', '')}`)
+                .join(', ')}
+            />
+          }
+          navItems={navItems}
+          title={isLoading ? <Skeleton width='10ch' /> : serverDomain}
+        >
           <Section open title={intl.formatMessage(messages.title)}>
             {extendedDescription.get('isLoading') ? (
-              <>
+              <div className='public-page__skeleton'>
                 <Skeleton width='100%' />
-                <br />
                 <Skeleton width='100%' />
-                <br />
-                <Skeleton width='100%' />
-                <br />
-                <Skeleton width='70%' />
-              </>
-            ) : (extendedDescription.get('content')?.length > 0 ? (
+                <Skeleton width='92%' />
+                <Skeleton width='68%' />
+              </div>
+            ) : extendedDescription.get('content')?.length > 0 ? (
               <div
                 className='prose'
                 dangerouslySetInnerHTML={{ __html: extendedDescription.get('content') }}
               />
             ) : (
-              <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
-            ))}
+              <p>
+                <FormattedMessage
+                  id='about.not_available'
+                  defaultMessage='This information has not been made available on this server.'
+                />
+              </p>
+            )}
           </Section>
 
           <RulesSection />
 
-          <Section title={intl.formatMessage(messages.blocks)} onOpen={this.handleDomainBlocksOpen}>
+          <Section
+            title={intl.formatMessage(messages.blocks)}
+            onOpen={this.handleDomainBlocksOpen}
+          >
             {domainBlocks.get('isLoading') ? (
-              <>
+              <div className='public-page__skeleton'>
                 <Skeleton width='100%' />
-                <br />
-                <Skeleton width='70%' />
-              </>
-            ) : (domainBlocks.get('isAvailable') ? (
+                <Skeleton width='78%' />
+              </div>
+            ) : domainBlocks.get('isAvailable') ? (
               <>
-                <p><FormattedMessage id='about.domain_blocks.preamble' defaultMessage='Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.' /></p>
+                <p>
+                  <FormattedMessage
+                    id='about.domain_blocks.preamble'
+                    defaultMessage='Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.'
+                  />
+                </p>
 
                 {domainBlocks.get('items').size > 0 && (
                   <div className='about__domain-blocks'>
-                    {domainBlocks.get('items').map(block => (
+                    {domainBlocks.get('items').map((block) => (
                       <div className='about__domain-blocks__domain' key={block.get('domain')}>
                         <div className='about__domain-blocks__domain__header'>
-                          <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
-                          <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
+                          <h6>
+                            <span title={`SHA-256: ${block.get('digest')}`}>
+                              {block.get('domain')}
+                            </span>
+                          </h6>
+                          <span
+                            className='about__domain-blocks__domain__type'
+                            title={intl.formatMessage(
+                              severityMessages[block.get('severity')].explanation,
+                            )}
+                          >
+                            {intl.formatMessage(
+                              severityMessages[block.get('severity')].title,
+                            )}
+                          </span>
                         </div>
 
-                        <p>{(block.get('comment') || '').length > 0 ? block.get('comment') : <FormattedMessage id='about.domain_blocks.no_reason_available' defaultMessage='Reason not available' />}</p>
+                        <p>
+                          {(block.get('comment') || '').length > 0 ? (
+                            block.get('comment')
+                          ) : (
+                            <FormattedMessage
+                              id='about.domain_blocks.no_reason_available'
+                              defaultMessage='Reason not available'
+                            />
+                          )}
+                        </p>
                       </div>
                     ))}
                   </div>
                 )}
               </>
             ) : (
-              <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
-            ))}
+              <p>
+                <FormattedMessage
+                  id='about.not_available'
+                  defaultMessage='This information has not been made available on this server.'
+                />
+              </p>
+            )}
           </Section>
-
-          <LinkFooter />
-
-          <div className='about__footer'>
-            <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.' /></p>
-          </div>
-        </div>
+        </PublicPageLayout>
 
         <Helmet>
           <title>{intl.formatMessage(messages.title)}</title>
@@ -170,7 +327,6 @@ class About extends PureComponent {
       </Column>
     );
   }
-
 }
 
 export default connect(mapStateToProps)(injectIntl(About));
