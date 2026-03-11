@@ -105,13 +105,9 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
               defaultMessage='Language'
             />
           </label>
-          <Select onChange={handleLocaleChange} id='language-select'>
+          <Select onChange={handleLocaleChange} id='language-select' value={selectedLocale}>
             {localeOptions.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                selected={option.value === selectedLocale}
-              >
+              <option key={option.value} value={option.value}>
                 {option.text}
               </option>
             ))}
@@ -122,40 +118,36 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
   );
 };
 
-const selectRules = (state: RootState) => {
-  const rules = state.server.getIn([
-    'server',
-    'rules',
-  ]) as ImmutableList<Rule> | null;
-  if (!rules) {
-    return [];
-  }
-  return rules.toJS() as Rule[];
-};
+const selectRules = (state: RootState) =>
+  (state.server.getIn(['server', 'rules']) as ImmutableList<Rule> | null) ?? null;
 
 const rulesSelector = createSelector(
   [selectRules, (_state, locale: string) => locale],
   (rules, locale): Rule[] => {
-    return rules.map((rule) => {
-      const translations = rule.translations;
+    if (!rules) {
+      return [];
+    }
 
-      // Handle cached responses from earlier versions
+    return (rules.toJS() as Rule[]).map((rule) => {
+      const translations = rule.translations;
+      const localizedRule = { ...rule };
+
       if (!translations) {
-        return rule;
+        return localizedRule;
       }
 
       const partialLocale = locale.split('-')[0];
       if (partialLocale && translations[partialLocale]) {
-        rule.text = translations[partialLocale].text;
-        rule.hint = translations[partialLocale].hint;
+        localizedRule.text = translations[partialLocale].text;
+        localizedRule.hint = translations[partialLocale].hint;
       }
 
       if (translations[locale]) {
-        rule.text = translations[locale].text;
-        rule.hint = translations[locale].hint;
+        localizedRule.text = translations[locale].text;
+        localizedRule.hint = translations[locale].hint;
       }
 
-      return rule;
+      return localizedRule;
     });
   },
 );
@@ -169,25 +161,31 @@ const localeOptionsSelector = createSelector(
         text: intl.formatMessage(messages.defaultLocale),
       },
     };
-    // Use the default locale as a target to translate language names.
+
     const intlLocale =
-      // Intl.DisplayNames can be undefined in old browsers
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      Intl.DisplayNames &&
-      (new Intl.DisplayNames(intl.locale, {
-        type: 'language',
-      }) as Intl.DisplayNames | undefined);
-    for (const { translations } of rules) {
+      typeof Intl.DisplayNames === 'function'
+        ? new Intl.DisplayNames(intl.locale, { type: 'language' })
+        : null;
+
+    if (!rules) {
+      return Object.values(langs);
+    }
+
+    for (const rule of rules.toArray()) {
+      const translations = rule.translations ?? {};
+
       for (const locale in translations) {
         if (langs[locale]) {
-          continue; // Skip if already added
+          continue;
         }
+
         langs[locale] = {
           value: locale,
           text: intlLocale?.of(locale) ?? locale,
         };
       }
     }
+
     return Object.values(langs);
   },
 );

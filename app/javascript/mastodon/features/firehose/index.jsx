@@ -4,16 +4,28 @@ import { useRef, useCallback, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { useIdentity } from '@/mastodon/identity_context';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import { addColumn } from 'mastodon/actions/columns';
 import { changeSetting } from 'mastodon/actions/settings';
-import { connectPublicStream, connectCommunityStream } from 'mastodon/actions/streaming';
-import { expandPublicTimeline, expandCommunityTimeline } from 'mastodon/actions/timelines';
+import {
+  connectPublicStream,
+  connectCommunityStream,
+} from 'mastodon/actions/streaming';
+import {
+  expandPublicTimeline,
+  expandCommunityTimeline,
+} from 'mastodon/actions/timelines';
 import { DismissableBanner } from 'mastodon/components/dismissable_banner';
-import { localLiveFeedAccess, remoteLiveFeedAccess, domain } from 'mastodon/initial_state';
+import { IconLogo } from 'mastodon/components/logo';
+import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
+import {
+  localLiveFeedAccess,
+  remoteLiveFeedAccess,
+  domain,
+} from 'mastodon/initial_state';
 import { canViewFeed } from 'mastodon/permissions';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
@@ -31,6 +43,22 @@ const messages = defineMessages({
   title_singular: {
     id: 'column.firehose_singular',
     defaultMessage: 'Live feed',
+  },
+  previewTitleCommunity: {
+    id: 'firehose.preview.community.title',
+    defaultMessage: 'See how this community sounds when people are speaking in public.',
+  },
+  previewDescriptionCommunity: {
+    id: 'firehose.preview.community.description',
+    defaultMessage: 'The local pulse helps first-time visitors gauge tone, cadence, and moderation before joining the room.',
+  },
+  previewTitleRemote: {
+    id: 'firehose.preview.remote.title',
+    defaultMessage: 'Watch the wider public flow without losing the calmer framing.',
+  },
+  previewDescriptionRemote: {
+    id: 'firehose.preview.remote.description',
+    defaultMessage: 'The live feed remains public, but the entry now explains what you\'re seeing and how it relates back to the community.',
   },
 });
 
@@ -130,7 +158,7 @@ const Firehose = ({ feedType, multiColumn }) => {
     return () => disconnect?.();
   }, [dispatch, signedIn, feedType, onlyMedia]);
 
-  const prependBanner = feedType === 'community' ? (
+  const signedInBanner = feedType === 'community' ? (
     <DismissableBanner id='community_timeline'>
       <FormattedMessage
         id='dismissable_banner.community_timeline'
@@ -147,6 +175,42 @@ const Firehose = ({ feedType, multiColumn }) => {
       />
     </DismissableBanner>
   );
+
+  const publicPreview = (
+    <div className='public-preview-card public-preview-card--timeline'>
+      <div className='public-preview-card__eyebrow'>
+        <FormattedMessage
+          id='firehose.preview.eyebrow'
+          defaultMessage='Public timeline preview'
+        />
+      </div>
+      <h2>
+        {intl.formatMessage(
+          feedType === 'community'
+            ? messages.previewTitleCommunity
+            : messages.previewTitleRemote,
+        )}
+      </h2>
+      <p>
+        {intl.formatMessage(
+          feedType === 'community'
+            ? messages.previewDescriptionCommunity
+            : messages.previewDescriptionRemote,
+        )}
+      </p>
+      <div className='public-preview-card__actions'>
+        <PublicAuthButtons />
+        <Link className='button button-secondary' to='/about'>
+          <FormattedMessage
+            id='firehose.preview.about'
+            defaultMessage='About this server'
+          />
+        </Link>
+      </div>
+    </div>
+  );
+
+  const prependBanner = signedIn ? signedInBanner : publicPreview;
 
   const emptyMessage = feedType === 'community' ? (
     <FormattedMessage
@@ -183,7 +247,7 @@ const Firehose = ({ feedType, multiColumn }) => {
     <Column bindToDocument={!multiColumn} ref={columnRef} label={intl.formatMessage(messages.title)}>
       <ColumnHeader
         icon='globe'
-        iconComponent={PublicIcon}
+        iconComponent={signedIn ? PublicIcon : IconLogo}
         active={hasUnread}
         title={intl.formatMessage(title)}
         onPin={handlePin}
