@@ -49,6 +49,9 @@ export const config: UserConfigFnPromise = async ({ mode, command }) => {
         '@/': `${jsRoot}/`,
       },
     },
+    optimizeDeps: {
+      include: ['lodash/debounce.js', 'lodash/throttle.js'],
+    },
     css: {
       modules: {
         generateScopedName(name, filename) {
