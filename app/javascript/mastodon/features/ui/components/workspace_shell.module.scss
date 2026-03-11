@@ -1,0 +1,727 @@
+@mixin workspace-card(
+  $radius: calc(var(--workspace-radius) - 6px),
+  $background: var(--workspace-surface)
+) {
+  background: $background;
+  border: 1px solid var(--workspace-border);
+  border-radius: $radius;
+  box-shadow: var(--workspace-shadow-soft);
+}
+
+.column,
+.composeRail,
+.navigationPanel,
+.composeDrawer {
+  --workspace-gutter: clamp(16px, 2vw, 24px);
+  --workspace-radius: clamp(22px, 2.5vw, 30px);
+  --workspace-border: color-mix(
+    in oklab,
+    var(--color-border-primary),
+    var(--color-bg-brand-base) 18%
+  );
+  --workspace-border-strong: color-mix(
+    in oklab,
+    var(--workspace-border),
+    var(--color-text-primary) 12%
+  );
+  --workspace-surface: linear-gradient(
+    180deg,
+    color-mix(
+        in oklab,
+        var(--color-bg-primary),
+        var(--color-bg-brand-softer) 44%
+      )
+      0%,
+    color-mix(in oklab, var(--color-bg-primary), var(--color-bg-secondary) 72%)
+      100%
+  );
+  --workspace-surface-strong: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-bg-primary), var(--color-bg-brand-soft) 18%)
+      0%,
+    var(--color-bg-primary) 100%
+  );
+  --workspace-surface-muted: color-mix(
+    in oklab,
+    var(--color-bg-secondary),
+    var(--color-bg-primary) 68%
+  );
+  --workspace-shadow: 0 28px 72px -44px var(--color-shadow-primary);
+  --workspace-shadow-soft: 0 18px 42px -34px var(--color-shadow-primary);
+  --workspace-outline: color-mix(
+    in oklab,
+    var(--color-bg-brand-base),
+    var(--color-bg-primary) 76%
+  );
+}
+
+.column {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 240px;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at top left,
+        color-mix(in oklab, var(--color-bg-brand-soft), transparent 12%) 0,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at top right,
+        color-mix(
+            in oklab,
+            var(--color-bg-secondary),
+            var(--color-bg-primary) 50%
+          )
+          0,
+        transparent 58%
+      );
+    opacity: 0.95;
+  }
+
+  :global(.column-header__wrapper) {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    padding: var(--workspace-gutter) var(--workspace-gutter) 14px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-bg-ambient), transparent 2%) 0%,
+      color-mix(in oklab, var(--color-bg-ambient), transparent 14%) 72%,
+      transparent 100%
+    );
+    backdrop-filter: blur(18px);
+  }
+
+  :global(.column-header) {
+    @include workspace-card(
+      var(--workspace-radius),
+      var(--workspace-surface-strong)
+    );
+
+    min-height: auto;
+    align-items: center;
+    padding: 18px 20px;
+  }
+
+  :global(.column-header__title) {
+    gap: 12px;
+    color: var(--color-text-primary);
+    font-size: 1.06rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  :global(.column-header__icon) {
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-brand);
+  }
+
+  :global(.column-header__buttons) {
+    gap: 8px;
+  }
+
+  :global(.column-header__button),
+  :global(.column-header__back-button) {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--workspace-border);
+    background: color-mix(
+      in oklab,
+      var(--color-bg-primary),
+      var(--color-bg-brand-softer) 46%
+    );
+    color: var(--color-text-secondary);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  :global(.column-header__back-button.compact) {
+    width: auto;
+    padding-inline: 12px;
+    gap: 8px;
+  }
+
+  :global(.column-header__button:hover),
+  :global(.column-header__button:focus-visible),
+  :global(.column-header__back-button:hover),
+  :global(.column-header__back-button:focus-visible) {
+    transform: translateY(-1px);
+    border-color: var(--workspace-border-strong);
+    background: var(--color-bg-primary);
+    color: var(--color-text-brand);
+    box-shadow: 0 14px 26px -24px var(--color-shadow-primary);
+  }
+
+  :global(.column-header__collapsible) {
+    padding-top: 12px;
+  }
+
+  :global(.column-header__collapsible__extra),
+  :global(.column-header__advanced-buttons) {
+    @include workspace-card(calc(var(--workspace-radius) - 6px));
+  }
+
+  :global(.column-header__collapsible__extra) {
+    padding: 16px 18px;
+  }
+
+  :global(.column-header__advanced-buttons) {
+    padding: 12px 14px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  :global(.column-header__setting-btn) {
+    border-radius: 999px;
+    border: 1px solid var(--workspace-border);
+    background: var(--color-bg-primary);
+    color: var(--color-text-secondary);
+    min-height: 38px;
+    padding-inline: 14px;
+  }
+
+  :global(.scrollable) {
+    padding: 0 var(--workspace-gutter) calc(var(--workspace-gutter) * 1.2);
+    background: transparent;
+  }
+
+  :global(.empty-column-indicator) {
+    @include workspace-card(var(--workspace-radius));
+
+    margin-top: 8px;
+    padding: 32px 24px;
+    color: var(--color-text-secondary);
+    text-align: left;
+  }
+
+  :global(.load-more) {
+    margin-top: 16px;
+    border-radius: 999px;
+    border: 1px solid var(--workspace-border);
+    background: var(--color-bg-primary);
+    box-shadow: var(--workspace-shadow-soft);
+  }
+}
+
+.feedList,
+.threadFeed {
+  display: grid;
+  gap: 16px;
+}
+
+.feedList :global(article),
+.threadFeed :global(article) {
+  margin: 0;
+}
+
+.feedList :global(.status__wrapper),
+.threadFeed :global(.status__wrapper),
+.threadFeed :global(.detailed-status__wrapper) {
+  @include workspace-card;
+
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.feedList :global(.status__wrapper:hover),
+.threadFeed :global(.status__wrapper:hover),
+.threadFeed :global(.detailed-status__wrapper:hover) {
+  transform: translateY(-1px);
+  border-color: var(--workspace-border-strong);
+  box-shadow: 0 22px 48px -36px var(--color-shadow-primary);
+}
+
+.feedList :global(.status__wrapper[data-featured='true']) {
+  background: var(--workspace-surface-strong);
+}
+
+.feedList :global(.status),
+.threadFeed :global(.status),
+.threadFeed :global(.detailed-status) {
+  border: 0;
+  background: transparent;
+  padding: 22px 24px 18px;
+}
+
+.feedList :global(.status__line),
+.threadFeed :global(.status__line) {
+  left: 20px;
+  opacity: 0.32;
+}
+
+.feedList :global(.status__display-name),
+.threadFeed :global(.status__display-name),
+.threadFeed :global(.detailed-status__display-name) {
+  margin-bottom: 14px;
+}
+
+.feedList :global(.status__content__text),
+.threadFeed :global(.status__content__text),
+.threadFeed :global(.reply-indicator__content) {
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.feedList :global(.status__meta),
+.feedList :global(.status__relative-time),
+.threadFeed :global(.detailed-status__meta),
+.threadFeed :global(.detailed-status__meta__line),
+.threadFeed :global(.detailed-status__datetime) {
+  color: var(--color-text-secondary);
+}
+
+.feedList :global(.status__action-bar),
+.threadFeed :global(.status__action-bar),
+.threadFeed :global(.detailed-status__action-bar) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--workspace-border);
+}
+
+.feedList :global(.status__action-bar__button-wrapper),
+.feedList :global(.status__action-bar .dropdown),
+.threadFeed :global(.status__action-bar__button-wrapper),
+.threadFeed :global(.status__action-bar .dropdown),
+.threadFeed :global(.detailed-status__button),
+.threadFeed :global(.detailed-status__action-bar-dropdown) {
+  flex: 1 1 0;
+  min-width: 82px;
+}
+
+.feedList :global(.status__action-bar__button),
+.feedList :global(.status__action-bar .dropdown__open),
+.threadFeed :global(.status__action-bar__button),
+.threadFeed :global(.status__action-bar .dropdown__open),
+.threadFeed :global(.detailed-status__button .icon-button),
+.threadFeed :global(.detailed-status__action-bar-dropdown .dropdown__open) {
+  width: 100%;
+  min-height: 42px;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--workspace-surface-muted);
+  color: var(--color-text-secondary);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.feedList :global(.status__action-bar__button:hover),
+.feedList :global(.status__action-bar__button:focus-visible),
+.feedList :global(.status__action-bar .dropdown__open:hover),
+.feedList :global(.status__action-bar .dropdown__open:focus-visible),
+.threadFeed :global(.status__action-bar__button:hover),
+.threadFeed :global(.status__action-bar__button:focus-visible),
+.threadFeed :global(.status__action-bar .dropdown__open:hover),
+.threadFeed :global(.status__action-bar .dropdown__open:focus-visible),
+.threadFeed :global(.detailed-status__button .icon-button:hover),
+.threadFeed :global(.detailed-status__button .icon-button:focus-visible),
+.threadFeed
+  :global(.detailed-status__action-bar-dropdown .dropdown__open:hover),
+.threadFeed
+  :global(.detailed-status__action-bar-dropdown .dropdown__open:focus-visible) {
+  transform: translateY(-1px);
+  border-color: var(--workspace-border);
+  background: var(--color-bg-primary);
+  color: var(--color-text-brand);
+}
+
+.notificationsColumn :global(.notification__filter-bar) {
+  @include workspace-card(999px);
+
+  margin: 0 var(--workspace-gutter) 16px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.notificationsColumn :global(.notification__filter-bar button) {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  min-height: 40px;
+  padding: 10px 14px;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.notificationsColumn :global(.notification__filter-bar button.active) {
+  background: var(--color-bg-primary);
+  color: var(--color-text-brand);
+  box-shadow: inset 0 0 0 1px var(--workspace-border);
+}
+
+.notificationsColumn :global(.notification-group) {
+  @include workspace-card;
+
+  padding: 20px 20px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+}
+
+.notificationsColumn :global(.notification-group__icon) {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: color-mix(
+    in oklab,
+    var(--color-bg-brand-softer),
+    var(--color-bg-primary) 55%
+  );
+  color: var(--color-text-brand);
+}
+
+.notificationsColumn :global(.notification-group__main__status),
+.notificationsColumn :global(.notification-group__main__additional-content),
+.notificationsColumn :global(.notification-group__embedded-status) {
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid var(--workspace-border);
+  background: var(--workspace-surface-muted);
+}
+
+.notificationsColumn :global(.notification-group__embedded-status) {
+  padding: 14px 16px;
+}
+
+.notificationsColumn :global(.filtered-notifications-banner),
+.notificationsColumn :global(.notifications-permission-banner) {
+  @include workspace-card(calc(var(--workspace-radius) - 8px));
+
+  margin: 0 var(--workspace-gutter) 16px;
+}
+
+.composeColumn :global(.compose-form),
+.composeRail :global(.compose-form),
+.composeDrawer :global(.compose-form) {
+  @include workspace-card(
+    var(--workspace-radius),
+    var(--workspace-surface-strong)
+  );
+
+  overflow: hidden;
+}
+
+.composeColumn :global(.compose-form__highlightable),
+.composeRail :global(.compose-form__highlightable),
+.composeDrawer :global(.compose-form__highlightable) {
+  padding: 20px 22px 18px;
+}
+
+.composeColumn :global(.reply-indicator),
+.composeRail :global(.reply-indicator),
+.composeDrawer :global(.reply-indicator) {
+  margin: 16px 18px 0;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--workspace-border);
+  background: var(--workspace-surface);
+}
+
+.composeColumn :global(.compose-form__dropdowns),
+.composeRail :global(.compose-form__dropdowns),
+.composeDrawer :global(.compose-form__dropdowns) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.composeColumn :global(.compose-form__input .autosuggest-textarea__textarea),
+.composeRail :global(.compose-form__input .autosuggest-textarea__textarea),
+.composeDrawer :global(.compose-form__input .autosuggest-textarea__textarea) {
+  min-height: 180px;
+  color: var(--color-text-primary);
+  font-size: 1.04rem;
+  line-height: 1.72;
+}
+
+.composeColumn :global(.compose-form__footer),
+.composeRail :global(.compose-form__footer),
+.composeDrawer :global(.compose-form__footer) {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--workspace-border);
+}
+
+.composeColumn :global(.compose-form__actions),
+.composeRail :global(.compose-form__actions),
+.composeDrawer :global(.compose-form__actions) {
+  gap: 16px;
+  align-items: center;
+}
+
+.composeColumn :global(.compose-form__buttons),
+.composeRail :global(.compose-form__buttons),
+.composeDrawer :global(.compose-form__buttons) {
+  gap: 10px;
+}
+
+.composeColumn :global(.compose-form__buttons > *),
+.composeRail :global(.compose-form__buttons > *),
+.composeDrawer :global(.compose-form__buttons > *) {
+  border-radius: 16px;
+}
+
+.composeColumn :global(.compose-form__submit .button),
+.composeRail :global(.compose-form__submit .button),
+.composeDrawer :global(.compose-form__submit .button) {
+  min-width: 148px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
+}
+
+.composeScroll {
+  padding: 0 var(--workspace-gutter) calc(var(--workspace-gutter) * 1.2);
+}
+
+.composeSurface {
+  padding-top: 8px;
+}
+
+.composeRail,
+.navigationPanel {
+  position: relative;
+  padding: 18px 16px 22px;
+  border-radius: calc(var(--workspace-radius) + 4px);
+  background: linear-gradient(
+    180deg,
+    color-mix(
+        in oklab,
+        var(--color-bg-primary),
+        var(--color-bg-brand-softer) 46%
+      )
+      0%,
+    color-mix(in oklab, var(--color-bg-primary), var(--color-bg-secondary) 82%)
+      100%
+  );
+  border: 1px solid var(--workspace-border);
+  box-shadow: var(--workspace-shadow);
+}
+
+.composeRail :global(.search),
+.navigationPanel :global(.search) {
+  margin-bottom: 16px;
+}
+
+.composeRail :global(.search__input),
+.navigationPanel :global(.search__input) {
+  border-radius: 18px;
+  border: 1px solid var(--workspace-border);
+  background: var(--workspace-surface-muted);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+.composeRail :global(.account__wrapper),
+.navigationPanel :global(.navigation-bar) {
+  @include workspace-card(calc(var(--workspace-radius) - 4px));
+
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.composeRail :global(.compose-form),
+.navigationPanel :global(.navigation-panel__menu),
+.navigationPanel :global(.column-link--logo) {
+  position: relative;
+}
+
+.navigationPanel :global(.column-link--logo) {
+  @include workspace-card(
+    calc(var(--workspace-radius) - 4px),
+    var(--workspace-surface-strong)
+  );
+
+  justify-content: flex-start;
+  margin-bottom: 18px;
+  padding: 18px 20px;
+}
+
+.navigationPanel :global(.navigation-panel__menu) {
+  display: grid;
+  gap: 8px;
+}
+
+.navigationPanel :global(hr) {
+  margin: 10px 0 12px;
+  border-color: var(--workspace-border);
+}
+
+.navigationPanel :global(.column-link) {
+  border-radius: 18px;
+  border: 1px solid transparent;
+  padding: 13px 16px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
+}
+
+.navigationPanel :global(.column-link:hover),
+.navigationPanel :global(.column-link:focus-visible),
+.navigationPanel :global(.column-link.active) {
+  transform: translateX(2px);
+  border-color: var(--workspace-border);
+  background: var(--workspace-surface);
+  box-shadow: var(--workspace-shadow-soft);
+  color: var(--color-text-brand);
+}
+
+.composeDrawer {
+  padding: 18px;
+}
+
+.composeDrawer :global(.drawer__header) {
+  @include workspace-card(999px);
+
+  margin-bottom: 16px;
+  padding: 10px;
+}
+
+.composeDrawer :global(.drawer__tab) {
+  border-radius: 999px;
+}
+
+.composeDrawer :global(.drawer__inner) {
+  gap: 18px;
+}
+
+.composeDrawer :global(.drawer__inner__mastodon) {
+  @include workspace-card(var(--workspace-radius));
+
+  min-height: 220px;
+}
+
+.profileColumn :global(.account-timeline__header) {
+  @include workspace-card(
+    var(--workspace-radius),
+    var(--workspace-surface-strong)
+  );
+
+  margin: 8px var(--workspace-gutter) 18px;
+  overflow: hidden;
+}
+
+.profileColumn :global(.account__header__image) {
+  min-height: 196px;
+  background: linear-gradient(
+    135deg,
+    color-mix(
+      in oklab,
+      var(--color-bg-brand-soft),
+      var(--color-bg-primary) 34%
+    ),
+    color-mix(in oklab, var(--color-bg-secondary), var(--color-bg-primary) 24%)
+  );
+}
+
+.profileColumn :global(.account__header__bar) {
+  padding-bottom: 24px;
+}
+
+.profileColumn :global(.account__header__extra),
+.profileColumn :global(.account__header__content),
+.profileColumn :global(.account__header__tabs) {
+  border-color: var(--workspace-border);
+}
+
+.profileColumn :global(.account__header__content) {
+  border-radius: 22px;
+  background: var(--workspace-surface-muted);
+}
+
+.profileColumn :global(.account__header__tabs) {
+  padding: 8px;
+  border-radius: 999px;
+  background: var(--workspace-surface);
+}
+
+.profileColumn :global(.account__header__tabs a) {
+  border-radius: 999px;
+  padding: 10px 14px;
+}
+
+.profileColumn :global(.account__header__tabs a.active) {
+  background: var(--color-bg-primary);
+  box-shadow: inset 0 0 0 1px var(--workspace-border);
+}
+
+@media (width < 1180px) {
+  .composeRail,
+  .navigationPanel {
+    padding-inline: 14px;
+  }
+}
+
+@media (width < 767px) {
+  .column,
+  .composeDrawer {
+    --workspace-gutter: 12px;
+    --workspace-radius: 22px;
+  }
+
+  .column :global(.column-header__wrapper) {
+    padding-inline: 12px;
+  }
+
+  .column :global(.column-header) {
+    padding: 16px 16px 14px;
+  }
+
+  .feedList :global(.status),
+  .threadFeed :global(.status),
+  .threadFeed :global(.detailed-status) {
+    padding: 18px 18px 16px;
+  }
+
+  .notificationsColumn :global(.notification__filter-bar) {
+    margin-inline: 12px;
+  }
+
+  .notificationsColumn :global(.notification-group) {
+    padding: 16px 16px 14px;
+    grid-template-columns: 1fr;
+  }
+
+  .composeColumn :global(.compose-form__highlightable),
+  .composeRail :global(.compose-form__highlightable),
+  .composeDrawer :global(.compose-form__highlightable) {
+    padding: 18px 18px 16px;
+  }
+
+  .profileColumn :global(.account-timeline__header) {
+    margin-inline: 12px;
+  }
+}

@@ -51,6 +51,7 @@ import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
 import { AnnualReportNavItem } from '../annual_report/nav_item';
 import { areCollectionsEnabled } from '../collections/utils';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import { DisabledAccountBanner } from './components/disabled_account_banner';
 import { FollowedTagsPanel } from './components/followed_tags_panel';
@@ -230,7 +231,12 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
   }
 
   return (
-    <div className='navigation-panel'>
+    <div
+      className={classNames(
+        'navigation-panel',
+        workspaceStyles.navigationPanel,
+      )}
+    >
       <div className='navigation-panel__logo'>
         <Link
           to='/'
