@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
+
+require 'bundler/setup'
+require 'fileutils'
+require 'json'
+
+ROOT = File.expand_path('..', __dir__)
+output_dir = ENV.fetch('RELEASE_PERFORMANCE_BASELINE_OUTPUT_DIR', File.join(ROOT, 'tmp/release_performance_baseline'))
+FileUtils.mkdir_p(output_dir)
+
+strict = ENV['RELEASE_PERFORMANCE_BASELINE_STRICT'] == '1'
+
+command = [
+  'bundle', 'exec', 'rspec',
+  'spec/performance/release_performance_baseline_spec.rb',
+  '--tag', 'js',
+  '--tag', 'streaming',
+]
+
+success = system({ 'RELEASE_PERFORMANCE_BASELINE_OUTPUT_DIR' => output_dir }, *command)
+status = $?
+exit(status&.exitstatus || 1) unless success && status&.success?
+
+results_path = File.join(output_dir, 'results.json')
+unless File.exist?(results_path)
+  warn "Missing results artifact: #{results_path}"
+  exit 1
+end
+
+overall_status = JSON.parse(File.read(results_path)).fetch('overall_status')
+
+if strict && overall_status != 'pass'
+  warn "Release performance baseline completed with #{overall_status.upcase} status"
+  exit 2
+end
+
+puts "Release performance baseline completed with #{overall_status.upcase} status"
