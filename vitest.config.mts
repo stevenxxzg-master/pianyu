@@ -1,5 +1,3 @@
-import { resolve } from 'node:path';
-
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import {
@@ -17,17 +15,21 @@ const storybookTests: TestProjectInlineConfiguration = {
     storybookTest({
       configDir: '.storybook',
       storybookScript: 'yarn run storybook',
+      tags: {
+        include: ['regression'],
+      },
     }),
   ],
   test: {
     name: 'storybook',
+    fileParallelism: false,
     browser: {
       enabled: true,
       headless: true,
       provider: playwright(),
       instances: [{ browser: 'chromium' }],
     },
-    setupFiles: [resolve(__dirname, '.storybook/vitest.setup.ts')],
+    setupFiles: ['./testing/storybook-vitest.setup.ts'],
   },
 };
 

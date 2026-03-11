@@ -30,7 +30,7 @@ const meta = {
       },
     },
   },
-  tags: ['test'],
+  tags: ['test', 'regression'],
 } satisfies Meta<typeof Button>;
 
 export default meta;
