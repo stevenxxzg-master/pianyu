@@ -109,10 +109,13 @@ export const ColumnsArea = forwardRef<
         </div>
 
         <div className='columns-area__panels__main'>
-          <div className='tabs-bar__wrapper'>
-            <TabsBarPortal />
+          <div className='columns-area__panels__main-shell'>
+            <div className='tabs-bar__wrapper'>
+              <TabsBarPortal />
+            </div>
+
+            <div className='columns-area columns-area--mobile'>{children}</div>
           </div>
-          <div className='columns-area columns-area--mobile'>{children}</div>
         </div>
 
         <CollapsibleNavigationPanel />

@@ -39,8 +39,10 @@ import { getNavigationSkipLinkId } from 'mastodon/features/ui/components/skip_li
 import { useBreakpoint } from 'mastodon/features/ui/hooks/useBreakpoint';
 import { useIdentity } from 'mastodon/identity_context';
 import {
+  domain,
   localLiveFeedAccess,
   remoteLiveFeedAccess,
+  title as siteTitle,
   trendsEnabled,
   me,
 } from 'mastodon/initial_state';
@@ -203,6 +205,15 @@ const isFirehoseActive = (
   return !!match || pathname.startsWith('/public');
 };
 
+const NavigationSection: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
+  <div className={classNames('navigation-panel__section', className)}>
+    {children}
+  </div>
+);
+
 const MENU_WIDTH = 284;
 
 export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
@@ -229,37 +240,66 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
     );
   }
 
+  const brandTitle = siteTitle ?? domain;
+  const brandCaption =
+    siteTitle && domain && siteTitle !== domain ? domain : undefined;
+
   return (
-    <div className='navigation-panel'>
-      <div className='navigation-panel__logo'>
-        <Link
-          to='/'
-          className='column-link column-link--logo'
-          id={getNavigationSkipLinkId()}
-        >
-          <WordmarkLogo />
-        </Link>
+    <div
+      className={classNames('navigation-panel', {
+        'navigation-panel--multi-column': multiColumn,
+      })}
+    >
+      <div className='navigation-panel__header'>
+        <div className='navigation-panel__logo'>
+          <Link
+            to='/'
+            className='column-link column-link--logo'
+            id={getNavigationSkipLinkId()}
+          >
+            <span className='navigation-panel__logo-mark'>
+              <WordmarkLogo />
+            </span>
+            {brandTitle && (
+              <span className='navigation-panel__logo-copy'>
+                <span className='navigation-panel__logo-kicker'>
+                  {brandTitle}
+                </span>
+                {brandCaption && (
+                  <span className='navigation-panel__logo-caption'>
+                    {brandCaption}
+                  </span>
+                )}
+              </span>
+            )}
+          </Link>
+        </div>
+
+        {showSearch && <Search singleColumn />}
+
+        {!multiColumn && (
+          <div className='navigation-panel__profile'>
+            <ProfileCard />
+          </div>
+        )}
+
+        {banner && <div className='navigation-panel__banner'>{banner}</div>}
       </div>
 
-      {showSearch && <Search singleColumn />}
-
-      {!multiColumn && <ProfileCard />}
-
-      {banner && <div className='navigation-panel__banner'>{banner}</div>}
-
       <div className='navigation-panel__menu'>
-        {signedIn && (
-          <>
-            {!multiColumn && (
-              <ColumnLink
-                to='/publish'
-                icon='plus'
-                iconComponent={AddIcon}
-                activeIconComponent={AddIcon}
-                text={intl.formatMessage(messages.compose)}
-                className='button navigation-panel__compose-button'
-              />
-            )}
+        <NavigationSection className='navigation-panel__section--primary'>
+          {signedIn && !multiColumn && (
+            <ColumnLink
+              to='/publish'
+              icon='plus'
+              iconComponent={AddIcon}
+              activeIconComponent={AddIcon}
+              text={intl.formatMessage(messages.compose)}
+              className='column-link button navigation-panel__compose-button'
+            />
+          )}
+
+          {signedIn && (
             <ColumnLink
               transparent
               to='/home'
@@ -268,52 +308,51 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               activeIconComponent={HomeActiveIcon}
               text={intl.formatMessage(messages.home)}
             />
-          </>
-        )}
+          )}
 
-        {trendsEnabled && (
-          <ColumnLink
-            transparent
-            to='/explore'
-            icon='explore'
-            iconComponent={TrendingUpIcon}
-            text={intl.formatMessage(messages.explore)}
-          />
-        )}
+          {trendsEnabled && (
+            <ColumnLink
+              transparent
+              to='/explore'
+              icon='explore'
+              iconComponent={TrendingUpIcon}
+              text={intl.formatMessage(messages.explore)}
+            />
+          )}
 
-        {(canViewFeed(signedIn, permissions, localLiveFeedAccess) ||
-          canViewFeed(signedIn, permissions, remoteLiveFeedAccess)) && (
-          <ColumnLink
-            transparent
-            to={
-              canViewFeed(signedIn, permissions, localLiveFeedAccess)
-                ? '/public/local'
-                : '/public/remote'
-            }
-            icon='globe'
-            iconComponent={PublicIcon}
-            isActive={isFirehoseActive}
-            text={intl.formatMessage(
-              canViewFeed(signedIn, permissions, localLiveFeedAccess) &&
-                canViewFeed(signedIn, permissions, remoteLiveFeedAccess)
-                ? messages.firehose
-                : messages.firehose_singular,
-            )}
-          />
-        )}
+          {(canViewFeed(signedIn, permissions, localLiveFeedAccess) ||
+            canViewFeed(signedIn, permissions, remoteLiveFeedAccess)) && (
+            <ColumnLink
+              transparent
+              to={
+                canViewFeed(signedIn, permissions, localLiveFeedAccess)
+                  ? '/public/local'
+                  : '/public/remote'
+              }
+              icon='globe'
+              iconComponent={PublicIcon}
+              isActive={isFirehoseActive}
+              text={intl.formatMessage(
+                canViewFeed(signedIn, permissions, localLiveFeedAccess) &&
+                  canViewFeed(signedIn, permissions, remoteLiveFeedAccess)
+                  ? messages.firehose
+                  : messages.firehose_singular,
+              )}
+            />
+          )}
+
+          {signedIn && (
+            <>
+              <NotificationsLink />
+              <FollowRequestsLink />
+              <AnnualReportNavItem />
+            </>
+          )}
+        </NavigationSection>
 
         {signedIn && (
-          <>
-            <NotificationsLink />
-
-            <FollowRequestsLink />
-
-            <AnnualReportNavItem />
-
-            <hr />
-
+          <NavigationSection className='navigation-panel__section--secondary'>
             <ListPanel />
-
             <FollowedTagsPanel />
 
             <ColumnLink
@@ -349,43 +388,46 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               iconComponent={AlternateEmailIcon}
               text={intl.formatMessage(messages.direct)}
             />
+          </NavigationSection>
+        )}
 
-            <hr />
+        <NavigationSection className='navigation-panel__section--meta'>
+          {signedIn && (
+            <>
+              <ColumnLink
+                transparent
+                href='/settings/preferences'
+                icon='cog'
+                iconComponent={SettingsIcon}
+                text={intl.formatMessage(messages.preferences)}
+              />
+              <MoreLink />
+            </>
+          )}
 
+          <div className='navigation-panel__legal'>
             <ColumnLink
               transparent
-              href='/settings/preferences'
-              icon='cog'
-              iconComponent={SettingsIcon}
-              text={intl.formatMessage(messages.preferences)}
+              to='/about'
+              icon='ellipsis-h'
+              iconComponent={InfoIcon}
+              text={intl.formatMessage(messages.about)}
             />
-
-            <MoreLink />
-          </>
-        )}
-
-        <div className='navigation-panel__legal'>
-          <ColumnLink
-            transparent
-            to='/about'
-            icon='ellipsis-h'
-            iconComponent={InfoIcon}
-            text={intl.formatMessage(messages.about)}
-          />
-        </div>
-
-        {!signedIn && (
-          <div className='navigation-panel__sign-in-banner'>
-            <hr />
-
-            {disabledAccountId ? <DisabledAccountBanner /> : <SignInBanner />}
           </div>
-        )}
+
+          {!signedIn && (
+            <div className='navigation-panel__sign-in-banner'>
+              {disabledAccountId ? <DisabledAccountBanner /> : <SignInBanner />}
+            </div>
+          )}
+        </NavigationSection>
       </div>
 
       <div className='flex-spacer' />
 
-      <Trends />
+      <div className='navigation-panel__trends'>
+        <Trends />
+      </div>
     </div>
   );
 };

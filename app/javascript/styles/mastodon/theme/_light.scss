@@ -150,6 +150,43 @@
     0 8px 10px -6px var(--color-shadow-primary);
   --overlay-icon-shadow: drop-shadow(0 0 8px var(--color-shadow-primary));
 
+
+  /* APP SHELL TOKENS */
+
+  --color-shell-canvas: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #eef1ff 62%
+  );
+  --color-shell-stage: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #dbe2ff 22%
+  );
+  --color-shell-surface: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #f5f7ff 84%
+  );
+  --color-shell-surface-elevated: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #fff 100%
+  );
+  --color-shell-section: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #e9edff 34%
+  );
+  --color-shell-accent-soft: #{utils.css-alpha(#4c52f0, 10%)};
+  --color-shell-stroke: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    #4c52f0 12%
+  );
+  --shadow-shell: 0 36px 90px -46px #{utils.css-alpha(#303d8f, 32%)};
+  --shadow-shell-soft: 0 18px 34px -24px #{utils.css-alpha(#303d8f, 18%)};
+
   /* GRAPHS/CHARTS TOKENS */
 
   --color-graph-primary-stroke: var(--color-text-brand);
