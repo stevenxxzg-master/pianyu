@@ -8,6 +8,8 @@ const breakpoints = {
 
 type Breakpoint = keyof typeof breakpoints;
 
+const noop = () => undefined;
+
 export const useBreakpoint = (breakpoint: Breakpoint) => {
   const query = `(max-width: ${breakpoints[breakpoint]}px)`;
 
@@ -22,7 +24,7 @@ export const useBreakpoint = (breakpoint: Breakpoint) => {
         typeof window === 'undefined' ||
         typeof window.matchMedia !== 'function'
       ) {
-        return () => {};
+        return noop;
       }
 
       const mediaWatcher = window.matchMedia(query);
