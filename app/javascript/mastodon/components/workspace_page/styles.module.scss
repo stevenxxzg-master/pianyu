@@ -21,8 +21,16 @@
   height: 220px;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(41, 80, 216, 14%), transparent 52%),
-    radial-gradient(circle at top right, rgba(27, 182, 214, 12%), transparent 48%);
+    radial-gradient(
+      circle at top left,
+      rgba(41, 80, 216, 14%),
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(27, 182, 214, 12%),
+      transparent 48%
+    );
   opacity: 0.9;
 }
 

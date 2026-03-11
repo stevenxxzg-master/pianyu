@@ -11,10 +11,10 @@ import {
 } from 'mastodon/actions/bookmarks';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import type { ColumnRef } from 'mastodon/components/column';
+import StatusList from 'mastodon/components/status_list';
 import { WorkspacePage } from 'mastodon/components/workspace_page';
 import workspaceContent from 'mastodon/components/workspace_page/content.module.scss';
 import discoveryStyles from 'mastodon/features/discovery/styles.module.scss';
-import StatusList from 'mastodon/components/status_list';
 import { getStatusList } from 'mastodon/selectors';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 

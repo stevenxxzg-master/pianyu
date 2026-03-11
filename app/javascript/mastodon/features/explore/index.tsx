@@ -165,7 +165,6 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
       ref={columnRef}
       title={intl.formatMessage(messages.title)}
     >
-
       <Switch>
         <Route path='/explore/tags' component={Tags} />
         <Route path='/explore/links' component={Links} />
@@ -175,7 +174,10 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             <Redirect to='/explore/suggestions' />
           </Route>
         )}
-        <Route exact path={signedIn ? '/explore/posts' : ['/explore', '/explore/posts']}>
+        <Route
+          exact
+          path={signedIn ? '/explore/posts' : ['/explore', '/explore/posts']}
+        >
           <Statuses multiColumn={multiColumn} />
         </Route>
       </Switch>
