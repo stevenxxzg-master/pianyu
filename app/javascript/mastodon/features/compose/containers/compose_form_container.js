@@ -9,6 +9,7 @@ import {
   changeComposeSpoilerText,
   insertEmojiCompose,
   uploadCompose,
+  dismissComposeSuccess,
 } from 'mastodon/actions/compose';
 import { pasteLinkCompose } from 'mastodon/actions/compose_typed';
 import { openModal } from 'mastodon/actions/modal';
@@ -18,6 +19,36 @@ import { me } from 'mastodon/initial_state';
 import ComposeForm from '../components/compose_form';
 
 const urlLikeRegex = /^https?:\/\/[^\s]+\/[^\s]+$/i;
+
+const getStatusRedirectPath = (status) => {
+  const username = status?.account?.username;
+  const statusId = status?.id;
+
+  if (username && statusId) {
+    return `/@${username}/${statusId}`;
+  }
+
+  if (status?.url) {
+    try {
+      const url = new URL(status.url, window.location.origin);
+      return `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+      return status.url;
+    }
+  }
+
+  return '/home';
+};
+
+const buildSubmitOptions = (props) => ({
+  redirectOnSuccess: !!props.redirectOnSuccess,
+  surface: props.surface ?? (props.redirectOnSuccess ? 'share' : 'page'),
+  onSuccess: props.redirectOnSuccess
+    ? (status) => {
+        window.location.assign(getStatusRedirectPath(status));
+      }
+    : undefined,
+});
 
 const processPasteOrDrop = (transfer, e, dispatch) => {
   if (transfer && transfer.files.length === 1) {
@@ -36,7 +67,7 @@ const processPasteOrDrop = (transfer, e, dispatch) => {
   }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   text: state.getIn(['compose', 'text']),
   suggestions: state.getIn(['compose', 'suggestions']),
   spoiler: state.getIn(['compose', 'spoiler']),
@@ -59,6 +90,13 @@ const mapStateToProps = state => ({
   isInReply: state.getIn(['compose', 'in_reply_to']) !== null,
   lang: state.getIn(['compose', 'language']),
   maxChars: state.getIn(['server', 'server', 'configuration', 'statuses', 'max_characters'], 500),
+  hasPoll: state.getIn(['compose', 'poll']) !== null,
+  hasQuote: !!state.getIn(['compose', 'quoted_status_id']),
+  lastSubmittedStatus: state.getIn(['compose', 'last_submitted_status']),
+  lastSubmissionSurface: state.getIn(['compose', 'last_submit_surface']),
+  lastSubmissionMode: state.getIn(['compose', 'last_submit_mode']),
+  lastSubmittedAt: state.getIn(['compose', 'last_submitted_at']),
+  surface: ownProps.surface ?? (ownProps.redirectOnSuccess ? 'share' : 'page'),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
@@ -68,23 +106,25 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
 
   onSubmit ({ missingAltText, quoteToPrivate }) {
+    const submitOptions = buildSubmitOptions(props);
+
     if (missingAltText) {
       dispatch(openModal({
         modalType: 'CONFIRM_MISSING_ALT_TEXT',
-        modalProps: {},
+        modalProps: { submitOptions },
       }));
     } else if (quoteToPrivate) {
       dispatch(openModal({
         modalType: 'CONFIRM_PRIVATE_QUOTE_NOTIFY',
-        modalProps: {},
+        modalProps: { submitOptions },
       }));
     } else {
-      dispatch(submitCompose((status) => {
-        if (props.redirectOnSuccess) {
-          window.location.assign(status.url);
-        }
-      }));
+      dispatch(submitCompose(submitOptions));
     }
+  },
+
+  onDismissSuccess () {
+    dispatch(dismissComposeSuccess());
   },
 
   onClearSuggestions () {

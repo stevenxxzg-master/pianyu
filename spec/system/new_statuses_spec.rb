@@ -25,6 +25,25 @@ RSpec.describe 'NewStatuses', :inline_jobs, :js, :streaming do
       .to have_css('.status__content__text', text: status_text)
   end
 
+  it 'shows a restrained success state on the publish page' do
+    visit '/publish'
+
+    expect(page)
+      .to have_css('.publish-page')
+      .and have_css('.compose-form__submit')
+
+    within('.compose-form') do
+      fill_in frontend_translations('compose_form.placeholder'), with: status_text
+      click_on frontend_translations('compose_form.publish')
+    end
+
+    expect(page)
+      .to have_css('.compose-form__success', text: frontend_translations('compose_form.success.published.title'))
+      .and have_button(frontend_translations('compose_form.success.open_post'))
+      .and have_button(frontend_translations('compose_form.success.continue'))
+      .and have_button(frontend_translations('compose_form.success.return_home'))
+  end
+
   def visit_homepage
     visit root_path
 

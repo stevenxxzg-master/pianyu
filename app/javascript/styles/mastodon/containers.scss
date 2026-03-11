@@ -164,3 +164,10 @@
     margin-top: 15px;
   }
 }
+
+.compose-standalone {
+  .compose-form.compose-form--share {
+    width: min(100%, 520px);
+    padding: 24px clamp(16px, 4vw, 24px) 36px;
+  }
+}
