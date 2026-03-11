@@ -20,13 +20,6 @@ import VolumeUpIcon from '@/material-icons/400-24px/volume_up-fill.svg?react';
 import { Blurhash } from 'mastodon/components/blurhash';
 import { Icon } from 'mastodon/components/icon';
 import { SpoilerButton } from 'mastodon/components/spoiler_button';
-import {
-  isFullscreen,
-  requestFullscreen,
-  exitFullscreen,
-  attachFullscreenListener,
-  detachFullscreenListener,
-} from 'mastodon/features/ui/util/fullscreen';
 import { displayMedia, useBlurhash } from 'mastodon/initial_state';
 import { playerSettings } from 'mastodon/settings';
 
@@ -51,6 +44,84 @@ const messages = defineMessages({
   skipForward: { id: 'video.skip_forward', defaultMessage: 'Skip forward' },
   skipBackward: { id: 'video.skip_backward', defaultMessage: 'Skip backward' },
 });
+
+interface DocumentWithFullscreen extends Document {
+  mozFullScreenElement?: Element;
+  webkitFullscreenElement?: Element;
+  mozCancelFullScreen?: () => void;
+  webkitExitFullscreen?: () => void;
+}
+
+interface HTMLElementWithFullscreen extends HTMLElement {
+  mozRequestFullScreen?: () => void;
+  webkitRequestFullscreen?: () => void;
+}
+
+const isFullscreen = () => {
+  const fullscreenDocument = document as DocumentWithFullscreen;
+
+  return !!(
+    fullscreenDocument.fullscreenElement ??
+    fullscreenDocument.webkitFullscreenElement ??
+    fullscreenDocument.mozFullScreenElement
+  );
+};
+
+const exitFullscreen = () => {
+  const fullscreenDocument = document as DocumentWithFullscreen;
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (fullscreenDocument.exitFullscreen) {
+    void fullscreenDocument.exitFullscreen();
+  } else if (fullscreenDocument.webkitExitFullscreen) {
+    fullscreenDocument.webkitExitFullscreen();
+  } else if (fullscreenDocument.mozCancelFullScreen) {
+    fullscreenDocument.mozCancelFullScreen();
+  }
+};
+
+const requestFullscreen = (element: HTMLElementWithFullscreen | null) => {
+  if (!element) {
+    return;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (element.requestFullscreen) {
+    void element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  }
+};
+
+const attachFullscreenListener = (listener: () => void) => {
+  const fullscreenDocument = document as DocumentWithFullscreen;
+
+  if ('onfullscreenchange' in fullscreenDocument) {
+    fullscreenDocument.addEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in fullscreenDocument) {
+    // @ts-expect-error This is valid on some browsers
+    fullscreenDocument.addEventListener('webkitfullscreenchange', listener); // eslint-disable-line @typescript-eslint/no-unsafe-call
+  } else if ('onmozfullscreenchange' in fullscreenDocument) {
+    // @ts-expect-error This is valid on some browsers
+    fullscreenDocument.addEventListener('mozfullscreenchange', listener); // eslint-disable-line @typescript-eslint/no-unsafe-call
+  }
+};
+
+const detachFullscreenListener = (listener: () => void) => {
+  const fullscreenDocument = document as DocumentWithFullscreen;
+
+  if ('onfullscreenchange' in fullscreenDocument) {
+    fullscreenDocument.removeEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in fullscreenDocument) {
+    // @ts-expect-error This is valid on some browsers
+    fullscreenDocument.removeEventListener('webkitfullscreenchange', listener); // eslint-disable-line @typescript-eslint/no-unsafe-call
+  } else if ('onmozfullscreenchange' in fullscreenDocument) {
+    // @ts-expect-error This is valid on some browsers
+    fullscreenDocument.removeEventListener('mozfullscreenchange', listener); // eslint-disable-line @typescript-eslint/no-unsafe-call
+  }
+};
 
 const DOUBLE_CLICK_THRESHOLD = 250;
 const HOVER_FADE_DELAY = 4000;

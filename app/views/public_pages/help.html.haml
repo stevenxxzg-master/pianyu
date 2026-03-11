@@ -1,0 +1,51 @@
+- content_for :body_classes, 'public-page-body'
+- content_for :page_title, t('public_pages.help.title')
+- content_for :header_tags do
+  = render partial: 'shared/og', locals: { description: t('public_pages.help.description', site: public_brand_name) }
+
+.public-page.public-page--help
+  .public-page__ambient
+  .public-page__frame
+    = render 'shared/public/header'
+
+    %main.public-page__main
+      %section.public-hero.public-hero--compact
+        .public-hero__copy
+          %p.public-kicker= t('public_pages.help.eyebrow')
+          %h1.public-title= t('public_pages.help.heading', site: public_brand_name)
+          %p.public-intro= t('public_pages.help.description', site: public_brand_name)
+
+      %section.public-section
+        .public-section__header
+          %p.public-section__eyebrow= t('public_pages.help.quickstart_eyebrow')
+          %h2.public-section__title= t('public_pages.help.quickstart_title')
+        .public-step-grid
+          - t('public_pages.help.quickstart').each do |step|
+            %article.public-step
+              %span.public-step__index= public_copy(step, :index)
+              %h3= public_copy(step, :title)
+              %p= public_copy(step, :text)
+
+      %section.public-section
+        .public-section__header
+          %p.public-section__eyebrow= t('public_pages.help.faq_eyebrow')
+          %h2.public-section__title= t('public_pages.help.faq_title')
+        .public-faq
+          - t('public_pages.help.faqs').each do |item|
+            %details.public-faq__item
+              %summary
+                %span= public_copy(item, :question)
+                %span.public-faq__toggle= material_symbol('add', whitespace: false)
+              .public-faq__answer= public_copy(item, :answer)
+
+      %section.public-band
+        %div
+          %p.public-band__eyebrow= t('public_pages.help.support_eyebrow')
+          %h2.public-band__title= t('public_pages.help.support_title')
+          %p.public-band__body= t('public_pages.help.support_body', domain: site_hostname)
+        .public-band__actions
+          = link_to t('public_pages.shared.nav.privacy'), privacy_policy_path, class: 'public-button public-button--ghost'
+          = link_to t('public_pages.shared.nav.terms'), terms_of_service_path, class: 'public-button public-button--ghost'
+          = link_to_login t('public_pages.shared.actions.sign_in'), class: 'public-button'
+
+    = render 'shared/public/footer'

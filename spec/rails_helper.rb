@@ -2,6 +2,8 @@
 
 ENV['RAILS_ENV'] ||= 'test'
 
+require 'socket'
+
 if ENV.fetch('COVERAGE', false)
   require 'simplecov'
 
@@ -29,8 +31,22 @@ if ENV.fetch('COVERAGE', false)
 end
 
 # This needs to be defined before Rails is initialized
-STREAMING_PORT = ENV.fetch('TEST_STREAMING_PORT', '4020')
+def preferred_streaming_test_port
+  return ENV.fetch('TEST_STREAMING_PORT') if ENV.key?('TEST_STREAMING_PORT')
+
+  server = TCPServer.new('127.0.0.1', 4020)
+  server.addr[1].to_s
+rescue Errno::EADDRINUSE
+  server&.close
+  server = TCPServer.new('127.0.0.1', 0)
+  server.addr[1].to_s
+ensure
+  server&.close
+end
+
+STREAMING_PORT = preferred_streaming_test_port
 STREAMING_HOST = ENV.fetch('TEST_STREAMING_HOST', 'localhost')
+ENV['TEST_STREAMING_PORT'] = STREAMING_PORT
 ENV['STREAMING_API_BASE_URL'] = "http://#{STREAMING_HOST}:#{STREAMING_PORT}"
 
 require_relative '../config/environment'

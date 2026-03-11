@@ -17,6 +17,7 @@ RSpec.describe 'Auth Passwords' do
       visit new_user_password_path
       expect(page)
         .to have_title(I18n.t('auth.reset_password'))
+        .and have_css('.public-auth')
 
       submit_email_reset
       expect(page)

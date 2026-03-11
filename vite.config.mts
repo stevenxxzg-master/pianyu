@@ -28,6 +28,17 @@ const jsRoot = path.resolve(__dirname, 'app/javascript');
 
 const cssAliasClasses: ReadonlyArray<string> = ['components', 'features'];
 
+const PREBUNDLED_LODASH_DEPS = [
+  'lodash/debounce.js',
+  'lodash/throttle.js',
+  'lodash/groupBy.js',
+  'lodash/minBy.js',
+  'lodash/isEqual.js',
+  'lodash/difference.js',
+  'lodash/escapeRegExp.js',
+  'lodash/noop.js',
+];
+
 export const config: UserConfigFnPromise = async ({ mode, command }) => {
   const isProdBuild = mode === 'production' && command === 'build';
 
@@ -48,6 +59,9 @@ export const config: UserConfigFnPromise = async ({ mode, command }) => {
         '~/': `${jsRoot}/`,
         '@/': `${jsRoot}/`,
       },
+    },
+    optimizeDeps: {
+      include: PREBUNDLED_LODASH_DEPS,
     },
     css: {
       modules: {

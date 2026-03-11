@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Capybara.server_host = 'localhost'
-Capybara.server_port = 3000
+Capybara.server_port = ENV.fetch('CAPYBARA_SERVER_PORT', 3000).to_i
 Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
 
 Capybara.register_driver(:playwright) do |app|

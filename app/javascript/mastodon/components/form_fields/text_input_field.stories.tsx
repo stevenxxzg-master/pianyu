@@ -7,6 +7,7 @@ import { TextInputField, TextInput } from './text_input_field';
 const meta = {
   title: 'Components/Form Fields/TextInputField',
   component: TextInputField,
+  tags: ['regression'],
   args: {
     label: 'Label',
     hint: 'This is a description of this form field',
@@ -54,7 +55,7 @@ export const WithIcon: Story = {
 
 export const Plain: Story = {
   render(args) {
-    return <TextInput {...args} />;
+    return <TextInput {...args} aria-label='Plain text input' />;
   },
 };
 

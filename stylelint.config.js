@@ -7,6 +7,7 @@ module.exports = {
     'public/assets/**/*',
     'public/packs/**/*',
     'public/packs-test/**/*',
+    'storybook-static/**/*',
     'vendor/**/*',
   ],
   reportDescriptionlessDisables: true,

@@ -1,6 +1,32 @@
-- content_for :page_title, t('terms_of_service.title')
-
+:ruby
+  terms_of_service = params[:date].present? ? TermsOfService.published.find_by(effective_date: params[:date]) : TermsOfService.current
+  effective_date = terms_of_service&.effective_date || terms_of_service&.published_at
+  content_for :body_classes, 'public-page-body'
+  content_for :page_title, t('terms_of_service.title')
 - content_for :header_tags do
-  = render partial: 'shared/og'
+  = render partial: 'shared/og', locals: { description: t('public_pages.terms.heading', site: public_brand_name) }
 
-= render 'shared/web_app'
+.public-page.public-page--terms
+  .public-page__ambient
+  .public-page__frame
+    = render 'shared/public/header'
+
+    %main.public-page__main
+      %section.public-legal
+        .public-legal__header
+          %p.public-kicker= t('public_pages.terms.eyebrow')
+          %h1.public-legal__title= t('public_pages.terms.heading', site: public_brand_name)
+          - if terms_of_service.present?
+            %p.public-legal__meta
+              = t('public_pages.shared.meta.effective_as_of', date: l(effective_date.to_date))
+              %span •
+              = t('public_pages.shared.footer.hosted_on', domain: site_hostname)
+              - if terms_of_service.succeeded_by.present?
+                %span •
+                = link_to l(terms_of_service.succeeded_by.effective_date), terms_of_service_version_path(terms_of_service.succeeded_by.effective_date)
+            .public-detail-card.prose
+              = public_markdown_content(terms_of_service.text)
+          - else
+            %p.public-intro= t('public_pages.terms.empty')
+
+    = render 'shared/public/footer'

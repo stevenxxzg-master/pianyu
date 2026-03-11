@@ -2,6 +2,17 @@ import { resolve } from 'node:path';
 
 import type { StorybookConfig } from '@storybook/react-vite';
 
+const STORYBOOK_PREBUNDLED_LODASH_DEPS = [
+  'lodash/debounce.js',
+  'lodash/throttle.js',
+  'lodash/groupBy.js',
+  'lodash/minBy.js',
+  'lodash/isEqual.js',
+  'lodash/difference.js',
+  'lodash/escapeRegExp.js',
+  'lodash/noop.js',
+];
+
 const config: StorybookConfig = {
   stories: ['../app/javascript/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
@@ -33,6 +44,13 @@ const config: StorybookConfig = {
     // For an unknown reason, Storybook does not use the root
     // from the Vite config so we need to set it manually.
     config.root = resolve(import.meta.dirname, '../app/javascript');
+    config.optimizeDeps = {
+      ...config.optimizeDeps,
+      include: [
+        ...(config.optimizeDeps?.include ?? []),
+        ...STORYBOOK_PREBUNDLED_LODASH_DEPS,
+      ],
+    };
     return config;
   },
 };

@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react';
 
 import { useIntl, defineMessages } from 'react-intl';
 
+import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ import { mascot, reduceMotion } from 'mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 import { messages as navbarMessages } from '../ui/components/navigation_bar';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import { Search } from './components/search';
 import ComposeFormContainer from './containers/compose_form_container';
@@ -47,7 +49,9 @@ const messages = defineMessages({
 
 type ColumnMap = ImmutableMap<'id' | 'uuid' | 'params', string>;
 
-const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
+export const Compose: React.FC<{ multiColumn: boolean }> = ({
+  multiColumn,
+}) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const columns = useAppSelector(
@@ -87,7 +91,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
   if (multiColumn) {
     return (
       <div
-        className='drawer'
+        className={classNames('drawer', workspaceStyles.composeDrawer)}
         role='region'
         aria-label={intl.formatMessage(navbarMessages.publish)}
       >
@@ -163,7 +167,12 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         <Search singleColumn={false} />
 
         <div className='drawer__pager'>
-          <div className='drawer__inner'>
+          <div
+            className={classNames(
+              'drawer__inner',
+              workspaceStyles.composeSurface,
+            )}
+          >
             <ComposeFormContainer />
 
             <div className='drawer__inner__mastodon with-zig-zag-decoration'>
@@ -179,6 +188,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
     <Column
       bindToDocument={!multiColumn}
       label={intl.formatMessage(navbarMessages.publish)}
+      className={`${workspaceStyles.column} ${workspaceStyles.composeColumn}`}
     >
       <ColumnHeader
         icon='pencil'
@@ -188,8 +198,10 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         showBackButton
       />
 
-      <div className='scrollable'>
-        <ComposeFormContainer />
+      <div className={classNames('scrollable', workspaceStyles.composeScroll)}>
+        <div className={workspaceStyles.composeSurface}>
+          <ComposeFormContainer />
+        </div>
       </div>
 
       <Helmet>

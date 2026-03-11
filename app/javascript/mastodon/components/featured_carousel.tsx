@@ -7,7 +7,7 @@ import { List as ImmutableList } from 'immutable';
 
 import { expandAccountFeaturedTimeline } from '@/mastodon/actions/timelines';
 import { Icon } from '@/mastodon/components/icon';
-import { StatusQuoteManager } from '@/mastodon/components/status_quoted';
+import { StatusQuoteManager } from '@/mastodon/containers/status_container';
 import {
   createAppSelector,
   useAppDispatch,

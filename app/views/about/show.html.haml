@@ -1,6 +1,75 @@
+- content_for :body_classes, 'public-page-body'
 - content_for :page_title, t('about.title')
-
 - content_for :header_tags do
-  = render partial: 'shared/og'
+  = render partial: 'shared/og', locals: { description: t('public_pages.about.description', site: public_brand_name) }
 
-= render partial: 'shared/web_app'
+:ruby
+  extended_description = public_extended_description_html
+  rules = public_rules
+  contact_email = instance_presenter.contact.email.presence
+  contact_account = instance_presenter.contact.account
+
+.public-page.public-page--about
+  .public-page__ambient
+  .public-page__frame
+    = render 'shared/public/header'
+
+    %main.public-page__main
+      %section.public-hero.public-hero--compact
+        .public-hero__copy
+          %p.public-kicker= t('public_pages.about.eyebrow')
+          %h1.public-title= t('public_pages.about.heading')
+          %p.public-intro= t('public_pages.about.description', site: public_brand_name)
+
+      %section.public-section
+        .public-section__header
+          %p.public-section__eyebrow= t('public_pages.about.principle_eyebrow')
+          %h2.public-section__title= t('public_pages.about.principle_title')
+        .public-card-grid
+          - t('public_pages.about.principles').each do |principle|
+            %article.public-card
+              .public-card__icon= material_symbol(public_copy(principle, :icon), whitespace: false)
+              %h3= public_copy(principle, :title)
+              %p= public_copy(principle, :text)
+
+      .public-split
+        %section.public-detail-card
+          %p.public-section__eyebrow= t('public_pages.about.story_title')
+          - if extended_description.present?
+            .prose= extended_description
+          - else
+            %p.public-section__body= t('public_pages.about.story_fallback')
+
+        %section.public-detail-card
+          %p.public-section__eyebrow= t('public_pages.about.meta_title')
+          %ul.public-meta-list
+            %li
+              = material_symbol('person', whitespace: false)
+              %div
+                %strong= t('public_pages.about.meta_admin')
+                - if contact_account.present?
+                  = account_link_to(contact_account)
+                - else
+                  = site_hostname
+            %li
+              = material_symbol('mail', whitespace: false)
+              %div
+                %strong= t('public_pages.about.meta_contact')
+                - if contact_email.present?
+                  = mail_to contact_email, contact_email
+                - else
+                  = t('public_pages.about.meta_contact_missing')
+
+      %section.public-detail-card
+        %p.public-section__eyebrow= t('public_pages.about.rules_title')
+        - if rules.any?
+          %ol.rules-list.public-rules
+            - rules.each do |rule|
+              %li
+                .rules-list__text= rule.text
+                - if rule.hint.present?
+                  .rules-list__hint= rule.hint
+        - else
+          %p.public-section__body= t('public_pages.about.rules_empty')
+
+    = render 'shared/public/footer'

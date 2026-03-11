@@ -51,6 +51,7 @@ import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
 import { AnnualReportNavItem } from '../annual_report/nav_item';
 import { areCollectionsEnabled } from '../collections/utils';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import { DisabledAccountBanner } from './components/disabled_account_banner';
 import { FollowedTagsPanel } from './components/followed_tags_panel';
@@ -58,6 +59,7 @@ import { ListPanel } from './components/list_panel';
 import { MoreLink } from './components/more_link';
 import { SignInBanner } from './components/sign_in_banner';
 import { Trends } from './components/trends';
+import classes from './styles.module.scss';
 
 const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
@@ -65,7 +67,7 @@ const messages = defineMessages({
     id: 'tabs_bar.notifications',
     defaultMessage: 'Notifications',
   },
-  explore: { id: 'explore.title', defaultMessage: 'Trending' },
+  explore: { id: 'explore.title', defaultMessage: 'Explore' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
   firehose_singular: {
     id: 'column.firehose_singular',
@@ -90,7 +92,7 @@ const messages = defineMessages({
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
   searchTrends: {
     id: 'navigation_bar.search_trends',
-    defaultMessage: 'Search / Trending',
+    defaultMessage: 'Search / Explore',
   },
   advancedInterface: {
     id: 'navigation_bar.advanced_interface',
@@ -230,7 +232,13 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
   }
 
   return (
-    <div className='navigation-panel'>
+    <div
+      className={classNames(
+        'navigation-panel',
+        classes.panel,
+        workspaceStyles.navigationPanel,
+      )}
+    >
       <div className='navigation-panel__logo'>
         <Link
           to='/'

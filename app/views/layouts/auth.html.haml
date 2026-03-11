@@ -1,19 +1,29 @@
+- content_for :body_classes, 'public-page-body public-page-body--auth'
 - content_for :header_tags do
   = vite_typescript_tag 'public.tsx', crossorigin: 'anonymous'
 
 - content_for :content do
-  .container-alt
-    .logo-container
-      %h1
-        - if within_authorization_flow?
-          = logo_as_symbol(:wordmark)
-        - else
-          = link_to root_path do
-            = logo_as_symbol(:wordmark)
+  .public-page.public-page--auth
+    .public-page__ambient
+    .public-page__frame
+      = render 'shared/public/header'
 
-    .form-container
-      = render 'flashes'
+      .public-auth
+        .public-auth__intro
+          %p.public-auth__eyebrow= t('public_pages.shared.auth_panel.eyebrow')
+          %h1.public-auth__title= t('public_pages.shared.auth_panel.title')
+          %p.public-auth__body= t('public_pages.shared.auth_panel.body')
+          %ul.public-auth__list
+            - t('public_pages.shared.auth_panel.points').each do |point|
+              %li
+                = material_symbol(public_copy(point, :icon), whitespace: false)
+                %span= public_copy(point, :text)
 
-      = yield
+        .public-auth__panel
+          .form-container
+            = render 'flashes'
+            = yield
+
+      = render 'shared/public/footer'
 
 = render template: 'layouts/application'

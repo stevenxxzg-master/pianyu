@@ -11,16 +11,40 @@ import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import SquigglyArrow from '@/svg-icons/squiggly_arrow.svg?react';
 import { fetchLists } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
-import { Column } from 'mastodon/components/column';
-import { ColumnHeader } from 'mastodon/components/column_header';
 import { Dropdown } from 'mastodon/components/dropdown_menu';
 import { Icon } from 'mastodon/components/icon';
 import ScrollableList from 'mastodon/components/scrollable_list';
+import { WorkspacePage } from 'mastodon/components/workspace_page';
+import workspaceContent from 'mastodon/components/workspace_page/content.module.scss';
+import discoveryStyles from 'mastodon/features/discovery/styles.module.scss';
 import { getOrderedLists } from 'mastodon/selectors/lists';
 import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },
+  eyebrow: {
+    id: 'lists.workspace_eyebrow',
+    defaultMessage: 'CURATED STREAMS',
+  },
+  description: {
+    id: 'lists.workspace_description',
+    defaultMessage:
+      'Shape custom reading lanes for the people and topics that deserve a tighter frame than the main timeline.',
+  },
+  badge: {
+    id: 'lists.workspace_badge',
+    defaultMessage:
+      '{count, plural, =0 {No lists yet} one {# active list} other {# active lists}}',
+  },
+  focusTitle: {
+    id: 'lists.workspace_focus_title',
+    defaultMessage: 'Relationship-led by design',
+  },
+  focusBody: {
+    id: 'lists.workspace_focus_body',
+    defaultMessage:
+      'Lists are positioned as a focused navigation surface inside the modern shell, not a stray utility hidden behind the old layout.',
+  },
   create: { id: 'lists.create_list', defaultMessage: 'Create list' },
   edit: { id: 'lists.edit', defaultMessage: 'Edit list' },
   delete: { id: 'lists.delete', defaultMessage: 'Delete list' },
@@ -101,27 +125,54 @@ const Lists: React.FC<{
   );
 
   return (
-    <Column
+    <WorkspacePage
       bindToDocument={!multiColumn}
-      label={intl.formatMessage(messages.heading)}
-    >
-      <ColumnHeader
-        title={intl.formatMessage(messages.heading)}
-        icon='list-ul'
-        iconComponent={ListAltIcon}
-        multiColumn={multiColumn}
-        extraButton={
-          <Link
-            to='/lists/new'
-            className='column-header__button'
-            title={intl.formatMessage(messages.create)}
-            aria-label={intl.formatMessage(messages.create)}
-          >
-            <Icon id='plus' icon={AddIcon} />
-          </Link>
-        }
-      />
+      className={discoveryStyles.utilityPage}
+      contentClassName={discoveryStyles.utilityList}
+      headerClassName={discoveryStyles.utilityHeader}
+      headerContent={
+        <div className={workspaceContent.hero}>
+          <div className={workspaceContent.split}>
+            <div className={workspaceContent.hero}>
+              <div className={workspaceContent.eyebrow}>
+                {intl.formatMessage(messages.eyebrow)}
+              </div>
+              <p className={workspaceContent.description}>
+                {intl.formatMessage(messages.description)}
+              </p>
+              <div className={workspaceContent.badges}>
+                <span className={workspaceContent.badge}>
+                  {intl.formatMessage(messages.badge, { count: lists.length })}
+                </span>
+              </div>
+            </div>
 
+            <div className={workspaceContent.noteCard}>
+              <p className={workspaceContent.noteTitle}>
+                {intl.formatMessage(messages.focusTitle)}
+              </p>
+              <p className={workspaceContent.noteBody}>
+                {intl.formatMessage(messages.focusBody)}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+      extraButton={
+        <Link
+          to='/lists/new'
+          className='column-header__button'
+          title={intl.formatMessage(messages.create)}
+          aria-label={intl.formatMessage(messages.create)}
+        >
+          <Icon id='plus' icon={AddIcon} />
+        </Link>
+      }
+      icon='list-ul'
+      iconComponent={ListAltIcon}
+      multiColumn={multiColumn}
+      title={intl.formatMessage(messages.heading)}
+    >
       <ScrollableList
         scrollKey='lists'
         emptyMessage={emptyMessage}
@@ -136,7 +187,7 @@ const Lists: React.FC<{
         <title>{intl.formatMessage(messages.heading)}</title>
         <meta name='robots' content='noindex' />
       </Helmet>
-    </Column>
+    </WorkspacePage>
   );
 };
 

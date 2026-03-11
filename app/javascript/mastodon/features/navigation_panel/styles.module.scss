@@ -1,0 +1,266 @@
+.panel {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: calc(100% - 20px);
+  padding: 18px 18px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(15, 25, 54, 14%);
+  border-radius: 32px;
+  background: linear-gradient(
+    170deg,
+    rgba(255, 255, 255, 98%),
+    rgba(244, 247, 253, 96%) 62%,
+    rgba(236, 242, 253, 98%)
+  );
+  box-shadow: 0 28px 56px rgba(16, 24, 48, 9%);
+}
+
+.panel::before,
+.panel::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+}
+
+.panel::before {
+  top: -84px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(41, 80, 216, 16%), transparent 66%);
+}
+
+.panel::after {
+  top: -56px;
+  right: -32px;
+  width: 170px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(27, 182, 214, 14%), transparent 64%);
+}
+
+.panel :global(.navigation-panel__menu) {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  padding: 0 4px 6px;
+  overflow-y: auto;
+}
+
+.panel :global(.navigation-panel__logo) {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 18px;
+  padding: 0 6px;
+}
+
+.panel :global(.navigation-bar) {
+  padding: 8px 8px 18px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(15, 25, 54, 8%);
+}
+
+.panel :global(.search) {
+  position: relative;
+  z-index: 1;
+  margin: 8px 4px 18px;
+}
+
+.panel :global(.search__input) {
+  border-radius: 18px;
+  border: 1px solid rgba(15, 25, 54, 10%);
+  background: rgba(255, 255, 255, 90%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 86%);
+}
+
+.panel :global(.column-link),
+.panel :global(button.column-link) {
+  border-radius: 18px;
+  padding: 13px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #4f5872;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.panel :global(.column-link:hover),
+.panel :global(.column-link:focus),
+.panel :global(.column-link.active),
+.panel :global(button.column-link:hover),
+.panel :global(button.column-link:focus) {
+  transform: translateY(-1px);
+  background: rgba(41, 80, 216, 8%);
+  color: #1f4ec9;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 78%);
+}
+
+.panel :global(.column-link__icon),
+.panel :global(.column-link .icon) {
+  color: #1f2a4d;
+}
+
+.panel :global(.column-link.active .column-link__icon),
+.panel :global(.column-link.active .icon),
+.panel :global(.column-link:hover .column-link__icon),
+.panel :global(.column-link:hover .icon) {
+  color: #1f4ec9;
+}
+
+.panel :global(.navigation-panel__compose-button) {
+  justify-content: flex-start;
+  margin: 6px 4px 12px;
+  border: 0;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #1f3dc8, #18a7d6);
+  color: #fff;
+  box-shadow: 0 20px 28px rgba(31, 61, 200, 22%);
+}
+
+.panel :global(.navigation-panel__compose-button .icon) {
+  color: #fff;
+}
+
+.panel :global(.navigation-panel__list-panel__header) {
+  gap: 8px;
+  padding-inline-end: 0;
+}
+
+.panel :global(.navigation-panel__list-panel__header__sep) {
+  border-color: rgba(15, 25, 54, 10%);
+}
+
+.panel :global(.navigation-panel__list-panel__items) {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding-inline-start: 20px;
+}
+
+.panel :global(.navigation-panel__list-panel__items .column-link) {
+  background: rgba(255, 255, 255, 70%);
+}
+
+.panel :global(.navigation-panel__list-panel .icon-button) {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 82%);
+  border: 1px solid rgba(15, 25, 54, 8%);
+}
+
+.panel :global(hr) {
+  margin: 18px 6px;
+  border-top: 1px solid rgba(15, 25, 54, 8%);
+}
+
+.panel :global(.navigation-panel__legal) {
+  margin-top: 8px;
+}
+
+.panel :global(.navigation-panel__legal .column-link),
+.panel :global(button.column-link.column-link--transparent) {
+  background: rgba(255, 255, 255, 70%);
+}
+
+.panel :global(.flex-spacer) {
+  min-height: 12px;
+}
+
+.moreMenu {
+  overflow: hidden;
+  padding: 6px;
+  border: 1px solid rgba(15, 25, 54, 10%);
+  border-radius: 24px;
+  background: linear-gradient(
+    170deg,
+    rgba(255, 255, 255, 99%),
+    rgba(247, 249, 254, 98%) 64%,
+    rgba(240, 245, 255, 99%)
+  );
+  box-shadow: 0 28px 48px rgba(16, 24, 48, 16%);
+}
+
+.moreMenu :global(.dropdown-menu) {
+  border-radius: 24px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.moreMenu :global(.dropdown-menu__arrow) {
+  color: rgba(255, 255, 255, 96%);
+}
+
+.moreMenu :global(.dropdown-menu__separator) {
+  margin: 6px 18px;
+  border-color: rgba(15, 25, 54, 8%);
+}
+
+.moreMenu :global(.dropdown-menu__item) {
+  margin: 6px 10px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.moreMenu :global(.dropdown-menu__item > a),
+.moreMenu :global(.dropdown-menu__item > button) {
+  display: flex;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: #1b2340;
+  background: rgba(255, 255, 255, 88%);
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.moreMenu :global(.dropdown-menu__item > a:hover),
+.moreMenu :global(.dropdown-menu__item > a:focus),
+.moreMenu :global(.dropdown-menu__item > button:hover),
+.moreMenu :global(.dropdown-menu__item > button:focus),
+.moreMenu :global(.dropdown-menu__item--highlighted > a),
+.moreMenu :global(.dropdown-menu__item--highlighted > button) {
+  transform: translateY(-1px);
+  background: rgba(41, 80, 216, 10%);
+  color: #1f4ec9;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 80%);
+}
+
+.moreMenu :global(.dropdown-menu__item--dangerous > a),
+.moreMenu :global(.dropdown-menu__item--dangerous > button) {
+  color: #c23a3a;
+}
+
+.moreMenu :global(.dropdown-menu__item-content) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.moreMenu :global(.dropdown-menu__item-subtitle) {
+  color: #5b6581;
+}
+
+@media (width <= 1024px) {
+  .panel {
+    border-radius: 28px;
+    padding: 16px;
+  }
+}

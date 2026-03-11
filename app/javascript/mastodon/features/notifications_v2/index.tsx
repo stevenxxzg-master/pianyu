@@ -47,6 +47,7 @@ import {
 } from '../notifications/components/filtered_notifications_banner';
 import NotificationsPermissionBanner from '../notifications/components/notifications_permission_banner';
 import ColumnSettingsContainer from '../notifications/containers/column_settings_container';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import { NotificationGroup } from './components/notification_group';
 import { FilterBar } from './filter_bar';
@@ -215,6 +216,7 @@ export const Notifications: React.FC<{
 
   const scrollContainer = signedIn ? (
     <ScrollableList
+      className={workspaceStyles.feedList}
       scrollKey={`notifications-${columnId}`}
       trackScroll={!pinned}
       isLoading={isLoading}
@@ -258,6 +260,7 @@ export const Notifications: React.FC<{
       bindToDocument={!multiColumn}
       ref={columnRef}
       label={intl.formatMessage(messages.title)}
+      className={`${workspaceStyles.column} ${workspaceStyles.notificationsColumn}`}
     >
       <ColumnHeader
         icon='bell'

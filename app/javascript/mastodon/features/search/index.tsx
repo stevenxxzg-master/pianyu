@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import FindInPageIcon from '@/material-icons/400-24px/find_in_page.svg?react';
@@ -11,22 +12,66 @@ import TagIcon from '@/material-icons/400-24px/tag.svg?react';
 import { submitSearch, expandSearch } from 'mastodon/actions/search';
 import type { ApiSearchType } from 'mastodon/api_types/search';
 import { Account } from 'mastodon/components/account';
-import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
-import { ColumnHeader } from 'mastodon/components/column_header';
 import { CompatibilityHashtag as Hashtag } from 'mastodon/components/hashtag';
 import { Icon } from 'mastodon/components/icon';
 import ScrollableList from 'mastodon/components/scrollable_list';
-import { StatusQuoteManager } from 'mastodon/components/status_quoted';
+import { WorkspacePage } from 'mastodon/components/workspace_page';
+import { StatusQuoteManager } from 'mastodon/containers/status_container';
 import { Search } from 'mastodon/features/compose/components/search';
+import discoveryStyles from 'mastodon/features/discovery/styles.module.scss';
 import { useSearchParam } from 'mastodon/hooks/useSearchParam';
 import type { Hashtag as HashtagType } from 'mastodon/models/tags';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
+
+import workspaceContent from '../../components/workspace_page/content.module.scss';
 
 import { SearchSection } from './components/search_section';
 
 const messages = defineMessages({
   title: { id: 'search_results.title', defaultMessage: 'Search for "{q}"' },
+  eyebrow: {
+    id: 'search_results.workspace_eyebrow',
+    defaultMessage: 'RELATION-FIRST SEARCH',
+  },
+  description: {
+    id: 'search_results.workspace_description',
+    defaultMessage:
+      'Move through people, topics, and specific posts without dropping into a hot-content detour.',
+  },
+  focusTitle: {
+    id: 'search_results.workspace_focus_title',
+    defaultMessage: 'Best when you already have a thread to pull',
+  },
+  focusBody: {
+    id: 'search_results.workspace_focus_body',
+    defaultMessage:
+      'Start with profiles and hashtags to stay close to relationships, then narrow into posts only when you need exact context.',
+  },
+  peopleChip: {
+    id: 'search_results.workspace_people_chip',
+    defaultMessage: 'Profiles first',
+  },
+  hashtagChip: {
+    id: 'search_results.workspace_hashtag_chip',
+    defaultMessage: 'Topic-led discovery',
+  },
+  statusChip: {
+    id: 'search_results.workspace_status_chip',
+    defaultMessage: 'Precise post lookup',
+  },
+  profilesMetric: {
+    id: 'search_results.workspace_profiles_metric',
+    defaultMessage: 'Profiles',
+  },
+  hashtagsMetric: {
+    id: 'search_results.workspace_hashtags_metric',
+    defaultMessage: 'Hashtags',
+  },
+  postsMetric: {
+    id: 'search_results.workspace_posts_metric',
+    defaultMessage: 'Posts',
+  },
 });
 
 const INITIAL_PAGE_LIMIT = 10;
@@ -78,6 +123,9 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
   const dispatch = useAppDispatch();
   const mappedType = typeFromParam(type);
   const trimmedValue = q?.trim() ?? '';
+  const profileCount = results?.accounts.length ?? 0;
+  const hashtagCount = results?.hashtags.length ?? 0;
+  const statusCount = results?.statuses.length ?? 0;
 
   useEffect(() => {
     if (trimmedValue.length > 0) {
@@ -194,9 +242,7 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
                 </SearchSection>
               )}
             </>
-          ) : (
-            []
-          );
+          ) : null;
         break;
       case 'accounts':
         filteredResults = renderAccounts(results.accounts);
@@ -211,94 +257,165 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
   }
 
   return (
-    <Column
+    <WorkspacePage
       bindToDocument={!multiColumn}
+      className={discoveryStyles.discoveryPage}
+      contentClassName={discoveryStyles.discoveryList}
+      headerClassName={discoveryStyles.discoveryHeader}
+      headerContent={
+        <div className={workspaceContent.hero}>
+          <div className={workspaceContent.split}>
+            <div className={workspaceContent.hero}>
+              <div className={workspaceContent.eyebrow}>
+                {intl.formatMessage(messages.eyebrow)}
+              </div>
+              <p className={workspaceContent.description}>
+                {intl.formatMessage(messages.description)}
+              </p>
+              <div className={workspaceContent.badges}>
+                <span className={workspaceContent.badge}>
+                  {intl.formatMessage(messages.peopleChip)}
+                </span>
+                <span className={workspaceContent.badge}>
+                  {intl.formatMessage(messages.hashtagChip)}
+                </span>
+                <span className={workspaceContent.badge}>
+                  {intl.formatMessage(messages.statusChip)}
+                </span>
+              </div>
+              <div className={workspaceContent.searchSlot}>
+                <Search
+                  singleColumn
+                  initialValue={trimmedValue}
+                  key={trimmedValue}
+                />
+              </div>
+            </div>
+
+            <div className={workspaceContent.noteCard}>
+              <p className={workspaceContent.noteTitle}>
+                {intl.formatMessage(messages.focusTitle)}
+              </p>
+              <p className={workspaceContent.noteBody}>
+                {intl.formatMessage(messages.focusBody)}
+              </p>
+              <div className={workspaceContent.metrics}>
+                <div className={workspaceContent.metric}>
+                  <span className={workspaceContent.metricLabel}>
+                    {intl.formatMessage(messages.profilesMetric)}
+                  </span>
+                  <span className={workspaceContent.metricValue}>
+                    {profileCount}
+                  </span>
+                </div>
+                <div className={workspaceContent.metric}>
+                  <span className={workspaceContent.metricLabel}>
+                    {intl.formatMessage(messages.hashtagsMetric)}
+                  </span>
+                  <span className={workspaceContent.metricValue}>
+                    {hashtagCount}
+                  </span>
+                </div>
+                <div className={workspaceContent.metric}>
+                  <span className={workspaceContent.metricLabel}>
+                    {intl.formatMessage(messages.postsMetric)}
+                  </span>
+                  <span className={workspaceContent.metricValue}>
+                    {statusCount}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={workspaceContent.tabs}>
+            <button
+              className={classNames(
+                workspaceContent.tabButton,
+                mappedType === 'all' && workspaceContent.tabButtonActive,
+              )}
+              onClick={handleSelectAll}
+              type='button'
+            >
+              <FormattedMessage id='search_results.all' defaultMessage='All' />
+            </button>
+            <button
+              className={classNames(
+                workspaceContent.tabButton,
+                mappedType === 'accounts' && workspaceContent.tabButtonActive,
+              )}
+              onClick={handleSelectAccounts}
+              type='button'
+            >
+              <FormattedMessage
+                id='search_results.accounts'
+                defaultMessage='Profiles'
+              />
+            </button>
+            <button
+              className={classNames(
+                workspaceContent.tabButton,
+                mappedType === 'hashtags' && workspaceContent.tabButtonActive,
+              )}
+              onClick={handleSelectHashtags}
+              type='button'
+            >
+              <FormattedMessage
+                id='search_results.hashtags'
+                defaultMessage='Hashtags'
+              />
+            </button>
+            <button
+              className={classNames(
+                workspaceContent.tabButton,
+                mappedType === 'statuses' && workspaceContent.tabButtonActive,
+              )}
+              onClick={handleSelectStatuses}
+              type='button'
+            >
+              <FormattedMessage
+                id='search_results.statuses'
+                defaultMessage='Posts'
+              />
+            </button>
+          </div>
+        </div>
+      }
+      icon={'search'}
+      iconComponent={SearchIcon}
+      multiColumn={multiColumn}
+      onClick={handleHeaderClick}
       ref={columnRef}
-      label={intl.formatMessage(messages.title, { q })}
+      title={intl.formatMessage(messages.title, { q })}
     >
-      <ColumnHeader
-        icon={'search'}
-        iconComponent={SearchIcon}
-        title={intl.formatMessage(messages.title, { q })}
-        onClick={handleHeaderClick}
-        multiColumn={multiColumn}
-      />
-
-      <div className='explore__search-header'>
-        <Search singleColumn initialValue={trimmedValue} key={trimmedValue} />
-      </div>
-
-      <div className='account__section-headline'>
-        <button
-          onClick={handleSelectAll}
-          className={mappedType === 'all' ? 'active' : undefined}
-          type='button'
-        >
-          <FormattedMessage id='search_results.all' defaultMessage='All' />
-        </button>
-        <button
-          onClick={handleSelectAccounts}
-          className={mappedType === 'accounts' ? 'active' : undefined}
-          type='button'
-        >
-          <FormattedMessage
-            id='search_results.accounts'
-            defaultMessage='Profiles'
-          />
-        </button>
-        <button
-          onClick={handleSelectHashtags}
-          className={mappedType === 'hashtags' ? 'active' : undefined}
-          type='button'
-        >
-          <FormattedMessage
-            id='search_results.hashtags'
-            defaultMessage='Hashtags'
-          />
-        </button>
-        <button
-          onClick={handleSelectStatuses}
-          className={mappedType === 'statuses' ? 'active' : undefined}
-          type='button'
-        >
-          <FormattedMessage
-            id='search_results.statuses'
-            defaultMessage='Posts'
-          />
-        </button>
-      </div>
-
-      <div className='explore__search-results' data-nosnippet>
-        <ScrollableList
-          scrollKey='search-results'
-          isLoading={isLoading}
-          showLoading={isLoading && !results}
-          onLoadMore={handleLoadMore}
-          hasMore={hasMore}
-          emptyMessage={
-            trimmedValue.length > 0 ? (
-              <FormattedMessage
-                id='search_results.no_results'
-                defaultMessage='No results.'
-              />
-            ) : (
-              <FormattedMessage
-                id='search_results.no_search_yet'
-                defaultMessage='Try searching for posts, profiles or hashtags.'
-              />
-            )
-          }
-          bindToDocument
-        >
-          {filteredResults}
-        </ScrollableList>
-      </div>
-
+      <ScrollableList
+        scrollKey='search-results'
+        isLoading={isLoading}
+        showLoading={isLoading && !results}
+        onLoadMore={handleLoadMore}
+        hasMore={hasMore}
+        emptyMessage={
+          trimmedValue.length > 0 ? (
+            <FormattedMessage
+              id='search_results.no_results'
+              defaultMessage='No results.'
+            />
+          ) : (
+            <FormattedMessage
+              id='search_results.no_search_yet'
+              defaultMessage='Try searching for posts, profiles or hashtags.'
+            />
+          )
+        }
+        bindToDocument={!multiColumn}
+      >
+        {filteredResults}
+      </ScrollableList>
       <Helmet>
         <title>{intl.formatMessage(messages.title, { q })}</title>
         <meta name='robots' content='noindex' />
       </Helmet>
-    </Column>
+    </WorkspacePage>
   );
 };
 

@@ -232,6 +232,8 @@ Rails.application.routes.draw do
   get '/web/(*any)', to: redirect('/%{any}', status: 302), as: :web, defaults: { any: '' }, format: false
   get '/about',      to: 'about#show'
   get '/about/more', to: redirect('/about')
+  get '/examples',   to: 'public_pages#examples'
+  get '/help',       to: 'public_pages#help'
 
   get '/privacy-policy',   to: 'privacy#show', as: :privacy_policy
   get '/terms-of-service', to: 'terms_of_service#show', as: :terms_of_service
