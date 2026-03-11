@@ -105,7 +105,11 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
               defaultMessage='Language'
             />
           </label>
-          <Select onChange={handleLocaleChange} id='language-select' value={selectedLocale}>
+          <Select
+            onChange={handleLocaleChange}
+            id='language-select'
+            value={selectedLocale}
+          >
             {localeOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.text}
@@ -119,7 +123,8 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
 };
 
 const selectRules = (state: RootState) =>
-  (state.server.getIn(['server', 'rules']) as ImmutableList<Rule> | null) ?? null;
+  (state.server.getIn(['server', 'rules']) as ImmutableList<Rule> | null) ??
+  null;
 
 const rulesSelector = createSelector(
   [selectRules, (_state, locale: string) => locale],

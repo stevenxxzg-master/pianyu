@@ -36,7 +36,10 @@ export const SignInBanner: React.FC = () => {
 
       <div className='sign-in-banner__links'>
         <Link to='/about'>
-          <FormattedMessage id='footer.about_this_server' defaultMessage='About' />
+          <FormattedMessage
+            id='footer.about_this_server'
+            defaultMessage='About this server'
+          />
         </Link>
         <Link to='/explore'>
           <FormattedMessage id='explore.title' defaultMessage='Trending' />

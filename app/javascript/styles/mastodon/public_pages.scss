@@ -12,7 +12,12 @@
     ),
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--color-bg-brand-softer) 28%, var(--color-bg-primary)) 0%,
+      color-mix(
+          in oklab,
+          var(--color-bg-brand-softer) 28%,
+          var(--color-bg-primary)
+        )
+        0%,
       var(--color-bg-primary) 32%
     );
   overflow: hidden;
@@ -30,13 +35,12 @@
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(
-        135deg,
-        transparent 0,
-        transparent 38%,
-        color-mix(in oklab, var(--color-bg-brand-softer) 32%, transparent) 100%
-      );
+    background: linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 38%,
+      color-mix(in oklab, var(--color-bg-brand-softer) 32%, transparent) 100%
+    );
     pointer-events: none;
     z-index: 0;
   }
@@ -106,7 +110,11 @@
       color: var(--color-text-secondary);
 
       &:nth-child(2n) {
-        background: color-mix(in oklab, var(--color-bg-secondary) 86%, white 14%);
+        background: color-mix(
+          in oklab,
+          var(--color-bg-secondary) 86%,
+          white 14%
+        );
       }
 
       &:last-child {
@@ -159,14 +167,14 @@
     grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
     gap: 24px;
     padding: clamp(20px, 4vw, 32px);
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
     border-radius: 28px;
-    background:
-      linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--color-bg-brand-softer) 88%, white 12%) 0%,
-        color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 68%
-      );
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-bg-brand-softer) 88%, white 12%) 0%,
+      color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 68%
+    );
     box-shadow: 0 28px 80px rgb(15 23 42 / 8%);
   }
 
@@ -223,7 +231,8 @@
     justify-content: center;
     width: 64px;
     height: 64px;
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 80%, white 20%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 80%, white 20%);
     border-radius: 22px;
     background: rgb(255 255 255 / 76%);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 42%);
@@ -245,7 +254,8 @@
 
   h1 {
     max-width: 12ch;
-    font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
     font-size: clamp(2.5rem, 5vw, 4.4rem);
     line-height: 0.98;
     letter-spacing: -0.045em;
@@ -306,7 +316,8 @@
     padding: 16px;
     min-height: 112px;
     border-radius: 20px;
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
     background: rgb(255 255 255 / 70%);
     box-shadow: 0 16px 40px rgb(15 23 42 / 4%);
 
@@ -329,7 +340,8 @@
   &__section,
   &__panel {
     padding: 22px;
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 86%, white 14%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 86%, white 14%);
     border-radius: 24px;
     background: color-mix(in oklab, var(--color-bg-primary) 94%, white 6%);
     box-shadow: 0 24px 60px rgb(15 23 42 / 5%);
@@ -371,7 +383,8 @@
   &__showcase-card,
   &__support-card {
     position: relative;
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
     border-radius: 20px;
     background: color-mix(in oklab, var(--color-bg-secondary) 86%, white 14%);
   }
@@ -390,7 +403,11 @@
     border-radius: 14px;
     align-items: center;
     justify-content: center;
-    background: color-mix(in oklab, var(--color-bg-brand-softer) 82%, white 18%);
+    background: color-mix(
+      in oklab,
+      var(--color-bg-brand-softer) 82%,
+      white 18%
+    );
     color: var(--color-text-brand);
   }
 
@@ -411,7 +428,11 @@
     &:focus,
     &:active {
       transform: translateY(-2px);
-      border-color: color-mix(in oklab, var(--color-text-brand) 45%, var(--color-border-primary));
+      border-color: color-mix(
+        in oklab,
+        var(--color-text-brand) 45%,
+        var(--color-border-primary)
+      );
       box-shadow: 0 16px 44px rgb(86 56 204 / 12%);
       text-decoration: none;
     }
@@ -505,20 +526,21 @@
 .public-preview-card {
   margin: 14px 14px 0;
   padding: 18px;
-  border: 1px solid color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
   border-radius: 22px;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in oklab, var(--color-bg-brand-softer) 82%, white 18%) 0%,
-      color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 100%
-    );
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 82%, white 18%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 100%
+  );
   box-shadow: 0 18px 50px rgb(15 23 42 / 6%);
 
   h2 {
     margin: 10px 0 8px;
     color: var(--color-text-primary);
-    font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
     font-size: clamp(1.5rem, 3vw, 2rem);
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -542,19 +564,18 @@
   gap: 10px;
 }
 
-
 .server-banner {
   display: grid;
   gap: 14px;
   padding: 18px;
-  border: 1px solid color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
   border-radius: 22px;
-  background:
-    linear-gradient(
-      160deg,
-      color-mix(in oklab, var(--color-bg-brand-softer) 78%, white 22%) 0%,
-      color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
-    );
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 78%, white 22%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
+  );
   box-shadow: 0 22px 56px rgb(15 23 42 / 6%);
 
   &__brand {
@@ -577,7 +598,8 @@
   h3 {
     margin: 0;
     color: var(--color-text-primary);
-    font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
     font-size: 28px;
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -610,7 +632,8 @@
     display: grid;
     gap: 8px;
     padding: 14px;
-    border: 1px solid color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
     border-radius: 18px;
     background: rgb(255 255 255 / 72%);
   }
@@ -709,14 +732,14 @@
   display: grid;
   gap: 14px;
   padding: 20px;
-  border: 1px solid color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
   border-radius: 22px;
-  background:
-    linear-gradient(
-      160deg,
-      color-mix(in oklab, var(--color-bg-brand-softer) 80%, white 20%) 0%,
-      color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
-    );
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 80%, white 20%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
+  );
   box-shadow: 0 22px 56px rgb(15 23 42 / 6%);
 
   &__brand {
@@ -739,7 +762,8 @@
   h2 {
     margin: 0;
     color: var(--color-text-primary);
-    font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
     font-size: 28px;
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -781,7 +805,8 @@
   gap: 22px;
   margin-top: 26px;
   padding: 22px;
-  border: 1px solid color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
   border-radius: 24px;
   background: color-mix(in oklab, var(--color-bg-primary) 94%, white 6%);
   box-shadow: 0 22px 56px rgb(15 23 42 / 5%);

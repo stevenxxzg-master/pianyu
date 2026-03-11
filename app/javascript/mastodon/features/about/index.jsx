@@ -28,6 +28,7 @@ import {
   statusPageUrl,
 } from 'mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
+import { isValidUrl } from 'mastodon/utils/checks';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
@@ -213,6 +214,10 @@ const About = ({ multiColumn }) => {
   const activeUsers = server.getIn(['usage', 'users', 'active_month']);
   const rulesCount = server.get('rules')?.size ?? 0;
   const showLocalPulse = localLiveFeedAccess === 'public';
+  const safeStatusPageUrl =
+    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
+      ? statusPageUrl
+      : null;
   const description =
     !isLoading && server.get('description')
       ? server.get('description')
@@ -509,13 +514,13 @@ const About = ({ multiColumn }) => {
                   )}
                 </article>
 
-                {statusPageUrl && (
+                {safeStatusPageUrl && (
                   <article className='public-home__support-card'>
                     <span className='public-home__support-card__label'>
                       {intl.formatMessage(messages.status)}
                     </span>
-                    <a className='public-home__support-link' href={statusPageUrl} rel='noopener' target='_blank'>
-                      {statusPageUrl}
+                    <a className='public-home__support-link' href={safeStatusPageUrl} rel='noopener' target='_blank'>
+                      {safeStatusPageUrl}
                     </a>
                   </article>
                 )}

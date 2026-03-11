@@ -9,8 +9,8 @@ import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
 import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
 import { ColumnHeader } from 'mastodon/components/column_header';
-import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
 import { SymbolLogo } from 'mastodon/components/logo';
+import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
 import { Search } from 'mastodon/features/compose/components/search';
 import { useBreakpoint } from 'mastodon/features/ui/hooks/useBreakpoint';
 import { useIdentity } from 'mastodon/identity_context';
@@ -28,7 +28,8 @@ const messages = defineMessages({
   },
   previewDescription: {
     id: 'explore.preview.description',
-    defaultMessage: 'Use discovery to scan posts, topics, and news before deciding whether this community is your pace.',
+    defaultMessage:
+      'Use discovery to scan posts, topics, and news before deciding whether this community is your pace.',
   },
 });
 
