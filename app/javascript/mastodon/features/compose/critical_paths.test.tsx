@@ -214,13 +214,14 @@ describe('compose critical paths', () => {
     });
   });
 
-  it('replaces the sidebar composer with a placeholder when another composer is mounted', () => {
+  it('keeps the sidebar shell visible while suppressing duplicate compose forms', () => {
     mockCompose.mounted = 2;
 
-    const { container } = renderWithIntl(<ComposePanel />);
+    renderWithIntl(<ComposePanel />);
 
+    expect(screen.getByText('Compose search')).toBeTruthy();
     expect(screen.queryByText('Compose form')).toBeNull();
-    expect(container.querySelector('.compose-form')).toBeTruthy();
+    expect(screen.getByText('Link footer')).toBeTruthy();
   });
 
   it('shows the signed-out server banner instead of the composer', () => {

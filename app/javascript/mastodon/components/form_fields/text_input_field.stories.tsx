@@ -55,7 +55,7 @@ export const WithIcon: Story = {
 
 export const Plain: Story = {
   render(args) {
-    return <TextInput {...args} />;
+    return <TextInput {...args} aria-label='Plain text input' />;
   },
 };
 

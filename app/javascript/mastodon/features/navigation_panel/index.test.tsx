@@ -210,7 +210,7 @@ describe('NavigationPanel', () => {
       screen.getByRole('link', { name: 'Home' }).getAttribute('href'),
     ).toBe('/home');
     expect(
-      screen.getByRole('link', { name: 'Trending' }).getAttribute('href'),
+      screen.getByRole('link', { name: 'Explore' }).getAttribute('href'),
     ).toBe('/explore');
     expect(
       screen.getByRole('link', { name: 'Live feed' }).getAttribute('href'),

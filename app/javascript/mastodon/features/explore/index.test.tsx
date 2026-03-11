@@ -25,8 +25,17 @@ vi.mock('mastodon/components/column', () => {
 });
 
 vi.mock('mastodon/components/column_header', () => {
-  const MockColumnHeader = ({ title }: { title: string }) => (
-    <button type='button'>{title}</button>
+  const MockColumnHeader = ({
+    title,
+    appendContent,
+  }: {
+    title: string;
+    appendContent?: ReactNode;
+  }) => (
+    <div>
+      <button type='button'>{title}</button>
+      {appendContent}
+    </div>
   );
 
   return { ColumnHeader: MockColumnHeader };
@@ -91,7 +100,7 @@ describe('Explore', () => {
     mockExplore.breakpoint = false;
   });
 
-  it('renders the signed-in tabs and default statuses route', () => {
+  it('renders the signed-in tabs and redirects the default route to people suggestions', () => {
     renderExplore('/explore');
 
     expect(screen.getByText('Explore search')).toBeTruthy();
@@ -99,7 +108,7 @@ describe('Explore', () => {
     expect(screen.getByText('Hashtags')).toBeTruthy();
     expect(screen.getByText('People')).toBeTruthy();
     expect(screen.getByText('News')).toBeTruthy();
-    expect(screen.getByText('Statuses panel')).toBeTruthy();
+    expect(screen.getByText('Suggestions panel')).toBeTruthy();
   });
 
   it('hides the people tab for signed-out users', () => {

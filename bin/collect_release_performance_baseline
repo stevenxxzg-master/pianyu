@@ -2,7 +2,23 @@
 # frozen_string_literal: true
 
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
+ENV['RAILS_ENV'] = 'test'
 
+require 'socket'
+
+server = TCPServer.new('127.0.0.1', 0)
+performance_port = server.addr[1]
+server.close
+
+ENV['CAPYBARA_SERVER_PORT'] = performance_port.to_s
+local_domain = ENV.fetch('LOCAL_DOMAIN', "localhost:#{performance_port}")
+ENV['LOCAL_DOMAIN'] = local_domain
+ENV['WEB_DOMAIN'] = ENV.fetch('WEB_DOMAIN', local_domain)
+ENV['LOCAL_HTTPS'] = 'false'
+ENV['CI'] = 'true'
+ENV['VITE_RUBY_AUTO_BUILD'] = 'false'
+
+require 'rubygems'
 require 'bundler/setup'
 require 'fileutils'
 require 'json'
@@ -13,16 +29,19 @@ FileUtils.mkdir_p(output_dir)
 
 strict = ENV['RELEASE_PERFORMANCE_BASELINE_STRICT'] == '1'
 
+vite_command = [Gem.ruby, File.expand_path('vite', __dir__), 'build', '--mode', 'test']
+abort 'Failed to build test Vite assets for release performance baseline' unless system(*vite_command)
+
 command = [
-  'bundle', 'exec', 'rspec',
+  Gem.ruby, File.expand_path('rspec', __dir__),
   'spec/performance/release_performance_baseline_spec.rb',
   '--tag', 'js',
-  '--tag', 'streaming',
+  '--tag', 'streaming'
 ]
 
 success = system({ 'RELEASE_PERFORMANCE_BASELINE_OUTPUT_DIR' => output_dir }, *command)
-status = $?
-exit(status&.exitstatus || 1) unless success && status&.success?
+status = Process.last_status
+exit(status&.exitstatus || 1) unless success
 
 results_path = File.join(output_dir, 'results.json')
 unless File.exist?(results_path)

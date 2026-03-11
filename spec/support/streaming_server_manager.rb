@@ -7,17 +7,19 @@ class StreamingServerManager
     at_exit { stop }
   end
 
-  def start(port: 4020)
+  def start(port: STREAMING_PORT)
     return if @running_thread
 
-    queue = Queue.new
+    command_queue = Queue.new
+    started_queue = Queue.new
 
     if ENV['DEBUG_STREAMING_SERVER'].present?
       logger = Logger.new($stdout)
       logger.level = 'debug'
     end
 
-    @queue = queue
+    @command_queue = command_queue
+    @started_queue = started_queue
 
     @running_thread = Thread.new do
       Open3.popen2e(
@@ -40,14 +42,14 @@ class StreamingServerManager
 
             if status == :starting && line.match('Streaming API now listening on')
               status = :started
-              @queue.enq 'started'
+              started_queue.enq 'started'
             end
           end
         end
 
         # And another thread to listen on commands from the main thread
         loop do
-          msg = queue.pop
+          msg = command_queue.pop
 
           case msg
           when 'stop'
@@ -55,10 +57,13 @@ class StreamingServerManager
             output_thread.kill
 
             # Then stop the node process
-            Process.kill('KILL', process_thread.pid)
+            begin
+              Process.kill('KILL', process_thread.pid)
+            rescue Errno::ESRCH
+              nil
+            end
 
-            # And we stop ourselves
-            @running_thread.kill
+            break
           end
         end
       end
@@ -67,7 +72,7 @@ class StreamingServerManager
     # wait for 10 seconds for the streaming server to start
     Timeout.timeout(10) do
       loop do
-        break if @queue.pop == 'started'
+        break if @started_queue.pop == 'started'
       end
     end
   end
@@ -75,10 +80,14 @@ class StreamingServerManager
   def stop
     return unless @running_thread
 
-    @queue.enq 'stop'
+    @command_queue.enq 'stop'
 
     # Wait for the thread to end
     @running_thread.join
+  ensure
+    @command_queue = nil
+    @started_queue = nil
+    @running_thread = nil
   end
 end
 

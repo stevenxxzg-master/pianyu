@@ -325,8 +325,8 @@ module ReleasePerformanceBaseline
     def signed_out_homepage_sample
       response, response_ms = plain_response('/')
       visit root_path
-      expect(page).to have_css('div.app-holder')
-      expect(page).to have_css('div.columns-area__panels__main')
+      expect(page).to have_css('body', class: 'public-page-body')
+      expect(page).to have_css('.public-page--landing')
       nav = navigation_entry
 
       {

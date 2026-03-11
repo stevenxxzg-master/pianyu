@@ -25,7 +25,7 @@
     "postversion": "git push --tags",
     "postinstall": "test -d node_modules/husky && husky || echo \"husky is not installed\"",
     "start": "node ./streaming/index.js",
-    "test": "yarn lint && yarn run typecheck && yarn test:js run",
+    "test": "yarn lint && yarn run typecheck && yarn test:js run && yarn test:storybook",
     "test:js": "vitest --project=legacy-tests",
     "test:storybook": "vitest --project=storybook",
     "typecheck": "tsc --noEmit",
