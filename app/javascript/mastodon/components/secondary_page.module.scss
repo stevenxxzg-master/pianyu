@@ -1,0 +1,474 @@
+.hero {
+  position: relative;
+  margin: 16px 16px 0;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at top right,
+      var(--color-bg-brand-softer),
+      transparent 42%
+    ),
+    linear-gradient(140deg, var(--color-bg-primary), var(--color-bg-secondary));
+  box-shadow: 0 24px 48px -36px rgb(0 0 0 / 55%);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 22px 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border-primary),
+    transparent
+  );
+}
+
+.heroCompact {
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.heroInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-brand-soft);
+}
+
+.heroTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.title {
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.9rem);
+  line-height: 1.08;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.description {
+  margin-top: 10px;
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.actions :global(.button),
+.actions :global(.button-secondary),
+.actions button {
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 56%);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.section {
+  margin: 16px 16px 0;
+  padding: 18px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 20px;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-primary),
+    var(--color-bg-secondary)
+  );
+  box-shadow: 0 20px 44px -36px rgb(0 0 0 / 45%);
+}
+
+.section :global(.button),
+.section :global(.button-secondary),
+.section button {
+  white-space: nowrap;
+}
+
+.listCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 0 16px 12px;
+  padding: 18px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 20px;
+  background: var(--color-bg-primary);
+  box-shadow: 0 20px 40px -36px rgb(0 0 0 / 50%);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.listCard:hover,
+.listCard:focus-within {
+  transform: translateY(-1px);
+  border-color: var(--color-text-brand-soft);
+  box-shadow: 0 28px 50px -38px rgb(0 0 0 / 55%);
+}
+
+.listLink {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.listEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  color: var(--color-text-brand-soft);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.listTitle {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.listDescription {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.listMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.listActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.listActions :global(.button) {
+  min-height: 40px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 16px;
+  padding: 30px 22px;
+  border: 1px dashed var(--color-border-primary);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at top,
+      var(--color-bg-brand-softer),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--color-bg-primary), var(--color-bg-secondary));
+  text-align: center;
+}
+
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  background: var(--color-bg-brand-soft);
+  color: var(--color-text-brand);
+}
+
+.emptyIcon :global(.icon) {
+  width: 24px;
+  height: 24px;
+}
+
+.emptyCopy {
+  max-width: 42ch;
+}
+
+.emptyCopy h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.emptyCopy p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+:global(.conversation).conversationCard {
+  gap: 0;
+  margin: 0 16px 12px;
+  padding: 0;
+  border: 1px solid var(--color-border-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-primary),
+    var(--color-bg-secondary)
+  );
+  box-shadow: 0 22px 42px -38px rgb(0 0 0 / 50%);
+  overflow: hidden;
+}
+
+:global(.conversation).conversationCard:hover,
+:global(.conversation).conversationCard:focus-within {
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-primary),
+    var(--color-bg-secondary)
+  );
+  border-color: var(--color-text-brand-soft);
+}
+
+:global(.conversation).conversationCard.unread::before {
+  top: 16px;
+  bottom: 16px;
+  width: 4px;
+  height: auto;
+  border-inline-start-width: 4px;
+  border-radius: 0 999px 999px 0;
+}
+
+.conversationAvatar {
+  padding: 20px 14px 20px 20px;
+}
+
+.conversationContent {
+  padding: 18px 20px 20px 0;
+}
+
+.conversationMeta {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.conversationNames {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.conversationTime {
+  flex: 0 0 auto;
+  min-width: fit-content;
+}
+
+.conversationActions {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-primary);
+}
+
+.accountCard {
+  margin: 0 16px 12px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 20px;
+  background: var(--color-bg-primary);
+  box-shadow: 0 18px 34px -34px rgb(0 0 0 / 50%);
+  overflow: hidden;
+}
+
+.accountCard :global(.account__wrapper) {
+  padding-inline-end: 18px;
+}
+
+.accountCard :global(.account__display-name) {
+  padding: 18px 18px 18px 20px;
+}
+
+.accountCard :global(.account__relationship) {
+  display: flex;
+  align-items: center;
+}
+
+.accountCard :global(.button) {
+  min-width: 96px;
+}
+
+.searchCard {
+  margin: 16px 16px 0;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 20px;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-primary),
+    var(--color-bg-secondary)
+  );
+  box-shadow: 0 18px 34px -34px rgb(0 0 0 / 45%);
+  padding: 8px;
+}
+
+.searchCard :global(.link-button) {
+  font-weight: 600;
+}
+
+.searchInput {
+  border-radius: 14px;
+}
+
+.footer {
+  margin: 16px;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toggleCard {
+  padding: 16px 18px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 18px;
+  background: var(--color-bg-primary);
+}
+
+.toggleCard :global(.app-form__toggle) {
+  margin: 0;
+}
+
+@media screen and (width <= 600px) {
+  .hero,
+  .section,
+  .emptyState,
+  .searchCard {
+    margin-inline: 12px;
+  }
+
+  .hero {
+    padding: 18px;
+  }
+
+  .listCard,
+  :global(.conversation).conversationCard,
+  .accountCard {
+    margin-inline: 12px;
+  }
+
+  .listCard {
+    flex-direction: column;
+  }
+
+  .listActions {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .heroTopRow,
+  .conversationMeta {
+    flex-direction: column;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .conversationAvatar {
+    padding: 18px 12px 0 18px;
+  }
+
+  .conversationContent {
+    padding: 14px 18px 18px;
+  }
+
+  .accountCard :global(.account__wrapper) {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 18px;
+  }
+
+  .accountCard :global(.account__display-name) {
+    padding-bottom: 0;
+  }
+
+  .accountCard :global(.account__relationship) {
+    width: 100%;
+    justify-content: flex-end;
+    padding-inline: 18px;
+  }
+}

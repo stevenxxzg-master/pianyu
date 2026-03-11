@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { useParams, useHistory, Link } from 'react-router-dom';
 
@@ -23,6 +24,13 @@ import { ColumnHeader } from 'mastodon/components/column_header';
 import { SelectField, TextInputField } from 'mastodon/components/form_fields';
 import { Icon } from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
+import {
+  SecondaryPageChip,
+  SecondaryPageHero,
+  SecondaryPageSection,
+  secondaryPageClasses,
+} from 'mastodon/components/secondary_page';
+import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 import type { List } from 'mastodon/models/list';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
@@ -31,6 +39,21 @@ import { messages as membersMessages } from './members';
 const messages = defineMessages({
   edit: { id: 'column.edit_list', defaultMessage: 'Edit list' },
   create: { id: 'column.create_list', defaultMessage: 'Create list' },
+  eyebrow: { id: 'lists.new.eyebrow', defaultMessage: 'List setup' },
+  createDescription: {
+    id: 'lists.new.create_description',
+    defaultMessage:
+      'Name the feed, decide which replies belong in it, and launch the next step in the same M5 secondary-page shell.',
+  },
+  editDescription: {
+    id: 'lists.new.edit_description',
+    defaultMessage:
+      'Fine-tune this list without bouncing between older form styles and newer page containers.',
+  },
+  repliesPolicyChip: {
+    id: 'lists.new.replies_policy_chip',
+    defaultMessage: 'Replies policy',
+  },
 });
 
 const MembersLink: React.FC<{
@@ -95,61 +118,71 @@ const NewList: React.FC<{ list?: List | null }> = ({ list }) => {
     ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(value);
     },
-    [setTitle],
+    [],
   );
 
   const handleExclusiveChange = useCallback(
     ({ target: { checked } }: React.ChangeEvent<HTMLInputElement>) => {
       setExclusive(checked);
     },
-    [setExclusive],
+    [],
   );
 
   const handleRepliesPolicyChange = useCallback(
     ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => {
       setRepliesPolicy(value as RepliesPolicyType);
     },
-    [setRepliesPolicy],
+    [],
   );
 
-  const handleSubmit = useCallback(() => {
-    setSubmitting(true);
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setSubmitting(true);
 
-    if (id) {
-      void dispatch(
-        updateList({
-          id,
-          title,
-          exclusive,
-          replies_policy: repliesPolicy,
-        }),
-      ).then(() => {
-        setSubmitting(false);
-        return '';
-      });
-    } else {
-      void dispatch(
-        createList({
-          title,
-          exclusive,
-          replies_policy: repliesPolicy,
-        }),
-      ).then((result) => {
-        setSubmitting(false);
+      if (id) {
+        void dispatch(
+          updateList({
+            id,
+            title,
+            exclusive,
+            replies_policy: repliesPolicy,
+          }),
+        ).then(() => {
+          setSubmitting(false);
+          return '';
+        });
+      } else {
+        void dispatch(
+          createList({
+            title,
+            exclusive,
+            replies_policy: repliesPolicy,
+          }),
+        ).then((result) => {
+          setSubmitting(false);
 
-        if (isFulfilled(result)) {
-          history.replace(`/lists/${result.payload.id}/edit`);
-          history.push(`/lists/${result.payload.id}/members`);
-        }
+          if (isFulfilled(result)) {
+            history.replace(`/lists/${result.payload.id}/edit`);
+            history.push(`/lists/${result.payload.id}/members`);
+          }
 
-        return '';
-      });
-    }
-  }, [history, dispatch, setSubmitting, id, title, exclusive, repliesPolicy]);
+          return '';
+        });
+      }
+    },
+    [history, dispatch, id, title, exclusive, repliesPolicy],
+  );
 
   return (
-    <form className='simple_form app-form' onSubmit={handleSubmit}>
-      <div className='fields-group'>
+    <form
+      className={classNames(
+        'simple_form app-form',
+        secondaryPageClasses.formStack,
+      )}
+      onSubmit={handleSubmit}
+    >
+      <SecondaryPageSection>
         <TextInputField
           required
           maxLength={30}
@@ -160,9 +193,9 @@ const NewList: React.FC<{ list?: List | null }> = ({ list }) => {
           onChange={handleTitleChange}
           id='list_title'
         />
-      </div>
+      </SecondaryPageSection>
 
-      <div className='fields-group'>
+      <SecondaryPageSection>
         <SelectField
           label={
             <FormattedMessage
@@ -193,15 +226,15 @@ const NewList: React.FC<{ list?: List | null }> = ({ list }) => {
             {(msg) => <option value='followed'>{msg}</option>}
           </FormattedMessage>
         </SelectField>
-      </div>
+      </SecondaryPageSection>
 
       {id && (
-        <div className='fields-group'>
+        <SecondaryPageSection>
           <MembersLink id={id} />
-        </div>
+        </SecondaryPageSection>
       )}
 
-      <div className='fields-group'>
+      <div className={secondaryPageClasses.toggleCard}>
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label className='app-form__toggle'>
           <div className='app-form__toggle__label'>
@@ -227,7 +260,7 @@ const NewList: React.FC<{ list?: List | null }> = ({ list }) => {
         </label>
       </div>
 
-      <div className='actions'>
+      <div className={secondaryPageClasses.formActions}>
         <button className='button' type='submit'>
           {submitting ? (
             <LoadingIndicator />
@@ -248,8 +281,9 @@ const NewListWrapper: React.FC<{
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id?: string }>();
-  const list = useAppSelector((state) =>
-    id ? state.lists.get(id) : undefined,
+  const list = useAppSelector(
+    (state) =>
+      (id ? state.lists.get(id) : undefined) as List | false | undefined,
   );
 
   useEffect(() => {
@@ -257,6 +291,10 @@ const NewListWrapper: React.FC<{
       dispatch(fetchList(id));
     }
   }, [dispatch, id]);
+
+  if (list === false) {
+    return <BundleColumnError multiColumn={multiColumn} errorType='routing' />;
+  }
 
   const isLoading = id && !list;
 
@@ -274,7 +312,36 @@ const NewListWrapper: React.FC<{
       />
 
       <div className='scrollable'>
-        {isLoading ? <LoadingIndicator /> : <NewList list={list} />}
+        <SecondaryPageHero
+          eyebrow={intl.formatMessage(messages.eyebrow)}
+          title={intl.formatMessage(id ? messages.edit : messages.create)}
+          description={intl.formatMessage(
+            id ? messages.editDescription : messages.createDescription,
+          )}
+          actions={
+            id ? (
+              <Link
+                to={`/lists/${id}/members`}
+                className='button button-secondary'
+              >
+                {intl.formatMessage(membersMessages.manageMembers)}
+              </Link>
+            ) : undefined
+          }
+          meta={
+            <SecondaryPageChip>
+              {intl.formatMessage(messages.repliesPolicyChip)}
+            </SecondaryPageChip>
+          }
+        />
+
+        {isLoading ? (
+          <SecondaryPageSection>
+            <LoadingIndicator />
+          </SecondaryPageSection>
+        ) : (
+          <NewList list={list} />
+        )}
       </div>
 
       <Helmet>

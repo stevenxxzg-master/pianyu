@@ -3,6 +3,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
 import {
@@ -13,12 +14,33 @@ import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
 import { ColumnHeader } from 'mastodon/components/column_header';
+import {
+  SecondaryPageChip,
+  SecondaryPageEmptyState,
+  SecondaryPageHero,
+} from 'mastodon/components/secondary_page';
 import StatusList from 'mastodon/components/status_list';
 import { getStatusList } from 'mastodon/selectors';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  eyebrow: { id: 'bookmarks.eyebrow', defaultMessage: 'Saved collection' },
+  description: {
+    id: 'bookmarks.description',
+    defaultMessage:
+      'Keep the posts you want to revisit in one tidy stream, with the same shell and rhythm as the rest of the app.',
+  },
+  count: {
+    id: 'bookmarks.count',
+    defaultMessage:
+      '{count, plural, =0 {Ready for your first save} one {# saved post} other {# saved posts}}',
+  },
+  helper: { id: 'bookmarks.helper', defaultMessage: 'Browse home' },
+  emptyTitle: {
+    id: 'bookmarks.empty_title',
+    defaultMessage: 'No bookmarks yet',
+  },
 });
 
 const Bookmarks: React.FC<{
@@ -68,10 +90,40 @@ const Bookmarks: React.FC<{
 
   const pinned = !!columnId;
 
+  const headerCard = (
+    <SecondaryPageHero
+      eyebrow={intl.formatMessage(messages.eyebrow)}
+      title={intl.formatMessage(messages.heading)}
+      description={intl.formatMessage(messages.description)}
+      actions={
+        <Link to='/' className='button button-secondary'>
+          {intl.formatMessage(messages.helper)}
+        </Link>
+      }
+      meta={
+        <SecondaryPageChip>
+          {intl.formatMessage(messages.count, { count: statusIds.size })}
+        </SecondaryPageChip>
+      }
+    />
+  );
+
   const emptyMessage = (
-    <FormattedMessage
-      id='empty_column.bookmarked_statuses'
-      defaultMessage="You don't have any bookmarked posts yet. When you bookmark one, it will show up here."
+    <SecondaryPageEmptyState
+      iconId='bookmarks'
+      icon={BookmarksIcon}
+      title={intl.formatMessage(messages.emptyTitle)}
+      message={
+        <FormattedMessage
+          id='empty_column.bookmarked_statuses'
+          defaultMessage="You don't have any bookmarked posts yet. When you bookmark one, it will show up here."
+        />
+      }
+      actions={
+        <Link to='/' className='button button-secondary'>
+          {intl.formatMessage(messages.helper)}
+        </Link>
+      }
     />
   );
 
@@ -99,6 +151,8 @@ const Bookmarks: React.FC<{
         hasMore={hasMore}
         isLoading={isLoading}
         onLoadMore={handleLoadMore}
+        prepend={headerCard}
+        alwaysPrepend
         emptyMessage={emptyMessage}
         bindToDocument={!multiColumn}
         timelineId='bookmarks'

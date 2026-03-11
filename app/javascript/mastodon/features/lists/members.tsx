@@ -2,11 +2,11 @@ import { useCallback, useState, useEffect } from 'react';
 
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
 
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
-import SquigglyArrow from '@/svg-icons/squiggly_arrow.svg?react';
 import { fetchRelationships } from 'mastodon/actions/accounts';
 import { showAlertForError } from 'mastodon/actions/alerts';
 import { importFetchedAccounts } from 'mastodon/actions/importer';
@@ -26,6 +26,12 @@ import { ColumnSearchHeader } from 'mastodon/components/column_search_header';
 import { FollowersCounter } from 'mastodon/components/counters';
 import { DisplayName } from 'mastodon/components/display_name';
 import ScrollableList from 'mastodon/components/scrollable_list';
+import {
+  SecondaryPageChip,
+  SecondaryPageEmptyState,
+  SecondaryPageHero,
+  secondaryPageClasses,
+} from 'mastodon/components/secondary_page';
 import { ShortNumber } from 'mastodon/components/short_number';
 import { VerifiedBadge } from 'mastodon/components/verified_badge';
 import { me } from 'mastodon/initial_state';
@@ -42,10 +48,31 @@ export const messages = defineMessages({
     id: 'lists.search',
     defaultMessage: 'Search',
   },
-  enterSearch: { id: 'lists.add_to_list', defaultMessage: 'Add to list' },
+  findPeople: { id: 'lists.find_people', defaultMessage: 'Find people' },
+  showMembers: { id: 'lists.show_members', defaultMessage: 'Show members' },
   add: { id: 'lists.add_member', defaultMessage: 'Add' },
   remove: { id: 'lists.remove_member', defaultMessage: 'Remove' },
-  back: { id: 'column_back_button.label', defaultMessage: 'Back' },
+  done: { id: 'lists.done', defaultMessage: 'Done' },
+  eyebrow: { id: 'lists.members.eyebrow', defaultMessage: 'Audience curation' },
+  description: {
+    id: 'lists.members.description',
+    defaultMessage:
+      'Add or remove people from this list with the same elevated title, search, and card treatment used across the M5 secondary flows.',
+  },
+  count: {
+    id: 'lists.members.count',
+    defaultMessage:
+      '{count, plural, =0 {No members yet} one {# member} other {# members}}',
+  },
+  emptyTitle: {
+    id: 'lists.members.empty_title',
+    defaultMessage: 'This list has no members yet',
+  },
+  noResultsTitle: {
+    id: 'lists.members.no_results_title',
+    defaultMessage: 'No matching accounts',
+  },
+  viewList: { id: 'lists.members.view_list', defaultMessage: 'Open list feed' },
 });
 
 type Mode = 'remove' | 'add';
@@ -75,31 +102,29 @@ const AccountItem: React.FC<{
     if (partOfList) {
       void apiRemoveAccountFromList(listId, accountId);
       onToggle(accountId);
+    } else if (following) {
+      void apiAddAccountToList(listId, accountId);
+      onToggle(accountId);
     } else {
-      if (following) {
-        void apiAddAccountToList(listId, accountId);
-        onToggle(accountId);
-      } else {
-        dispatch(
-          openModal({
-            modalType: 'CONFIRM_FOLLOW_TO_LIST',
-            modalProps: {
-              accountId,
-              onConfirm: () => {
-                apiFollowAccount(accountId)
-                  .then(() => apiAddAccountToList(listId, accountId))
-                  .then(() => {
-                    onToggle(accountId);
-                    return '';
-                  })
-                  .catch((err: unknown) => {
-                    dispatch(showAlertForError(err));
-                  });
-              },
+      dispatch(
+        openModal({
+          modalType: 'CONFIRM_FOLLOW_TO_LIST',
+          modalProps: {
+            accountId,
+            onConfirm: () => {
+              apiFollowAccount(accountId)
+                .then(() => apiAddAccountToList(listId, accountId))
+                .then(() => {
+                  onToggle(accountId);
+                  return '';
+                })
+                .catch((err: unknown) => {
+                  dispatch(showAlertForError(err));
+                });
             },
-          }),
-        );
-      }
+          },
+        }),
+      );
     }
   }, [dispatch, accountId, following, listId, partOfList, onToggle]);
 
@@ -110,7 +135,7 @@ const AccountItem: React.FC<{
   const firstVerifiedField = account.fields.find((item) => !!item.verified_at);
 
   return (
-    <div className='account'>
+    <div className={classNames('account', secondaryPageClasses.accountCard)}>
       <div className='account__wrapper'>
         <Link
           key={account.id}
@@ -120,7 +145,7 @@ const AccountItem: React.FC<{
           data-hover-card-account={account.id}
         >
           <div className='account__avatar-wrapper'>
-            <Avatar account={account} size={36} />
+            <Avatar account={account} size={40} />
           </div>
 
           <div className='account__contents'>
@@ -158,6 +183,7 @@ const ListMembers: React.FC<{
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const intl = useIntl();
+  const list = useAppSelector((state) => state.lists.get(id));
 
   const [searching, setSearching] = useState(false);
   const [accountIds, setAccountIds] = useState<string[]>([]);
@@ -198,33 +224,73 @@ const ListMembers: React.FC<{
 
   const handleSearchClick = useCallback(() => {
     setMode('add');
-  }, [setMode]);
+  }, []);
 
   const handleDismissSearchClick = useCallback(() => {
     setMode('remove');
     setSearching(false);
-  }, [setMode]);
+  }, []);
 
   const handleAccountToggle = useCallback(
     (accountId: string) => {
       const partOfList = accountIds.includes(accountId);
 
       if (partOfList) {
-        setAccountIds(accountIds.filter((id) => id !== accountId));
+        setAccountIds(
+          accountIds.filter((existingId) => existingId !== accountId),
+        );
       } else {
         setAccountIds([accountId, ...accountIds]);
       }
     },
-    [accountIds, setAccountIds],
+    [accountIds],
   );
 
-  let displayedAccountIds: string[];
+  const displayedAccountIds =
+    mode === 'add' && searching ? searchAccountIds : accountIds;
 
-  if (mode === 'add' && searching) {
-    displayedAccountIds = searchAccountIds;
-  } else {
-    displayedAccountIds = accountIds;
-  }
+  const headerCard = (
+    <>
+      <SecondaryPageHero
+        eyebrow={intl.formatMessage(messages.eyebrow)}
+        title={list?.get('title') ?? intl.formatMessage(messages.manageMembers)}
+        description={intl.formatMessage(messages.description)}
+        actions={
+          <>
+            <button
+              type='button'
+              className='button button-secondary'
+              onClick={
+                mode === 'add' ? handleDismissSearchClick : handleSearchClick
+              }
+            >
+              {intl.formatMessage(
+                mode === 'add' ? messages.showMembers : messages.findPeople,
+              )}
+            </button>
+            <Link to={`/lists/${id}`} className='button button-secondary'>
+              {intl.formatMessage(messages.viewList)}
+            </Link>
+          </>
+        }
+        meta={
+          <SecondaryPageChip>
+            {intl.formatMessage(messages.count, { count: accountIds.length })}
+          </SecondaryPageChip>
+        }
+      />
+
+      <ColumnSearchHeader
+        placeholder={intl.formatMessage(messages.placeholder)}
+        onBack={handleDismissSearchClick}
+        onSubmit={handleSearch}
+        onActivate={handleSearchClick}
+        active={mode === 'add'}
+        className={secondaryPageClasses.searchCard}
+        inputClassName={secondaryPageClasses.searchInput}
+      />
+    </>
+  );
 
   return (
     <Column
@@ -239,14 +305,6 @@ const ListMembers: React.FC<{
         showBackButton
       />
 
-      <ColumnSearchHeader
-        placeholder={intl.formatMessage(messages.placeholder)}
-        onBack={handleDismissSearchClick}
-        onSubmit={handleSearch}
-        onActivate={handleSearchClick}
-        active={mode === 'add'}
-      />
-
       <ScrollableList
         scrollKey='list_members'
         trackScroll={!multiColumn}
@@ -254,38 +312,63 @@ const ListMembers: React.FC<{
         isLoading={loading || loadingSearchResults}
         showLoading={loading && displayedAccountIds.length === 0}
         hasMore={false}
+        prepend={headerCard}
+        alwaysPrepend
         footer={
-          <>
-            {displayedAccountIds.length > 0 && <div className='spacer' />}
-
-            <div className='column-footer'>
-              <Link to={`/lists/${id}`} className='button button--block'>
-                <FormattedMessage id='lists.done' defaultMessage='Done' />
-              </Link>
-            </div>
-          </>
+          <div className={secondaryPageClasses.footer}>
+            <Link to={`/lists/${id}`} className='button button--block'>
+              <FormattedMessage id='lists.done' defaultMessage='Done' />
+            </Link>
+          </div>
         }
         emptyMessage={
-          mode === 'remove' ? (
-            <>
-              <span>
-                <FormattedMessage
-                  id='lists.no_members_yet'
-                  defaultMessage='No members yet.'
-                />
-                <br />
-                <FormattedMessage
-                  id='lists.find_users_to_add'
-                  defaultMessage='Find users to add'
-                />
-              </span>
-
-              <SquigglyArrow className='empty-column-indicator__arrow' />
-            </>
+          mode === 'remove' || !searching ? (
+            <SecondaryPageEmptyState
+              iconId='list-ul'
+              icon={ListAltIcon}
+              title={intl.formatMessage(messages.emptyTitle)}
+              message={
+                <>
+                  <FormattedMessage
+                    id='lists.no_members_yet'
+                    defaultMessage='No members yet.'
+                  />{' '}
+                  <FormattedMessage
+                    id='lists.find_users_to_add'
+                    defaultMessage='Find users to add'
+                  />
+                </>
+              }
+              actions={
+                <button
+                  type='button'
+                  className='button button-secondary'
+                  onClick={handleSearchClick}
+                >
+                  {intl.formatMessage(messages.findPeople)}
+                </button>
+              }
+            />
           ) : (
-            <FormattedMessage
-              id='lists.no_results_found'
-              defaultMessage='No results found.'
+            <SecondaryPageEmptyState
+              iconId='list-ul'
+              icon={ListAltIcon}
+              title={intl.formatMessage(messages.noResultsTitle)}
+              message={
+                <FormattedMessage
+                  id='lists.no_results_found'
+                  defaultMessage='No results found.'
+                />
+              }
+              actions={
+                <button
+                  type='button'
+                  className='button button-secondary'
+                  onClick={handleDismissSearchClick}
+                >
+                  {intl.formatMessage(messages.showMembers)}
+                </button>
+              }
             />
           )
         }

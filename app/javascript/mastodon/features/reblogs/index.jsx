@@ -11,27 +11,60 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
 import RefreshIcon from '@/material-icons/400-24px/refresh.svg?react';
+import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
+import { expandReblogs, fetchReblogs } from 'mastodon/actions/interactions';
 import { Account } from 'mastodon/components/account';
-import { Icon }  from 'mastodon/components/icon';
-
-import { fetchReblogs, expandReblogs } from '../../actions/interactions';
-import ColumnHeader from '../../components/column_header';
-import { LoadingIndicator } from '../../components/loading_indicator';
-import ScrollableList from '../../components/scrollable_list';
-import Column from '../ui/components/column';
+import Column from 'mastodon/components/column';
+import ColumnHeader from 'mastodon/components/column_header';
+import { Icon } from 'mastodon/components/icon';
+import { LoadingIndicator } from 'mastodon/components/loading_indicator';
+import {
+  SecondaryPageChip,
+  SecondaryPageEmptyState,
+  SecondaryPageHero,
+  secondaryPageClasses,
+} from 'mastodon/components/secondary_page';
+import ScrollableList from 'mastodon/components/scrollable_list';
 
 const messages = defineMessages({
+  heading: { id: 'reblogs.detail.heading', defaultMessage: 'Boosts' },
   refresh: { id: 'refresh', defaultMessage: 'Refresh' },
+  eyebrow: { id: 'reblogs.detail.eyebrow', defaultMessage: 'Post activity' },
+  description: {
+    id: 'reblogs.detail.description',
+    defaultMessage:
+      'See who has boosted this post in the same card language used by the refreshed secondary views.',
+  },
+  count: {
+    id: 'reblogs.detail.count',
+    defaultMessage: '{count, plural, =0 {No boosts yet} one {# person here} other {# people here}}',
+  },
+  emptyTitle: {
+    id: 'reblogs.detail.empty_title',
+    defaultMessage: 'No boosts on this post yet',
+  },
 });
 
 const mapStateToProps = (state, props) => ({
-  accountIds: state.getIn(['user_lists', 'reblogged_by', props.params.statusId, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'reblogged_by', props.params.statusId, 'next']),
-  isLoading: state.getIn(['user_lists', 'reblogged_by', props.params.statusId, 'isLoading'], true),
+  accountIds: state.getIn([
+    'user_lists',
+    'reblogged_by',
+    props.params.statusId,
+    'items',
+  ]),
+  hasMore: !!state.getIn([
+    'user_lists',
+    'reblogged_by',
+    props.params.statusId,
+    'next',
+  ]),
+  isLoading: state.getIn(
+    ['user_lists', 'reblogged_by', props.params.statusId, 'isLoading'],
+    true,
+  ),
 });
 
 class Reblogs extends ImmutablePureComponent {
-
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -42,7 +75,7 @@ class Reblogs extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     if (!this.props.accountIds) {
       this.props.dispatch(fetchReblogs(this.props.params.statusId));
     }
@@ -56,27 +89,74 @@ class Reblogs extends ImmutablePureComponent {
     this.props.dispatch(expandReblogs(this.props.params.statusId));
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { intl, accountIds, hasMore, isLoading, multiColumn } = this.props;
 
     if (!accountIds) {
       return (
         <Column>
-          <LoadingIndicator />
+          <div className='scrollable'>
+            <LoadingIndicator />
+          </div>
         </Column>
       );
     }
 
-    const emptyMessage = <FormattedMessage id='status.reblogs.empty' defaultMessage='No one has boosted this post yet. When someone does, they will show up here.' />;
+    const headerCard = (
+      <SecondaryPageHero
+        eyebrow={intl.formatMessage(messages.eyebrow)}
+        title={intl.formatMessage(messages.heading)}
+        description={intl.formatMessage(messages.description)}
+        actions={
+          <button
+            type='button'
+            className='button button-secondary'
+            onClick={this.handleRefresh}
+          >
+            <Icon id='refresh' icon={RefreshIcon} />
+            {intl.formatMessage(messages.refresh)}
+          </button>
+        }
+        meta={
+          <SecondaryPageChip>
+            {intl.formatMessage(messages.count, { count: accountIds.size })}
+          </SecondaryPageChip>
+        }
+      />
+    );
+
+    const emptyMessage = (
+      <SecondaryPageEmptyState
+        iconId='repeat'
+        icon={RepeatIcon}
+        title={intl.formatMessage(messages.emptyTitle)}
+        message={
+          <FormattedMessage
+            id='status.reblogs.empty'
+            defaultMessage='No one has boosted this post yet. When someone does, they will show up here.'
+          />
+        }
+        actions={
+          <button
+            type='button'
+            className='button button-secondary'
+            onClick={this.handleRefresh}
+          >
+            {intl.formatMessage(messages.refresh)}
+          </button>
+        }
+      />
+    );
 
     return (
-      <Column bindToDocument={!multiColumn}>
+      <Column
+        bindToDocument={!multiColumn}
+        label={intl.formatMessage(messages.heading)}
+      >
         <ColumnHeader
           showBackButton
+          title={intl.formatMessage(messages.heading)}
           multiColumn={multiColumn}
-          extraButton={(
-            <button type='button' className='column-header__button' title={intl.formatMessage(messages.refresh)} aria-label={intl.formatMessage(messages.refresh)} onClick={this.handleRefresh}><Icon id='refresh' icon={RefreshIcon} /></button>
-          )}
         />
 
         <ScrollableList
@@ -84,12 +164,19 @@ class Reblogs extends ImmutablePureComponent {
           onLoadMore={this.handleLoadMore}
           hasMore={hasMore}
           isLoading={isLoading}
+          prepend={headerCard}
+          alwaysPrepend
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >
-          {accountIds.map(id =>
-            <Account key={id} id={id} />,
-          )}
+          {accountIds.map((id) => (
+            <Account
+              key={id}
+              id={id}
+              className={secondaryPageClasses.accountCard}
+              withBorder={false}
+            />
+          ))}
         </ScrollableList>
 
         <Helmet>
@@ -98,7 +185,6 @@ class Reblogs extends ImmutablePureComponent {
       </Column>
     );
   }
-
 }
 
 export default connect(mapStateToProps)(injectIntl(Reblogs));

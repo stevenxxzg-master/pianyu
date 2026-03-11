@@ -2,13 +2,27 @@ import { useCallback, useState, useRef } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
+
 export const ColumnSearchHeader: React.FC<{
   onBack: () => void;
   onSubmit: (value: string) => void;
   onActivate: () => void;
   placeholder: string;
   active: boolean;
-}> = ({ onBack, onActivate, onSubmit, placeholder, active }) => {
+  className?: string;
+  inputClassName?: string;
+  cancelButtonClassName?: string;
+}> = ({
+  onBack,
+  onActivate,
+  onSubmit,
+  placeholder,
+  active,
+  className,
+  inputClassName,
+  cancelButtonClassName,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState('');
 
@@ -45,13 +59,21 @@ export const ColumnSearchHeader: React.FC<{
     onActivate();
   }, [onActivate]);
 
-  const handleSubmit = useCallback(() => {
-    onSubmit(value);
-  }, [onSubmit, value]);
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      onSubmit(value);
+    },
+    [onSubmit, value],
+  );
 
   return (
-    <form className='column-search-header' onSubmit={handleSubmit}>
+    <form
+      className={classNames('column-search-header', className)}
+      onSubmit={handleSubmit}
+    >
       <input
+        className={inputClassName}
         ref={inputRef}
         type='search'
         value={value}
@@ -62,7 +84,11 @@ export const ColumnSearchHeader: React.FC<{
       />
 
       {active && (
-        <button type='button' className='link-button' onClick={onBack}>
+        <button
+          type='button'
+          className={classNames('link-button', cancelButtonClassName)}
+          onClick={onBack}
+        >
           <FormattedMessage id='column_search.cancel' defaultMessage='Cancel' />
         </button>
       )}
