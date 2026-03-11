@@ -447,7 +447,7 @@ export const DetailedStatus: React.FC<{
         )}
 
         {expanded && (
-          <>
+          <div className='detailed-status__content-body'>
             <StatusContent
               status={status}
               onTranslate={handleTranslate}
@@ -458,13 +458,15 @@ export const DetailedStatus: React.FC<{
             {hashtagBar}
 
             {status.get('quote') && (
-              <QuotedStatus
-                quote={status.get('quote')}
-                parentQuotePostId={status.get('id')}
-                contextType='thread'
-              />
+              <div className='detailed-status__context'>
+                <QuotedStatus
+                  quote={status.get('quote')}
+                  parentQuotePostId={status.get('id')}
+                  contextType='thread'
+                />
+              </div>
             )}
-          </>
+          </div>
         )}
 
         <div className='detailed-status__meta'>
