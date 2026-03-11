@@ -18,10 +18,8 @@ import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
 import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 import {
   domain as siteDomain,
-  statusPageUrl,
   title as siteTitle,
 } from 'mastodon/initial_state';
-import { isValidUrl } from 'mastodon/utils/checks';
 
 const messages = defineMessages({
   title: { id: 'terms_of_service.title', defaultMessage: 'Terms of Service' },
@@ -67,10 +65,6 @@ const messages = defineMessages({
   termsDescription: {
     id: 'public_page.terms_description',
     defaultMessage: 'Participation rules and service expectations',
-  },
-  statusLink: {
-    id: 'public_page.status_link',
-    defaultMessage: 'Need live service status? Visit the status page.',
   },
   unavailable: {
     id: 'terms_of_service.unavailable',
@@ -134,11 +128,6 @@ const TermsOfService: React.FC<{
     },
   ];
 
-  const safeStatusPageUrl =
-    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
-      ? statusPageUrl
-      : undefined;
-
   return (
     <Column
       bindToDocument={!multiColumn}
@@ -146,13 +135,6 @@ const TermsOfService: React.FC<{
     >
       <PublicPageLayout
         asideDescription={intl.formatMessage(messages.navDescription)}
-        asideFooter={
-          safeStatusPageUrl ? (
-            <a href={safeStatusPageUrl} rel='noopener' target='_blank'>
-              {intl.formatMessage(messages.statusLink)}
-            </a>
-          ) : undefined
-        }
         asideTitle={intl.formatMessage(messages.navTitle)}
         className='terms-of-service'
         eyebrow={intl.formatMessage(messages.eyebrow)}
