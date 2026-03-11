@@ -27,6 +27,7 @@ import { ColumnSettings } from './components/column_settings';
 import { CriticalUpdateBanner } from './components/critical_update_banner';
 import { Announcements } from './components/announcements';
 import { AnnualReportTimeline } from '../annual_report/timeline';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -149,7 +150,12 @@ class HomeTimeline extends PureComponent {
     }
 
     return (
-      <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.title)}>
+      <Column
+        bindToDocument={!multiColumn}
+        ref={this.setRef}
+        label={intl.formatMessage(messages.title)}
+        className={classNames(workspaceStyles.column)}
+      >
         <ColumnHeader
           icon='home'
           iconComponent={matchesBreakpoint ? SymbolLogo : HomeIcon}
@@ -176,6 +182,7 @@ class HomeTimeline extends PureComponent {
             timelineId='home'
             emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Follow more people to fill it up.' />}
             bindToDocument={!multiColumn}
+            className={workspaceStyles.feedList}
           />
         ) : <NotSignedInIndicator />}
 

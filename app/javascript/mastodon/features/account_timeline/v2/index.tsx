@@ -23,6 +23,7 @@ import { useAccountVisibility } from '@/mastodon/hooks/useAccountVisibility';
 import { selectTimelineByKey } from '@/mastodon/selectors/timelines';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
+import workspaceStyles from '../../ui/components/workspace_shell.module.scss';
 import { AccountHeader } from '../components/account_header';
 import { LimitedAccountHint } from '../components/limited_account_hint';
 
@@ -47,7 +48,13 @@ const AccountTimelineV2: FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
 
   if (!accountId) {
     return (
-      <Column bindToDocument={!multiColumn}>
+      <Column
+        bindToDocument={!multiColumn}
+        className={classNames(
+          workspaceStyles.column,
+          workspaceStyles.profileColumn,
+        )}
+      >
         <LoadingIndicator />
       </Column>
     );
@@ -105,7 +112,13 @@ const InnerTimeline: FC<{ accountId: string; multiColumn: boolean }> = ({
   const isLoading = !!timeline?.isLoading || isPinnedLoading;
 
   return (
-    <Column bindToDocument={!multiColumn}>
+    <Column
+      bindToDocument={!multiColumn}
+      className={classNames(
+        workspaceStyles.column,
+        workspaceStyles.profileColumn,
+      )}
+    >
       <ColumnBackButton />
 
       <StatusList
@@ -124,7 +137,7 @@ const InnerTimeline: FC<{ accountId: string; multiColumn: boolean }> = ({
         bindToDocument={!multiColumn}
         timelineId='account'
         withCounters
-        className={classNames(classes.statusWrapper)}
+        className={classNames(classes.statusWrapper, workspaceStyles.feedList)}
         statusProps={{ headerRenderFn: renderPinnedStatusHeader }}
       />
     </Column>

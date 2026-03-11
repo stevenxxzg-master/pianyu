@@ -66,6 +66,7 @@ import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import { getAncestorsIds, getDescendantsIds } from 'mastodon/selectors/contexts';
 import Column from '../ui/components/column';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
+import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import ActionBar from './components/action_bar';
 import { DetailedStatus } from './components/detailed_status';
@@ -567,7 +568,7 @@ class Status extends ImmutablePureComponent {
     };
 
     return (
-      <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.detailedStatus)}>
+      <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.detailedStatus)} className={classNames(workspaceStyles.column)}>
         <ColumnHeader
           showBackButton
           multiColumn={multiColumn}
@@ -577,7 +578,7 @@ class Status extends ImmutablePureComponent {
         />
 
         <ScrollContainer scrollKey='thread' shouldUpdateScroll={this.shouldUpdateScroll} childRef={this.setContainerRef}>
-          <div className={classNames('item-list scrollable scrollable--flex', { fullscreen })} ref={this.setContainerRef}>
+          <div className={classNames('item-list scrollable scrollable--flex', workspaceStyles.threadFeed, { fullscreen })} ref={this.setContainerRef}>
             {ancestors}
 
             <Hotkeys handlers={handlers}>

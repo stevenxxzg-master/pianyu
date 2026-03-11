@@ -37,6 +37,7 @@ export default class StatusList extends ImmutablePureComponent {
     lastId: PropTypes.string,
     bindToDocument: PropTypes.bool,
     statusProps: PropTypes.object,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
