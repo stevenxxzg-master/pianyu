@@ -13,6 +13,7 @@ import WarningIcon from '@/material-icons/400-24px/warning.svg?react';
 import type { IconProp } from '../icon';
 import { Icon } from '../icon';
 import { IconButton } from '../icon_button';
+import surfaceClasses from '../surface/surface.module.css';
 
 import classes from './styles.module.css';
 
@@ -49,6 +50,15 @@ const variantClasses = {
   error: classes.variantError as string,
 } as const;
 
+const variantSurfaceTone = {
+  default: surfaceClasses.toneAccent,
+  feature: surfaceClasses.toneAccent,
+  inverted: surfaceClasses.toneInverse,
+  success: surfaceClasses.toneSuccess,
+  warning: surfaceClasses.toneWarning,
+  error: surfaceClasses.toneDanger,
+} as const;
+
 export const Callout: FC<CalloutProps> = ({
   className,
   variant = 'default',
@@ -69,6 +79,10 @@ export const Callout: FC<CalloutProps> = ({
     <aside
       className={classNames(
         className,
+        surfaceClasses.surface,
+        surfaceClasses.message,
+        surfaceClasses.densityDefault,
+        variantSurfaceTone[variant],
         classes.wrapper,
         variantClasses[variant],
       )}

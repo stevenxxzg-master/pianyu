@@ -1,6 +1,7 @@
 @use 'sass:color';
 @use 'variables' as *;
 @use 'mixins' as *;
+@use 'ui-primitives' as ui;
 
 .app-body {
   -webkit-overflow-scrolling: touch;
@@ -83,9 +84,19 @@
 }
 
 .button {
-  background-color: var(--color-bg-brand-base);
-  border: 10px none;
-  border-radius: 4px;
+  @include ui.control;
+
+  background: linear-gradient(
+    180deg,
+    color-mix(
+        in srgb,
+        var(--color-bg-brand-base) 82%,
+        var(--color-bg-brand-soft)
+      )
+      0%,
+    var(--color-bg-brand-base) 100%
+  );
+  border-color: color-mix(in srgb, var(--color-text-brand) 24%, transparent);
   box-sizing: border-box;
   color: var(--color-text-on-brand-base);
   cursor: pointer;
@@ -98,43 +109,103 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: 22px;
+  min-height: var(--ui-control-height-default);
   overflow: hidden;
-  padding: 7px 18px;
+  padding: 10px 18px;
   position: relative;
   text-align: center;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: auto;
+  box-shadow:
+    var(--ui-control-shadow),
+    0 14px 24px color-mix(in srgb, var(--color-bg-brand-base) 22%, transparent);
 
   &:active,
   &:focus,
   &:hover {
-    background-color: var(--color-bg-brand-base-hover);
+    color: var(--color-text-on-brand-base);
+    text-decoration: none;
+    border-color: color-mix(in srgb, var(--color-text-brand) 30%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--color-bg-brand-base-hover) 78%,
+          var(--color-bg-brand-soft)
+        )
+        0%,
+      var(--color-bg-brand-base-hover) 100%
+    );
+    box-shadow:
+      var(--ui-control-shadow),
+      0 18px 28px
+        color-mix(in srgb, var(--color-bg-brand-base) 24%, transparent);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-bg-brand-base);
-    outline-offset: 2px;
+    box-shadow:
+      var(--ui-control-shadow),
+      0 18px 28px
+        color-mix(in srgb, var(--color-bg-brand-base) 24%, transparent),
+      var(--ui-focus-ring);
   }
 
   &--compact {
-    font-size: 14px;
-    line-height: normal;
-    font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 4px;
+    min-height: var(--ui-control-height-compact);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 8px 12px;
   }
 
   &--dangerous {
-    background-color: var(--color-bg-error-base);
+    background: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--color-bg-error-base) 84%,
+          var(--color-bg-error-soft)
+        )
+        0%,
+      var(--color-bg-error-base) 100%
+    );
+    border-color: color-mix(in srgb, var(--color-text-error) 26%, transparent);
     color: var(--color-text-on-error-base);
+    box-shadow:
+      var(--ui-control-shadow),
+      0 14px 24px
+        color-mix(in srgb, var(--color-bg-error-base) 18%, transparent);
 
     &:active,
     &:focus,
     &:hover {
-      background-color: var(--color-bg-error-base-hover);
+      color: var(--color-text-on-error-base);
+      border-color: color-mix(
+        in srgb,
+        var(--color-text-error) 30%,
+        transparent
+      );
+      background: linear-gradient(
+        180deg,
+        color-mix(
+            in srgb,
+            var(--color-bg-error-base-hover) 82%,
+            var(--color-bg-error-soft)
+          )
+          0%,
+        var(--color-bg-error-base-hover) 100%
+      );
       transition: none;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        var(--ui-control-shadow),
+        0 14px 24px
+          color-mix(in srgb, var(--color-bg-error-base) 18%, transparent),
+        0 0 0 3px color-mix(in srgb, var(--color-text-error) 20%, transparent);
     }
   }
 
@@ -150,9 +221,7 @@
 
   &:disabled,
   &.disabled {
-    color: var(--color-text-on-disabled);
-    background-color: var(--color-bg-disabled);
-    cursor: not-allowed;
+    box-shadow: none;
   }
 
   &.copyable {
@@ -166,26 +235,61 @@
   }
 
   &.button-secondary {
+    @include ui.control;
+
     color: var(--color-text-brand);
-    background: transparent;
-    padding: 6px 17px;
-    border: 1px solid var(--color-text-brand);
+    background: var(--ui-control-bg);
+    padding: 10px 17px;
+    border-color: color-mix(
+      in srgb,
+      var(--color-text-brand) 26%,
+      var(--ui-control-border)
+    );
+    box-shadow: var(--ui-control-shadow);
 
     &:active,
     &:focus,
     &:hover {
-      border-color: var(--color-text-brand);
+      border-color: color-mix(
+        in srgb,
+        var(--color-text-brand) 32%,
+        var(--ui-control-border)
+      );
       color: var(--color-text-brand);
-      background-color: transparent;
+      background: color-mix(
+        in srgb,
+        var(--color-bg-brand-softer) 52%,
+        var(--ui-control-bg)
+      );
       text-decoration: none;
     }
 
+    &:focus-visible {
+      box-shadow: var(--ui-control-shadow), var(--ui-focus-ring);
+    }
+
     &.button--destructive {
+      color: var(--color-text-error);
+      border-color: color-mix(
+        in srgb,
+        var(--color-text-error) 28%,
+        var(--ui-control-border)
+      );
+
       &:active,
       &:focus,
       &:hover {
-        border-color: var(--color-text-error);
         color: var(--color-text-error);
+        border-color: color-mix(
+          in srgb,
+          var(--color-text-error) 34%,
+          var(--ui-control-border)
+        );
+        background: color-mix(
+          in srgb,
+          var(--color-bg-error-softer) 48%,
+          var(--ui-control-bg)
+        );
       }
     }
 
@@ -193,6 +297,7 @@
     &.disabled {
       border-color: var(--color-text-disabled);
       color: var(--color-text-disabled);
+      background: transparent;
 
       &:active,
       &:focus,
@@ -206,13 +311,15 @@
   &.button--plain {
     color: var(--color-text-brand);
     background: transparent;
-    padding: 6px;
+    padding: 8px 10px;
 
     // The button has no outline, so we use negative margin to
     // visually align its label with its surroundings while maintaining
     // a generous click target
-    margin-inline: -6px;
+    margin-inline: -10px;
     border: 1px solid transparent;
+    min-height: auto;
+    box-shadow: none;
 
     &:active,
     &:focus,
@@ -912,14 +1019,19 @@ body > [data-popper-placement] {
 }
 
 .dropdown-button {
+  @include ui.control('compact');
+
   display: flex;
   align-items: center;
   gap: 4px;
   color: var(--color-text-brand);
-  background: transparent;
-  border: 1px solid var(--color-text-brand);
-  border-radius: 6px;
-  padding: 4px 8px;
+  background: var(--ui-control-bg);
+  border-color: color-mix(
+    in srgb,
+    var(--color-text-brand) 24%,
+    var(--ui-control-border)
+  );
+  padding: 7px 10px;
   font-size: 13px;
   line-height: normal;
   font-weight: 400;
@@ -927,15 +1039,11 @@ body > [data-popper-placement] {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  &:focus-visible {
-    outline: var(--outline-focus-default);
-    outline-offset: 2px;
-  }
-
   &[disabled] {
     cursor: default;
     color: var(--color-text-disabled);
     border-color: var(--color-text-disabled);
+    background: transparent;
   }
 
   .icon {
@@ -953,18 +1061,44 @@ body > [data-popper-placement] {
 
   &.active {
     color: var(--color-text-on-brand-base);
-    border-color: var(--color-bg-brand-base);
-    background: var(--color-bg-brand-base);
+    border-color: color-mix(in srgb, var(--color-text-brand) 24%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--color-bg-brand-base) 82%,
+          var(--color-bg-brand-soft)
+        )
+        0%,
+      var(--color-bg-brand-base) 100%
+    );
   }
 
   &.warning {
     color: var(--color-text-warning);
-    border-color: var(--color-text-warning);
+    border-color: color-mix(
+      in srgb,
+      var(--color-text-warning) 28%,
+      var(--ui-control-border)
+    );
 
     &.active {
       color: var(--color-text-on-warning-base);
-      border-color: var(--color-bg-warning-base);
-      background-color: var(--color-bg-warning-base);
+      border-color: color-mix(
+        in srgb,
+        var(--color-text-warning) 28%,
+        transparent
+      );
+      background: linear-gradient(
+        180deg,
+        color-mix(
+            in srgb,
+            var(--color-bg-warning-base) 84%,
+            var(--color-bg-warning-soft)
+          )
+          0%,
+        var(--color-bg-warning-base) 100%
+      );
     }
   }
 }
@@ -2774,12 +2908,9 @@ a.account__display-name {
 }
 
 .dropdown-menu {
-  background: var(--color-bg-primary);
-  backdrop-filter: $backdrop-blur-filter;
-  border: 1px solid var(--color-border-primary);
-  padding: 4px;
-  border-radius: 4px;
-  box-shadow: var(--dropdown-shadow);
+  @include ui.surface('popover');
+
+  padding: 6px;
   z-index: 9999;
 
   &__text-button {
@@ -3256,10 +3387,24 @@ a.account__display-name {
   }
 
   .search__input {
-    line-height: 18px;
-    font-size: 16px;
-    padding-block: 15px;
-    padding-inline-end: 30px;
+    @include ui.text-field;
+
+    display: block;
+    padding-block: 12px;
+    padding-inline: 16px;
+    padding-inline-start: 16px + 15px + 8px;
+    line-height: normal;
+    border-radius: var(--ui-radius-control);
+
+    &::-moz-focus-inner {
+      border: 0;
+    }
+
+    &::-moz-focus-inner,
+    &:focus,
+    &:active {
+      outline: 0 !important;
+    }
   }
 
   .scrollable {
@@ -3286,7 +3431,116 @@ a.account__display-name {
   }
 
   .search-page .search {
-    display: none;
+    margin-bottom: 32px;
+    position: relative;
+
+    .layout-multiple-columns & {
+      margin-bottom: 10px;
+    }
+
+    &__popout {
+      box-sizing: border-box;
+      display: none;
+      position: absolute;
+      inset-inline-start: 0;
+      margin-top: -2px;
+      width: 100%;
+      z-index: 99;
+      font-size: 13px;
+      padding: 15px 6px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      h4 {
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+        padding: 0 10px;
+        margin-bottom: 10px;
+      }
+
+      .icon-button {
+        padding: 0;
+        color: var(--color-text-secondary);
+      }
+
+      .icon {
+        width: 18px;
+        height: 18px;
+      }
+
+      &__menu {
+        margin-bottom: 20px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        &__message {
+          color: var(--color-text-secondary);
+          padding: 0 10px;
+        }
+
+        &__item {
+          display: block;
+          box-sizing: border-box;
+          width: 100%;
+          border: 0;
+          font: inherit;
+          background: transparent;
+          color: var(--color-text-secondary);
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 12px;
+          text-align: start;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+
+          &--flex {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .icon-button {
+            transition: none;
+          }
+
+          &:hover,
+          &:focus,
+          &:active,
+          &.selected {
+            color: var(--color-text-on-brand-base);
+            background: var(--color-bg-brand-base);
+
+            .icon-button {
+              color: inherit;
+            }
+          }
+
+          mark {
+            background: transparent;
+            font-weight: 700;
+            color: var(--color-text-primary);
+          }
+
+          span {
+            overflow: inherit;
+            text-overflow: inherit;
+          }
+        }
+      }
+    }
+
+    &.active {
+      .search__input {
+        border-radius: var(--ui-radius-control) var(--ui-radius-control) 0 0;
+      }
+
+      .search__popout {
+        display: block;
+      }
+    }
   }
 
   .navigation-panel__legal,
@@ -3336,8 +3590,34 @@ a.account__display-name {
     .tabs-bar__wrapper .column-back-button,
     .explore__search-header,
     .column-search-header {
-      border-left: 0;
-      border-right: 0;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--color-border-primary);
+      border-top: 0;
+      border-bottom: 0;
+      padding: 16px;
+      padding-bottom: 8px;
+
+      input {
+        @include ui.text-field;
+
+        color: var(--color-text-primary);
+        padding: 11px 16px;
+        font-size: 16px;
+        line-height: normal;
+        display: block;
+        flex: 1 1 auto;
+
+        &::placeholder {
+          color: var(--color-text-secondary);
+          opacity: 1;
+        }
+
+        &:focus {
+          outline: 0;
+        }
+      }
     }
 
     .column-header,
@@ -5230,9 +5510,13 @@ a.status-card {
 }
 
 .empty-column-indicator {
+  @include ui.surface;
+
   color: var(--color-text-secondary);
   text-align: center;
-  padding: 20px;
+  max-width: min(560px, calc(100% - 32px));
+  margin: 16px auto;
+  padding: 24px;
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
@@ -5241,6 +5525,7 @@ a.status-card {
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
+  min-height: 180px;
 
   & > span {
     max-width: 500px;
@@ -5551,11 +5836,7 @@ a.status-card {
 .privacy-dropdown__dropdown,
 .language-dropdown__dropdown,
 .visibility-dropdown__dropdown {
-  box-shadow: var(--dropdown-shadow);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-primary);
-  padding: 4px;
-  border-radius: 4px;
+  padding: 6px;
   overflow: hidden;
   z-index: 2;
 
@@ -5826,13 +6107,11 @@ a.status-card {
     inset-inline-start: 0;
     margin-top: -2px;
     width: 100%;
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border-primary);
-    border-radius: 0 0 4px 4px;
-    box-shadow: var(--dropdown-shadow);
     z-index: 99;
     font-size: 13px;
-    padding: 15px 5px;
+    padding: 15px 6px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
     h4 {
       text-transform: uppercase;
@@ -5874,7 +6153,7 @@ a.status-card {
         color: var(--color-text-secondary);
         padding: 10px;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: 12px;
         text-align: start;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -5917,7 +6196,7 @@ a.status-card {
 
   &.active {
     .search__input {
-      border-radius: 4px 4px 0 0;
+      border-radius: var(--ui-radius-control) var(--ui-radius-control) 0 0;
     }
 
     .search__popout {
@@ -5927,12 +6206,14 @@ a.status-card {
 }
 
 .search__input {
-  @include search-input;
+  @include ui.text-field;
 
   display: block;
-  padding: 12px 16px;
+  padding-block: 12px;
+  padding-inline: 16px;
   padding-inline-start: 16px + 15px + 8px;
   line-height: normal;
+  border-radius: var(--ui-radius-control);
 
   &::-moz-focus-inner {
     border: 0;
@@ -6587,10 +6868,7 @@ a.status-card {
   width: 588px;
   max-height: 80vh;
   flex-direction: column;
-  background: var(--color-bg-primary);
-  backdrop-filter: $backdrop-blur-filter;
-  border: 1px solid var(--color-border-primary);
-  border-radius: 16px;
+  overflow: hidden;
 
   &__header {
     box-sizing: border-box;
@@ -6599,8 +6877,8 @@ a.status-card {
     align-items: center;
     justify-content: space-between;
     flex-direction: row-reverse;
-    padding: 12px 24px;
-    min-height: 61px;
+    padding: 16px 24px;
+    min-height: 68px;
 
     &__title {
       font-size: 16px;
@@ -6617,7 +6895,7 @@ a.status-card {
     overflow-y: auto;
 
     &__description {
-      margin: 24px 24px 0;
+      margin: 20px 24px 0;
       color: var(--color-text-secondary);
 
       a {
@@ -6629,7 +6907,7 @@ a.status-card {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding: 24px;
+      padding: 20px 24px 24px;
     }
 
     &__preview {
@@ -6671,13 +6949,10 @@ a.status-card {
   }
 
   &__popout {
-    background: var(--color-bg-primary);
-    backdrop-filter: $backdrop-blur-filter;
-    border: 1px solid var(--color-border-primary);
-    box-shadow: var(--dropdown-shadow);
+    @include ui.surface('popover');
+
     max-width: 320px;
     padding: 16px;
-    border-radius: 8px;
     z-index: 9999 !important;
     font-size: 14px;
     line-height: 20px;
@@ -11486,13 +11761,12 @@ noscript {
   padding-bottom: 8px;
 
   input {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border-primary);
+    @include ui.text-field;
+
     color: var(--color-text-primary);
-    padding: 12px;
+    padding: 11px 16px;
     font-size: 16px;
     line-height: normal;
-    border-radius: 4px;
     display: block;
     flex: 1 1 auto;
 

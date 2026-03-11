@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 
+import { ModalSurface } from '../surface';
+
 interface ModalShellProps {
   className?: string;
   children?: React.ReactNode;
@@ -10,7 +12,7 @@ export const ModalShell: React.FC<ModalShellProps> = ({
   className,
 }) => {
   return (
-    <div
+    <ModalSurface
       className={classNames(
         'modal-root__modal',
         'safety-action-modal',
@@ -18,7 +20,7 @@ export const ModalShell: React.FC<ModalShellProps> = ({
       )}
     >
       {children}
-    </div>
+    </ModalSurface>
   );
 };
 

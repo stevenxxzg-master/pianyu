@@ -1,0 +1,118 @@
+@use 'variables' as *;
+
+@mixin control($density: 'default') {
+  $min-height: var(--ui-control-height-default);
+
+  @if $density == 'compact' {
+    $min-height: var(--ui-control-height-compact);
+  }
+
+  min-height: $min-height;
+  border: 1px solid var(--ui-control-border);
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-control-bg);
+  box-shadow: var(--ui-control-shadow);
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+
+  &:hover:not(:disabled, .disabled) {
+    background: var(--ui-control-bg-hover);
+    border-color: var(--ui-control-border-hover);
+  }
+
+  &:active:not(:disabled, .disabled) {
+    background: var(--ui-control-bg-active);
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--ui-control-border-focus);
+    box-shadow: var(--ui-control-shadow), var(--ui-focus-ring);
+  }
+
+  &:disabled,
+  &.disabled {
+    color: var(--color-text-on-disabled);
+    background: var(--color-bg-disabled);
+    border-color: transparent;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin text-field($density: 'default') {
+  $padding-block: 11px;
+  $padding-inline: 16px;
+
+  @if $density == 'compact' {
+    $padding-block: 8px;
+    $padding-inline: 12px;
+  }
+
+  @include control($density);
+
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding-block: $padding-block;
+  padding-inline: $padding-inline;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-primary);
+  resize: vertical;
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+  }
+
+  &:focus:user-invalid,
+  &:required:user-invalid,
+  [data-has-error='true'] & {
+    border-color: var(--color-text-error);
+    box-shadow:
+      var(--ui-control-shadow),
+      0 0 0 3px color-mix(in srgb, var(--color-text-error) 20%, transparent);
+  }
+
+  &:required:user-valid {
+    border-color: color-mix(
+      in srgb,
+      var(--color-text-success) 45%,
+      var(--ui-control-border)
+    );
+  }
+
+  &:disabled {
+    color: var(--color-text-disabled);
+  }
+}
+
+@mixin surface($variant: 'panel') {
+  $border-radius: var(--ui-radius-surface);
+  $box-shadow: var(--ui-surface-shadow);
+
+  @if $variant == 'card' {
+    $border-radius: var(--ui-radius-card);
+  } @else if $variant == 'popover' {
+    $border-radius: var(--ui-radius-popover);
+    $box-shadow: var(--ui-surface-shadow-floating);
+  } @else if $variant == 'modal' {
+    $box-shadow: var(--ui-surface-shadow-floating);
+  }
+
+  background: var(--ui-surface-bg);
+  border: 1px solid var(--ui-surface-border);
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  @if $variant == 'popover' or $variant == 'modal' {
+    backdrop-filter: $backdrop-blur-filter;
+  }
+}

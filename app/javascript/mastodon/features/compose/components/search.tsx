@@ -28,6 +28,7 @@ import {
   openURL,
 } from 'mastodon/actions/search';
 import { Icon } from 'mastodon/components/icon';
+import { PopoverSurface } from 'mastodon/components/surface';
 import { useIdentity } from 'mastodon/identity_context';
 import { domain, searchEnabled } from 'mastodon/initial_state';
 import type { RecentSearch, SearchType } from 'mastodon/models/search';
@@ -567,8 +568,7 @@ export const Search: React.FC<{
 
       <ClearButton hasValue={hasValue} onClick={handleClear} />
 
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <div
+      <PopoverSurface
         className='search__popout'
         role='dialog'
         tabIndex={-1}
@@ -689,7 +689,7 @@ export const Search: React.FC<{
             )}
           </div>
         )}
-      </div>
+      </PopoverSurface>
     </form>
   );
 };

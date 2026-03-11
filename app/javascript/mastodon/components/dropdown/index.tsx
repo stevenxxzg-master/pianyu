@@ -13,6 +13,7 @@ import UnfoldMoreIcon from '@/material-icons/400-24px/unfold_more.svg?react';
 import type { SelectItem } from '../dropdown_selector';
 import { DropdownSelector } from '../dropdown_selector';
 import { Icon } from '../icon';
+import { PopoverSurface } from '../surface';
 
 import { matchWidth } from './utils';
 
@@ -117,7 +118,7 @@ export const Dropdown: FC<
       >
         {({ props, placement }) => (
           <div {...props} className={`${classPrefix}__overlay`}>
-            <div
+            <PopoverSurface
               className={classNames(
                 'dropdown-animation',
                 `${classPrefix}__dropdown`,
@@ -132,7 +133,7 @@ export const Dropdown: FC<
                 onChange={onChange}
                 classNamePrefix={classPrefix}
               />
-            </div>
+            </PopoverSurface>
           </div>
         )}
       </Overlay>

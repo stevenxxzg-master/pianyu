@@ -11,6 +11,7 @@ import KeyboardArrowUpIcon from '@/material-icons/400-24px/keyboard_arrow_up.svg
 import SearchIcon from '@/material-icons/400-24px/search.svg?react';
 import { matchWidth } from 'mastodon/components/dropdown/utils';
 import { IconButton } from 'mastodon/components/icon_button';
+import { PopoverSurface } from 'mastodon/components/surface';
 import { useOnClickOutside } from 'mastodon/hooks/useOnClickOutside';
 
 import classes from './combobox.module.scss';
@@ -384,7 +385,10 @@ const ComboboxWithRef = <T extends ComboboxItem>(
         }}
       >
         {({ props, placement }) => (
-          <div {...props} className={classNames(classes.popover, placement)}>
+          <PopoverSurface
+            {...props}
+            className={classNames(classes.popover, placement)}
+          >
             {showStatusMessageInMenu ? (
               <span className={classes.emptyMessage}>{statusMessage}</span>
             ) : (
@@ -421,7 +425,7 @@ const ComboboxWithRef = <T extends ComboboxItem>(
                 })}
               </ul>
             )}
-          </div>
+          </PopoverSurface>
         )}
       </Overlay>
     </div>

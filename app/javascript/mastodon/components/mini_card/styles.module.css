@@ -4,9 +4,6 @@
 }
 
 .card {
-  border: 1px solid var(--color-border-primary);
-  padding: 8px;
-  border-radius: 8px;
   flex-shrink: 0;
   display: grid;
   grid-template-rows: repeat(2, 1fr);

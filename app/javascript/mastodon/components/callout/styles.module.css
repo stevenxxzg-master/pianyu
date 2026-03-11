@@ -1,11 +1,7 @@
 .wrapper {
   display: flex;
   align-items: start;
-  padding: 12px;
   gap: 8px;
-  background-color: var(--color-bg-brand-softer);
-  color: var(--color-text-primary);
-  border-radius: 12px;
 }
 
 .icon {
@@ -52,10 +48,10 @@
   font-weight: 500;
   padding: 0;
   text-decoration: underline;
-  transition: color 0.1s ease-in-out;
+  transition: opacity 0.1s ease-in-out;
 
   &:hover {
-    color: var(--color-text-brand-soft);
+    opacity: 0.74;
   }
 }
 
@@ -76,7 +72,7 @@
 
 .variantDefault {
   .icon {
-    background-color: var(--color-bg-brand-soft);
+    background-color: var(--surface-accent);
   }
 }
 
@@ -90,39 +86,42 @@
 } */
 
 .variantFeature {
-  background-color: var(--color-bg-brand-base);
-  color: var(--color-text-on-brand-base);
-
-  button:hover {
-    color: color-mix(var(--color-text-on-brand-base), transparent 20%);
-  }
+  --surface-bg: var(--color-bg-brand-base);
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-on-brand-base) 18%,
+    transparent
+  );
+  --surface-color: var(--color-text-on-brand-base);
+  --surface-accent: color-mix(
+    in srgb,
+    var(--color-text-on-brand-base) 18%,
+    transparent
+  );
 }
 
 .variantInverted {
-  background-color: var(--color-bg-inverted);
-  color: var(--color-text-on-inverted);
+  --surface-accent: color-mix(
+    in srgb,
+    var(--color-text-on-inverted) 18%,
+    transparent
+  );
 }
 
 .variantSuccess {
-  background-color: var(--color-bg-success-softer);
-
   .icon {
-    background-color: var(--color-bg-success-soft);
+    background-color: var(--surface-accent);
   }
 }
 
 .variantWarning {
-  background-color: var(--color-bg-warning-softer);
-
   .icon {
-    background-color: var(--color-bg-warning-soft);
+    background-color: var(--surface-accent);
   }
 }
 
 .variantError {
-  background-color: var(--color-bg-error-softer);
-
   .icon {
-    background-color: var(--color-bg-error-soft);
+    background-color: var(--surface-accent);
   }
 }
