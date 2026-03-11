@@ -12,6 +12,71 @@ html {
   --avatar-border-radius: 8px;
   --max-media-height-small: 460px;
   --max-media-height-large: 566px;
+  --ui-radius-control: 14px;
+  --ui-radius-card: 16px;
+  --ui-radius-surface: 20px;
+  --ui-radius-popover: 18px;
+  --ui-radius-pill: 999px;
+  --ui-control-height-default: 44px;
+  --ui-control-height-compact: 36px;
+  --ui-control-bg: color-mix(
+    in srgb,
+    var(--color-bg-primary) 58%,
+    var(--color-bg-secondary)
+  );
+  --ui-control-bg-hover: color-mix(
+    in srgb,
+    var(--ui-control-bg) 82%,
+    var(--color-bg-tertiary)
+  );
+  --ui-control-bg-active: color-mix(
+    in srgb,
+    var(--ui-control-bg) 72%,
+    var(--color-bg-tertiary)
+  );
+  --ui-control-border: color-mix(
+    in srgb,
+    var(--color-border-primary) 84%,
+    var(--color-text-primary) 16%
+  );
+  --ui-control-border-hover: color-mix(
+    in srgb,
+    var(--ui-control-border) 72%,
+    var(--color-text-primary) 28%
+  );
+  --ui-control-border-focus: color-mix(
+    in srgb,
+    var(--color-text-brand) 65%,
+    var(--ui-control-border)
+  );
+  --ui-control-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-white) 24%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-shadow-primary) 12%, transparent);
+  --ui-focus-ring: 0 0 0 3px
+    color-mix(in srgb, var(--color-text-brand) 20%, transparent);
+  --ui-surface-bg: color-mix(
+    in srgb,
+    var(--color-bg-primary) 90%,
+    var(--color-bg-secondary)
+  );
+  --ui-surface-muted-bg: color-mix(
+    in srgb,
+    var(--color-bg-primary) 72%,
+    var(--color-bg-secondary)
+  );
+  --ui-surface-border: color-mix(
+    in srgb,
+    var(--color-border-primary) 84%,
+    var(--color-text-primary) 16%
+  );
+  --ui-surface-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-white) 24%, transparent),
+    0 18px 36px color-mix(in srgb, var(--color-shadow-primary) 6%, transparent),
+    0 2px 10px color-mix(in srgb, var(--color-shadow-primary) 5%, transparent);
+  --ui-surface-shadow-floating: var(--dropdown-shadow);
+  --ui-panel-padding: 20px;
+  --ui-card-padding: 14px;
+  --ui-message-padding: 14px;
 
   // Variable for easily inverting directional UI elements,
   --text-x-direction: 1;

@@ -7,6 +7,7 @@ import type { OmitUnion } from '@/mastodon/utils/types';
 
 import { Icon } from '../icon';
 import type { IconProp } from '../icon';
+import { Card } from '../surface';
 
 import classes from './styles.module.css';
 
@@ -41,7 +42,7 @@ export const MiniCard = forwardRef<HTMLDivElement, MiniCardProps>(
     }
 
     return (
-      <div
+      <Card
         {...props}
         className={classNames(
           classes.card,
@@ -61,7 +62,7 @@ export const MiniCard = forwardRef<HTMLDivElement, MiniCardProps>(
         <dt className={classes.label}>{label}</dt>
         <dd className={classes.value}>{value}</dd>
         {children}
-      </div>
+      </Card>
     );
   },
 );

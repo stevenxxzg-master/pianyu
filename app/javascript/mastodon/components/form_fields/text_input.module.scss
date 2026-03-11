@@ -1,65 +1,33 @@
-.input {
-  box-sizing: border-box;
-  display: block;
-  resize: vertical;
-  width: 100%;
-  padding: 10px 16px;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--color-text-primary);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-primary);
-  border-radius: 4px;
-  outline: var(--outline-focus-default);
-  outline-color: transparent;
-  outline-offset: -1px;
-  transition: outline-color 0.15s ease-out;
+@use '../../../styles/mastodon/ui-primitives' as ui;
 
-  @media screen and (width <= 600px) {
-    font-size: 16px;
-  }
+.input {
+  @include ui.text-field;
 
   .iconWrapper & {
     // Make space for icon displayed at start of input
-    padding-inline-start: 36px;
-  }
-
-  &::placeholder {
-    color: var(--color-text-secondary);
-  }
-
-  &:focus {
-    outline-color: var(--color-text-brand);
-  }
-
-  &:focus:user-invalid,
-  &:required:user-invalid,
-  [data-has-error='true'] & {
-    outline-color: var(--color-text-error);
-  }
-
-  &:required:user-valid {
-    outline-color: var(--color-text-success);
-  }
-
-  &:disabled {
-    color: var(--color-text-disabled);
-    border-color: transparent;
-    cursor: not-allowed;
+    padding-inline-start: 44px;
   }
 }
 
 .iconWrapper {
   position: relative;
+
+  &:has(.input:focus-visible) .icon {
+    color: var(--color-text-brand);
+  }
+
+  &:has(.input:disabled) .icon {
+    color: var(--color-text-disabled);
+  }
 }
 
 .icon {
   pointer-events: none;
   position: absolute;
-  width: 22px;
-  height: 22px;
-  inset-inline-start: 10px;
-  inset-block-start: 10px;
+  width: 20px;
+  height: 20px;
+  inset-inline-start: 14px;
+  inset-block-start: calc(50% - 10px);
   color: var(--color-text-secondary);
+  transition: color 0.18s ease;
 }

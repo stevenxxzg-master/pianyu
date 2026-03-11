@@ -1,0 +1,148 @@
+.surface {
+  --surface-bg: var(--ui-surface-bg);
+  --surface-border: var(--ui-surface-border);
+  --surface-shadow: var(--ui-surface-shadow);
+  --surface-padding: var(--ui-panel-padding);
+  --surface-gap: 16px;
+  --surface-color: var(--color-text-primary);
+  --surface-accent: color-mix(
+    in srgb,
+    var(--color-text-primary) 12%,
+    transparent
+  );
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--surface-gap);
+  color: var(--surface-color);
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--ui-radius-surface);
+  box-shadow: var(--surface-shadow);
+}
+
+.panel,
+.card,
+.message {
+  padding: var(--surface-padding);
+}
+
+.card {
+  --surface-padding: var(--ui-card-padding);
+
+  border-radius: var(--ui-radius-card);
+  gap: 10px;
+}
+
+.popover {
+  --surface-padding: 10px;
+  --surface-shadow: var(--ui-surface-shadow-floating);
+
+  padding: var(--surface-padding);
+  border-radius: var(--ui-radius-popover);
+  backdrop-filter: blur(10px) saturate(180%) contrast(75%) brightness(70%);
+}
+
+.modal {
+  --surface-shadow: var(--ui-surface-shadow-floating);
+
+  gap: 0;
+  border-radius: calc(var(--ui-radius-surface) + 2px);
+  overflow: hidden;
+  backdrop-filter: blur(10px) saturate(180%) contrast(75%) brightness(70%);
+}
+
+.message {
+  --surface-padding: var(--ui-message-padding);
+
+  gap: 12px;
+}
+
+.toneDefault {
+  --surface-accent: color-mix(
+    in srgb,
+    var(--color-text-primary) 12%,
+    transparent
+  );
+}
+
+.toneAccent {
+  --surface-bg: color-mix(
+    in srgb,
+    var(--color-bg-brand-softer) 76%,
+    var(--ui-surface-bg)
+  );
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-brand) 20%,
+    var(--ui-surface-border)
+  );
+  --surface-accent: var(--color-bg-brand-soft);
+}
+
+.toneSuccess {
+  --surface-bg: color-mix(
+    in srgb,
+    var(--color-bg-success-softer) 82%,
+    var(--ui-surface-bg)
+  );
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-success) 20%,
+    var(--ui-surface-border)
+  );
+  --surface-accent: var(--color-bg-success-soft);
+}
+
+.toneWarning {
+  --surface-bg: color-mix(
+    in srgb,
+    var(--color-bg-warning-softer) 82%,
+    var(--ui-surface-bg)
+  );
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-warning) 20%,
+    var(--ui-surface-border)
+  );
+  --surface-accent: var(--color-bg-warning-soft);
+}
+
+.toneDanger {
+  --surface-bg: color-mix(
+    in srgb,
+    var(--color-bg-error-softer) 82%,
+    var(--ui-surface-bg)
+  );
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-error) 22%,
+    var(--ui-surface-border)
+  );
+  --surface-accent: var(--color-bg-error-soft);
+}
+
+.toneInverse {
+  --surface-bg: var(--color-bg-inverted);
+  --surface-border: color-mix(
+    in srgb,
+    var(--color-text-on-inverted) 18%,
+    transparent
+  );
+  --surface-shadow: var(--ui-surface-shadow-floating);
+  --surface-color: var(--color-text-on-inverted);
+  --surface-accent: color-mix(
+    in srgb,
+    var(--color-text-on-inverted) 18%,
+    transparent
+  );
+}
+
+.densityCompact {
+  --surface-gap: 12px;
+}
+
+.densityDefault {
+  --surface-gap: 16px;
+}

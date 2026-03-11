@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 import { Button } from '@/mastodon/components/button';
 import { IconButton } from '@/mastodon/components/icon_button';
+import { ModalSurface } from '@/mastodon/components/surface';
 import CloseIcon from '@/material-icons/400-24px/close.svg?react';
 
 export type { BaseConfirmationModalProps as DialogModalProps } from './confirmation_modals/confirmation_modal';
@@ -34,7 +35,9 @@ export const DialogModal: FC<DialogModalProps> = ({
   const intl = useIntl();
 
   return (
-    <div className={classNames('modal-root__modal dialog-modal', className)}>
+    <ModalSurface
+      className={classNames('modal-root__modal dialog-modal', className)}
+    >
       <div className='dialog-modal__header'>
         <IconButton
           className='dialog-modal__header__close'
@@ -79,6 +82,6 @@ export const DialogModal: FC<DialogModalProps> = ({
           {buttons}
         </div>
       )}
-    </div>
+    </ModalSurface>
   );
 };

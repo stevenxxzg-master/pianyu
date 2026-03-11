@@ -1,5 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
+import { Panel } from '../surface';
+
 import classes from './empty_state.module.scss';
 
 /**
@@ -20,13 +22,13 @@ export const EmptyState: React.FC<{
   children,
 }) => {
   return (
-    <div className={classes.wrapper}>
+    <Panel className={classes.wrapper}>
       <div className={classes.content}>
         <h3>{title}</h3>
         {!!message && <p>{message}</p>}
       </div>
 
       {children}
-    </div>
+    </Panel>
   );
 };

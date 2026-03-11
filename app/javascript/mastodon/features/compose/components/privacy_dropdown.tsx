@@ -14,6 +14,7 @@ import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import QuietTimeIcon from '@/material-icons/400-24px/quiet_time.svg?react';
 import { DropdownSelector } from 'mastodon/components/dropdown_selector';
 import { Icon } from 'mastodon/components/icon';
+import { PopoverSurface } from 'mastodon/components/surface';
 
 export const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
@@ -177,7 +178,7 @@ const PrivacyDropdown: React.FC<PrivacyDropdownProps> = ({
       >
         {({ props, placement }) => (
           <div {...props}>
-            <div
+            <PopoverSurface
               className={`dropdown-animation privacy-dropdown__dropdown ${placement}`}
             >
               <DropdownSelector
@@ -187,7 +188,7 @@ const PrivacyDropdown: React.FC<PrivacyDropdownProps> = ({
                 // @ts-expect-error DropdownSelector doesn't yet return the correct type for onChange
                 onChange={onChange}
               />
-            </div>
+            </PopoverSurface>
           </div>
         )}
       </Overlay>
