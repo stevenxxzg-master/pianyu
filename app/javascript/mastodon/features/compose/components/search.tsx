@@ -41,6 +41,24 @@ const messages = defineMessages({
     id: 'search.search_or_paste',
     defaultMessage: 'Search or paste URL',
   },
+  popoutEyebrow: {
+    id: 'search_popout.quick_start',
+    defaultMessage: 'Quick start',
+  },
+  popoutTitle: {
+    id: 'search_popout.find_people_posts_or_paste_url',
+    defaultMessage: 'Find people, posts, or paste a URL',
+  },
+  popoutDescriptionSignedIn: {
+    id: 'search_popout.modern_description.logged_in',
+    defaultMessage:
+      'Recent searches stay close, and advanced operators are ready when you need them.',
+  },
+  popoutDescriptionSignedOut: {
+    id: 'search_popout.modern_description.logged_out',
+    defaultMessage:
+      'Search profiles, hashtags, or paste a URL to jump straight in.',
+  },
 });
 
 const labelForRecentSearch = (search: RecentSearch) => {
@@ -92,7 +110,8 @@ interface SearchOption {
 export const Search: React.FC<{
   singleColumn: boolean;
   initialValue?: string;
-}> = ({ singleColumn, initialValue }) => {
+  modernized?: boolean;
+}> = ({ singleColumn, initialValue, modernized = false }) => {
   const intl = useIntl();
   const recent = useAppSelector((state) => state.search.recent);
   const { signedIn } = useIdentity();
@@ -544,10 +563,17 @@ export const Search: React.FC<{
     return () => null;
   }, [expanded]);
 
-  const searchOptionsHeading = useId();
+  const searchPopoutHeading = useId();
 
   return (
-    <form ref={formRef} className={classNames('search', { active: expanded })}>
+    <form
+      ref={formRef}
+      className={classNames('search', {
+        active: expanded,
+        'search--modernized': modernized,
+        'search--single-column': modernized && singleColumn,
+      })}
+    >
       <input
         ref={searchInputRef}
         className='search__input'
@@ -572,122 +598,264 @@ export const Search: React.FC<{
         className='search__popout'
         role='dialog'
         tabIndex={-1}
-        aria-labelledby={searchOptionsHeading}
+        aria-labelledby={searchPopoutHeading}
         onKeyDown={handleKeyDown}
       >
-        {!hasValue && (
-          <>
-            <h4>
-              <FormattedMessage
-                id='search_popout.recent'
-                defaultMessage='Recent searches'
-              />
+        {modernized && (
+          <div className='search__popout__intro'>
+            <p className='search__popout__eyebrow'>
+              {intl.formatMessage(messages.popoutEyebrow)}
+            </p>
+            <h4
+              id={searchPopoutHeading}
+              className='search__popout__intro__title'
+            >
+              {intl.formatMessage(messages.popoutTitle)}
             </h4>
+            <p className='search__popout__intro__description'>
+              {intl.formatMessage(
+                signedIn
+                  ? messages.popoutDescriptionSignedIn
+                  : messages.popoutDescriptionSignedOut,
+              )}
+            </p>
+          </div>
+        )}
 
-            <div className='search__popout__menu'>
-              {recentOptions.length > 0 ? (
-                recentOptions.map(({ label, key, action, forget }, i) => (
-                  <div
+        {!hasValue &&
+          (modernized ? (
+            <div className='search__popout__section'>
+              <h4>
+                <FormattedMessage
+                  id='search_popout.recent'
+                  defaultMessage='Recent searches'
+                />
+              </h4>
+
+              <div className='search__popout__menu'>
+                {recentOptions.length > 0 ? (
+                  recentOptions.map(({ label, key, action, forget }, i) => (
+                    <div
+                      key={key}
+                      tabIndex={0}
+                      role='button'
+                      onMouseDown={action}
+                      onFocus={getOptionFocusHandler(i)}
+                      className={classNames(
+                        'search__popout__menu__item search__popout__menu__item--flex',
+                        { selected: selectedOption === i },
+                      )}
+                    >
+                      <span>{label}</span>
+                      <button
+                        className='icon-button'
+                        onMouseDown={forget}
+                        type='button'
+                      >
+                        <Icon id='times' icon={CloseIcon} />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className='search__popout__menu__message'>
+                    <FormattedMessage
+                      id='search.no_recent_searches'
+                      defaultMessage='No recent searches'
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <>
+              <h4>
+                <FormattedMessage
+                  id='search_popout.recent'
+                  defaultMessage='Recent searches'
+                />
+              </h4>
+
+              <div className='search__popout__menu'>
+                {recentOptions.length > 0 ? (
+                  recentOptions.map(({ label, key, action, forget }, i) => (
+                    <div
+                      key={key}
+                      tabIndex={0}
+                      role='button'
+                      onMouseDown={action}
+                      onFocus={getOptionFocusHandler(i)}
+                      className={classNames(
+                        'search__popout__menu__item search__popout__menu__item--flex',
+                        { selected: selectedOption === i },
+                      )}
+                    >
+                      <span>{label}</span>
+                      <button
+                        className='icon-button'
+                        onMouseDown={forget}
+                        type='button'
+                      >
+                        <Icon id='times' icon={CloseIcon} />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className='search__popout__menu__message'>
+                    <FormattedMessage
+                      id='search.no_recent_searches'
+                      defaultMessage='No recent searches'
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          ))}
+
+        {quickActions.length > 0 &&
+          (modernized ? (
+            <div className='search__popout__section'>
+              <h4>
+                <FormattedMessage
+                  id='search_popout.quick_actions'
+                  defaultMessage='Quick actions'
+                />
+              </h4>
+
+              <div className='search__popout__menu'>
+                {quickActions.map(({ key, label, action }, i) => (
+                  <button
                     key={key}
-                    tabIndex={0}
-                    role='button'
                     onMouseDown={action}
                     onFocus={getOptionFocusHandler(i)}
-                    className={classNames(
-                      'search__popout__menu__item search__popout__menu__item--flex',
-                      { selected: selectedOption === i },
-                    )}
+                    className={classNames('search__popout__menu__item', {
+                      selected: selectedOption === i,
+                    })}
+                    type='button'
                   >
-                    <span>{label}</span>
-                    <button
-                      className='icon-button'
-                      onMouseDown={forget}
-                      type='button'
-                    >
-                      <Icon id='times' icon={CloseIcon} />
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <div className='search__popout__menu__message'>
-                  <FormattedMessage
-                    id='search.no_recent_searches'
-                    defaultMessage='No recent searches'
-                  />
-                </div>
-              )}
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </>
-        )}
+          ) : (
+            <>
+              <h4>
+                <FormattedMessage
+                  id='search_popout.quick_actions'
+                  defaultMessage='Quick actions'
+                />
+              </h4>
 
-        {quickActions.length > 0 && (
-          <>
+              <div className='search__popout__menu'>
+                {quickActions.map(({ key, label, action }, i) => (
+                  <button
+                    key={key}
+                    onMouseDown={action}
+                    onFocus={getOptionFocusHandler(i)}
+                    className={classNames('search__popout__menu__item', {
+                      selected: selectedOption === i,
+                    })}
+                    type='button'
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </>
+          ))}
+
+        {modernized ? (
+          <div className='search__popout__section'>
             <h4>
               <FormattedMessage
-                id='search_popout.quick_actions'
-                defaultMessage='Quick actions'
+                id='search_popout.options'
+                defaultMessage='Search options'
               />
             </h4>
 
-            <div className='search__popout__menu'>
-              {quickActions.map(({ key, label, action }, i) => (
-                <button
-                  key={key}
-                  onMouseDown={action}
-                  onFocus={getOptionFocusHandler(i)}
-                  className={classNames('search__popout__menu__item', {
-                    selected: selectedOption === i,
-                  })}
-                  type='button'
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        <h4 id={searchOptionsHeading}>
-          <FormattedMessage
-            id='search_popout.options'
-            defaultMessage='Search options'
-          />
-        </h4>
-
-        {searchEnabled && signedIn ? (
-          <div className='search__popout__menu'>
-            {searchOptions.map(({ key, label, action }, i) => {
-              const currentIndex = (quickActions.length || recent.length) + i;
-              return (
-                <button
-                  key={key}
-                  onMouseDown={action}
-                  onFocus={getOptionFocusHandler(currentIndex)}
-                  className={classNames('search__popout__menu__item', {
-                    selected: selectedOption === currentIndex,
-                  })}
-                  type='button'
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          <div className='search__popout__menu__message'>
-            {searchEnabled ? (
-              <FormattedMessage
-                id='search_popout.full_text_search_logged_out_message'
-                defaultMessage='Only available when logged in.'
-              />
+            {searchEnabled && signedIn ? (
+              <div className='search__popout__menu'>
+                {searchOptions.map(({ key, label, action }, i) => {
+                  const currentIndex =
+                    (quickActions.length || recent.length) + i;
+                  return (
+                    <button
+                      key={key}
+                      onMouseDown={action}
+                      onFocus={getOptionFocusHandler(currentIndex)}
+                      className={classNames('search__popout__menu__item', {
+                        selected: selectedOption === currentIndex,
+                      })}
+                      type='button'
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             ) : (
-              <FormattedMessage
-                id='search_popout.full_text_search_disabled_message'
-                defaultMessage='Not available on {domain}.'
-                values={{ domain }}
-              />
+              <div className='search__popout__menu__message'>
+                {searchEnabled ? (
+                  <FormattedMessage
+                    id='search_popout.full_text_search_logged_out_message'
+                    defaultMessage='Only available when logged in.'
+                  />
+                ) : (
+                  <FormattedMessage
+                    id='search_popout.full_text_search_disabled_message'
+                    defaultMessage='Not available on {domain}.'
+                    values={{ domain }}
+                  />
+                )}
+              </div>
             )}
           </div>
+        ) : (
+          <>
+            <h4 id={searchPopoutHeading}>
+              <FormattedMessage
+                id='search_popout.options'
+                defaultMessage='Search options'
+              />
+            </h4>
+
+            {searchEnabled && signedIn ? (
+              <div className='search__popout__menu'>
+                {searchOptions.map(({ key, label, action }, i) => {
+                  const currentIndex =
+                    (quickActions.length || recent.length) + i;
+                  return (
+                    <button
+                      key={key}
+                      onMouseDown={action}
+                      onFocus={getOptionFocusHandler(currentIndex)}
+                      className={classNames('search__popout__menu__item', {
+                        selected: selectedOption === currentIndex,
+                      })}
+                      type='button'
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className='search__popout__menu__message'>
+                {searchEnabled ? (
+                  <FormattedMessage
+                    id='search_popout.full_text_search_logged_out_message'
+                    defaultMessage='Only available when logged in.'
+                  />
+                ) : (
+                  <FormattedMessage
+                    id='search_popout.full_text_search_disabled_message'
+                    defaultMessage='Not available on {domain}.'
+                    values={{ domain }}
+                  />
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </form>

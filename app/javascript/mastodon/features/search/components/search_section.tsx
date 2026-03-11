@@ -5,7 +5,7 @@ export const SearchSection: React.FC<{
   onClickMore?: () => void;
   children: React.ReactNode;
 }> = ({ title, onClickMore, children }) => (
-  <div className='search-results__section'>
+  <section className='search-results__section'>
     <div className='search-results__section__header'>
       <h3>{title}</h3>
       {onClickMore && (
@@ -18,6 +18,6 @@ export const SearchSection: React.FC<{
       )}
     </div>
 
-    {children}
-  </div>
+    <div className='search-results__section__body'>{children}</div>
+  </section>
 );

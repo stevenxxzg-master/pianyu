@@ -45,7 +45,10 @@ class Suggestions extends PureComponent {
       return (
         <div className='explore__suggestions scrollable scrollable--flex'>
           <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.explore_statuses' defaultMessage='Nothing is trending right now. Check back later!' />
+            <FormattedMessage
+              id='empty_column.explore_suggestions'
+              defaultMessage='No people suggestions yet. Try search or check back later.'
+            />
           </div>
         </div>
       );
