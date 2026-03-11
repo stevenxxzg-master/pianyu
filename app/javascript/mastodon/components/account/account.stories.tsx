@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within, userEvent } from 'storybook/test';
 
 import { accountFactoryState, relationshipsFactory } from '@/testing/factories';
 
@@ -76,13 +77,27 @@ const meta = {
   render(args) {
     return <Account id='1' {...args} />;
   },
+  tags: ['test'],
 } satisfies Meta<Props>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
+const primaryCardTest: Story['play'] = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  const profileLink = await canvas.findByTitle('testuser');
+  await expect(profileLink).toHaveAttribute('href', '/@testuser');
+  await expect(canvas.getByRole('button', { name: 'Mute' })).toBeVisible();
+
+  await userEvent.click(canvas.getByRole('button', { name: 'More' }));
+  await expect(await canvas.findByRole('menuitem', { name: 'Mute notifications' })).toBeVisible();
+};
+
+export const Primary: Story = {
+  play: primaryCardTest,
+};
 
 export const Hidden: Story = {
   args: {
@@ -99,6 +114,9 @@ export const Minimal: Story = {
 export const WithBio: Story = {
   args: {
     withBio: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('This is a test user account.')).toBeVisible();
   },
 };
 
