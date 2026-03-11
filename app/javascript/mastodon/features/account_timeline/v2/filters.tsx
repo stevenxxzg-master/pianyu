@@ -3,8 +3,6 @@ import type { ChangeEventHandler, FC } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import { useParams } from 'react-router';
-
 import Overlay from 'react-overlays/esm/Overlay';
 
 import { Toggle } from '@/mastodon/components/form_fields';
@@ -17,7 +15,8 @@ import { useAccountContext } from './context';
 import classes from './styles.module.scss';
 
 export const AccountFilters: FC = () => {
-  const { acct } = useParams<{ acct: string }>();
+  const { acct } = useAccountContext();
+
   if (!acct) {
     return null;
   }
