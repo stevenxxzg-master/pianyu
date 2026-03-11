@@ -11569,7 +11569,6 @@ noscript {
   }
 }
 
-
 .home-timeline {
   --home-timeline-surface: color-mix(
     in oklab,
@@ -11596,7 +11595,9 @@ noscript {
     var(--color-border-primary) 78%,
     var(--color-bg-brand-base) 22%
   );
-  --home-timeline-soft-border: rgb(from var(--color-border-primary) r g b / 72%);
+  --home-timeline-soft-border: rgb(
+    from var(--color-border-primary) r g b / 72%
+  );
   --home-timeline-muted: color-mix(
     in oklab,
     var(--color-bg-secondary) 86%,
@@ -11619,17 +11620,28 @@ noscript {
     padding: 18px 18px 0;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--home-timeline-surface) 90%, var(--color-bg-brand-softer)) 0%,
+      color-mix(
+          in oklab,
+          var(--home-timeline-surface) 90%,
+          var(--color-bg-brand-softer)
+        )
+        0%,
       transparent 100%
     );
   }
 
   .column-header {
     border-color: var(--home-timeline-border);
-    border-radius: var(--home-timeline-radius-xl) var(--home-timeline-radius-xl) 0 0;
+    border-radius: var(--home-timeline-radius-xl) var(--home-timeline-radius-xl)
+      0 0;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--home-timeline-panel) 82%, var(--color-bg-primary)) 0%,
+      color-mix(
+          in oklab,
+          var(--home-timeline-panel) 82%,
+          var(--color-bg-primary)
+        )
+        0%,
       var(--home-timeline-surface) 100%
     );
     box-shadow: var(--home-timeline-shadow);
@@ -11680,11 +11692,17 @@ noscript {
   > .scrollable {
     padding-bottom: 20px;
     border-color: var(--home-timeline-border);
-    border-radius: 0 0 var(--home-timeline-radius-xl) var(--home-timeline-radius-xl);
+    border-radius: 0 0 var(--home-timeline-radius-xl)
+      var(--home-timeline-radius-xl);
     background: linear-gradient(
       180deg,
       var(--home-timeline-surface) 0%,
-      color-mix(in oklab, var(--color-bg-secondary) 90%, var(--home-timeline-surface)) 100%
+      color-mix(
+          in oklab,
+          var(--color-bg-secondary) 90%,
+          var(--home-timeline-surface)
+        )
+        100%
     );
     box-shadow: var(--home-timeline-shadow);
     overflow: clip;
@@ -11709,20 +11727,38 @@ noscript {
     background: linear-gradient(
       180deg,
       var(--home-timeline-card) 0%,
-      color-mix(in oklab, var(--home-timeline-card) 82%, var(--color-bg-secondary)) 100%
+      color-mix(
+          in oklab,
+          var(--home-timeline-card) 82%,
+          var(--color-bg-secondary)
+        )
+        100%
     );
     box-shadow:
       0 1px 0 rgb(from var(--color-text-primary) r g b / 3%),
       0 14px 30px rgb(from var(--color-text-primary) r g b / 4%);
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease,
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease,
       background 180ms ease;
 
     &.focusable:focus-visible {
       outline-offset: 2px;
       background: linear-gradient(
         180deg,
-        color-mix(in oklab, var(--home-timeline-card) 76%, var(--color-bg-brand-softer)) 0%,
-        color-mix(in oklab, var(--home-timeline-card) 84%, var(--color-bg-secondary)) 100%
+        color-mix(
+            in oklab,
+            var(--home-timeline-card) 76%,
+            var(--color-bg-brand-softer)
+          )
+          0%,
+        color-mix(
+            in oklab,
+            var(--home-timeline-card) 84%,
+            var(--color-bg-secondary)
+          )
+          100%
       );
     }
 
@@ -11744,7 +11780,12 @@ noscript {
     background: linear-gradient(
       180deg,
       var(--home-timeline-card-hover) 0%,
-      color-mix(in oklab, var(--home-timeline-card-hover) 82%, var(--color-bg-secondary)) 100%
+      color-mix(
+          in oklab,
+          var(--home-timeline-card-hover) 82%,
+          var(--color-bg-secondary)
+        )
+        100%
     );
     box-shadow:
       0 1px 0 rgb(from var(--color-text-primary) r g b / 3%),
@@ -11754,8 +11795,18 @@ noscript {
   .status__wrapper-direct {
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--home-timeline-card) 74%, var(--color-bg-brand-softer)) 0%,
-      color-mix(in oklab, var(--home-timeline-card) 86%, var(--color-bg-secondary)) 100%
+      color-mix(
+          in oklab,
+          var(--home-timeline-card) 74%,
+          var(--color-bg-brand-softer)
+        )
+        0%,
+      color-mix(
+          in oklab,
+          var(--home-timeline-card) 86%,
+          var(--color-bg-secondary)
+        )
+        100%
     );
   }
 
@@ -12030,7 +12081,12 @@ noscript {
     border: 1px solid var(--home-timeline-soft-border);
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--home-timeline-panel) 84%, var(--color-bg-primary)) 0%,
+      color-mix(
+          in oklab,
+          var(--home-timeline-panel) 84%,
+          var(--color-bg-primary)
+        )
+        0%,
       var(--home-timeline-card) 100%
     );
     box-shadow: var(--home-timeline-shadow);
