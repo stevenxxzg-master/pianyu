@@ -1,0 +1,177 @@
+.discoveryPage {
+  --workspace-accent: #1f4ec9;
+}
+
+.discoveryHeader {
+  --workspace-accent: #1f4ec9;
+}
+
+.discoveryList :global(.item-list) {
+  padding-top: 16px;
+}
+
+.discoveryList :global(.search-results__section) {
+  display: grid;
+  gap: 14px;
+  margin: 0 14px 18px;
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(15, 25, 54, 8%);
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 94%),
+    rgba(241, 245, 253, 96%)
+  );
+  box-shadow: 0 18px 32px rgba(18, 24, 48, 6%);
+}
+
+.discoveryList :global(.search-results__section__header) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.discoveryList :global(.search-results__section__header h3) {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: #1b2340;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.discoveryList :global(.search-results__section__header button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 25, 54, 8%);
+  background: rgba(255, 255, 255, 76%);
+  color: #1f4ec9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.discoveryList :global(.search-results__section > .account),
+.discoveryList :global(.search-results__section > .hashtag),
+.discoveryList :global(.search-results__section > article.focusable) {
+  margin: 0;
+}
+
+.discoveryList :global(.explore-suggestions-card) {
+  padding: 18px;
+}
+
+.discoveryList :global(.explore-suggestions-card__source) {
+  margin-bottom: 14px;
+  color: #5a647d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.discoveryList :global(.explore-suggestions-card__body) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.discoveryList :global(.explore-suggestions-card__link) {
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.discoveryList :global(.story) {
+  padding: 18px;
+}
+
+.discoveryList :global(.story.expanded) {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 98%),
+    rgba(236, 244, 255, 95%)
+  );
+}
+
+.discoveryList :global(.story__thumbnail) {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.discoveryList :global(.scrollable__append) {
+  min-height: 160px;
+}
+
+.utilityPage {
+  --workspace-accent: #2341aa;
+}
+
+.utilityHeader {
+  --workspace-accent: #2341aa;
+}
+
+.utilityList :global(.item-list) {
+  padding-top: 18px;
+}
+
+.utilityList :global(.lists__item) {
+  padding-inline-end: 16px;
+}
+
+.utilityList :global(.lists__item__title) {
+  gap: 10px;
+  padding: 18px 16px;
+  color: #1d2847;
+}
+
+.utilityList :global(.conversation) {
+  padding: 18px;
+}
+
+.utilityList :global(.hashtag),
+.utilityList :global(.domain),
+.utilityList :global(.account),
+.utilityList :global(.account-authorize) {
+  padding: 18px;
+}
+
+.warningBanner {
+  margin: 8px 14px 18px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 25, 54, 8%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 245, 230, 94%),
+    rgba(255, 251, 244, 98%)
+  );
+  color: #4d4655;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@media (width <= 640px) {
+  .discoveryList :global(.search-results__section),
+  .warningBanner {
+    margin-inline: 10px;
+  }
+
+  .discoveryList :global(.search-results__section) {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .utilityList :global(.lists__item__title),
+  .utilityList :global(.conversation),
+  .utilityList :global(.hashtag),
+  .utilityList :global(.domain),
+  .utilityList :global(.account),
+  .utilityList :global(.account-authorize) {
+    padding: 16px;
+  }
+}

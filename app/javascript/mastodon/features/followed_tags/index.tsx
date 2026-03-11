@@ -13,15 +13,39 @@ import {
 } from 'mastodon/actions/tags_typed';
 import type { ApiHashtagJSON } from 'mastodon/api_types/tags';
 import { Button } from 'mastodon/components/button';
-import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
-import { ColumnHeader } from 'mastodon/components/column_header';
 import { Hashtag } from 'mastodon/components/hashtag';
 import ScrollableList from 'mastodon/components/scrollable_list';
+import { WorkspacePage } from 'mastodon/components/workspace_page';
+import workspaceContent from 'mastodon/components/workspace_page/content.module.scss';
+import discoveryStyles from 'mastodon/features/discovery/styles.module.scss';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 const messages = defineMessages({
   heading: { id: 'followed_tags', defaultMessage: 'Followed hashtags' },
+  eyebrow: {
+    id: 'followed_tags.workspace_eyebrow',
+    defaultMessage: 'TOPIC THREADS',
+  },
+  description: {
+    id: 'followed_tags.workspace_description',
+    defaultMessage:
+      'Bring the subjects you actively track into the same polished workspace flow as search, lists, and direct browsing.',
+  },
+  badge: {
+    id: 'followed_tags.workspace_badge',
+    defaultMessage:
+      '{count, plural, =0 {No followed topics yet} one {# followed topic} other {# followed topics}}',
+  },
+  focusTitle: {
+    id: 'followed_tags.workspace_focus_title',
+    defaultMessage: 'A lightweight bridge back into discovery',
+  },
+  focusBody: {
+    id: 'followed_tags.workspace_focus_body',
+    defaultMessage:
+      'This panel now reads like part of the exploration system instead of a legacy side utility bolted onto the shell.',
+  },
 });
 
 const FollowedTag: React.FC<{
@@ -99,20 +123,47 @@ const FollowedTags: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
   );
 
   return (
-    <Column
+    <WorkspacePage
       bindToDocument={!multiColumn}
-      ref={columnRef}
-      label={intl.formatMessage(messages.heading)}
-    >
-      <ColumnHeader
-        icon='hashtag'
-        iconComponent={TagIcon}
-        title={intl.formatMessage(messages.heading)}
-        onClick={handleHeaderClick}
-        multiColumn={multiColumn}
-        showBackButton
-      />
+      className={discoveryStyles.utilityPage}
+      contentClassName={discoveryStyles.utilityList}
+      headerClassName={discoveryStyles.utilityHeader}
+      headerContent={
+        <div className={workspaceContent.hero}>
+          <div className={workspaceContent.split}>
+            <div className={workspaceContent.hero}>
+              <div className={workspaceContent.eyebrow}>
+                {intl.formatMessage(messages.eyebrow)}
+              </div>
+              <p className={workspaceContent.description}>
+                {intl.formatMessage(messages.description)}
+              </p>
+              <div className={workspaceContent.badges}>
+                <span className={workspaceContent.badge}>
+                  {intl.formatMessage(messages.badge, { count: tags.length })}
+                </span>
+              </div>
+            </div>
 
+            <div className={workspaceContent.noteCard}>
+              <p className={workspaceContent.noteTitle}>
+                {intl.formatMessage(messages.focusTitle)}
+              </p>
+              <p className={workspaceContent.noteBody}>
+                {intl.formatMessage(messages.focusBody)}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+      icon='hashtag'
+      iconComponent={TagIcon}
+      multiColumn={multiColumn}
+      onClick={handleHeaderClick}
+      ref={columnRef}
+      showBackButton
+      title={intl.formatMessage(messages.heading)}
+    >
       <ScrollableList
         scrollKey='followed_tags'
         emptyMessage={emptyMessage}
@@ -132,7 +183,7 @@ const FollowedTags: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         <title>{intl.formatMessage(messages.heading)}</title>
         <meta name='robots' content='noindex' />
       </Helmet>
-    </Column>
+    </WorkspacePage>
   );
 };
 
