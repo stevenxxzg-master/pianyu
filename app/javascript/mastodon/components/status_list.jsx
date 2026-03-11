@@ -10,7 +10,7 @@ import { RegenerationIndicator } from 'mastodon/components/regeneration_indicato
 import { InlineFollowSuggestions } from 'mastodon/features/home_timeline/components/inline_follow_suggestions';
 import { PinnedShowAllButton } from '@/mastodon/features/account_timeline/v2/pinned_statuses';
 
-import { StatusQuoteManager } from '../components/status_quoted';
+import { StatusQuoteManager } from '../containers/status_container';
 
 import { LoadGap } from './load_gap';
 import ScrollableList from './scrollable_list';

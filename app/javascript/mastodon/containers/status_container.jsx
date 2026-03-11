@@ -1,5 +1,7 @@
 import { injectIntl } from 'react-intl';
 
+import Bundle from '../features/ui/components/bundle';
+
 import { connect } from 'react-redux';
 
 import {
@@ -46,6 +48,7 @@ import { setStatusQuotePolicy } from '../actions/statuses_typed';
 import Status from '../components/status';
 import { deleteModal } from '../initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from '../selectors';
+import { useAppSelector } from '../store';
 
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
@@ -243,4 +246,39 @@ const mapDispatchToProps = (dispatch, { contextType }) => ({
 
 });
 
-export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));
+const fetchQuotedStatus = () =>
+  import('../components/status_quoted').then((module) => ({
+    default: module.QuotedStatus,
+  }));
+
+const StatusContainer = injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));
+
+export const StatusQuoteManager = (props) => {
+  const status = useAppSelector((state) => {
+    const status = state.statuses.get(props.id);
+    const reblogId = status?.get('reblog');
+
+    return reblogId ? state.statuses.get(reblogId) : status;
+  });
+  const quote = status?.get('quote');
+
+  if (!quote) {
+    return <StatusContainer {...props} />;
+  }
+
+  return (
+    <StatusContainer {...props}>
+      <Bundle fetchComponent={fetchQuotedStatus}>
+        {(QuotedStatus) => (
+          <QuotedStatus
+            quote={quote}
+            parentQuotePostId={status?.get('id')}
+            contextType={props.contextType}
+          />
+        )}
+      </Bundle>
+    </StatusContainer>
+  );
+};
+
+export default StatusContainer;

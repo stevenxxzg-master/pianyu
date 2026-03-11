@@ -4,10 +4,16 @@ import type { FC } from 'react';
 import { Map } from 'immutable';
 
 import { quoteComposeCancel } from '@/mastodon/actions/compose_typed';
-import { QuotedStatus } from '@/mastodon/components/status_quoted';
+import type { QuotedStatus as QuotedStatusComponent } from '@/mastodon/components/status_quoted';
+import Bundle from '@/mastodon/features/ui/components/bundle';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
 import { QuotePlaceholder } from './quote_placeholder';
+
+const fetchQuotedStatus = () =>
+  import('@/mastodon/components/status_quoted').then((module) => ({
+    default: module.QuotedStatus,
+  }));
 
 export const ComposeQuotedStatus: FC = () => {
   const quotedStatusId = useAppSelector(
@@ -43,10 +49,14 @@ export const ComposeQuotedStatus: FC = () => {
   }
 
   return (
-    <QuotedStatus
-      quote={quote}
-      contextType='composer'
-      onQuoteCancel={!isEditing ? handleQuoteCancel : undefined}
-    />
+    <Bundle fetchComponent={fetchQuotedStatus}>
+      {(QuotedStatus: typeof QuotedStatusComponent) => (
+        <QuotedStatus
+          quote={quote}
+          contextType='composer'
+          onQuoteCancel={!isEditing ? handleQuoteCancel : undefined}
+        />
+      )}
+    </Bundle>
   );
 };

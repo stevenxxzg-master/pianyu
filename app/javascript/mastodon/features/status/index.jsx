@@ -60,7 +60,7 @@ import {
 import { setStatusQuotePolicy } from '../../actions/statuses_typed';
 import ColumnHeader from '../../components/column_header';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import { StatusQuoteManager } from '../../components/status_quoted';
+import { StatusQuoteManager } from '../../containers/status_container';
 import { deleteModal } from '../../initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import { getAncestorsIds, getDescendantsIds } from 'mastodon/selectors/contexts';

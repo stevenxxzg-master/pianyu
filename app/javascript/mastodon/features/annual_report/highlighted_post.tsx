@@ -12,7 +12,7 @@ import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import { InterceptStatusClicks } from 'mastodon/components/status/intercept_status_clicks';
-import { StatusQuoteManager } from 'mastodon/components/status_quoted';
+import { StatusQuoteManager } from 'mastodon/containers/status_container';
 import type { TopStatuses } from 'mastodon/models/annual_report';
 import { makeGetStatus } from 'mastodon/selectors';
 import { useAppSelector } from 'mastodon/store';

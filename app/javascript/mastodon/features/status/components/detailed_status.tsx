@@ -26,14 +26,20 @@ import { IconLogo } from 'mastodon/components/logo';
 import MediaGallery from 'mastodon/components/media_gallery';
 import { PictureInPicturePlaceholder } from 'mastodon/components/picture_in_picture_placeholder';
 import StatusContent from 'mastodon/components/status_content';
-import { QuotedStatus } from 'mastodon/components/status_quoted';
+import type { QuotedStatus as QuotedStatusComponent } from 'mastodon/components/status_quoted';
 import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 import { Audio } from 'mastodon/features/audio';
+import Bundle from 'mastodon/features/ui/components/bundle';
 import scheduleIdleTask from 'mastodon/features/ui/util/schedule_idle_task';
 import { Video } from 'mastodon/features/video';
 import { useIdentity } from 'mastodon/identity_context';
 
 import Card from './card';
+
+const fetchQuotedStatus = () =>
+  import('mastodon/components/status_quoted').then((module) => ({
+    default: module.QuotedStatus,
+  }));
 
 interface VideoModalOptions {
   startTime: number;
@@ -458,11 +464,15 @@ export const DetailedStatus: React.FC<{
             {hashtagBar}
 
             {status.get('quote') && (
-              <QuotedStatus
-                quote={status.get('quote')}
-                parentQuotePostId={status.get('id')}
-                contextType='thread'
-              />
+              <Bundle fetchComponent={fetchQuotedStatus}>
+                {(QuotedStatus: typeof QuotedStatusComponent) => (
+                  <QuotedStatus
+                    quote={status.get('quote')}
+                    parentQuotePostId={status.get('id')}
+                    contextType='thread'
+                  />
+                )}
+              </Bundle>
             )}
           </>
         )}
