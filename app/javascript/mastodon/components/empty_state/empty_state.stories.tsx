@@ -8,6 +8,7 @@ import { EmptyState } from '.';
 const meta = {
   title: 'Components/EmptyState',
   component: EmptyState,
+  tags: ['regression'],
   argTypes: {
     title: {
       control: 'text',

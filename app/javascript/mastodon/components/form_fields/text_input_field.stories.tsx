@@ -7,6 +7,7 @@ import { TextInputField, TextInput } from './text_input_field';
 const meta = {
   title: 'Components/Form Fields/TextInputField',
   component: TextInputField,
+  tags: ['regression'],
   args: {
     label: 'Label',
     hint: 'This is a description of this form field',
