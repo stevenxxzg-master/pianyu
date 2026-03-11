@@ -65,13 +65,34 @@ import { deleteModal } from '../../initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import { getAncestorsIds, getDescendantsIds } from 'mastodon/selectors/contexts';
 import Column from '../ui/components/column';
-import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import workspaceStyles from '../ui/components/workspace_shell.module.scss';
 
 import ActionBar from './components/action_bar';
 import { DetailedStatus } from './components/detailed_status';
 import { RefreshController } from './components/refresh_controller';
 import { quoteComposeById } from '@/mastodon/actions/compose_typed';
+
+const isFullscreen = () => !!(document.fullscreenElement ?? document.webkitFullscreenElement ?? document.mozFullScreenElement);
+
+const attachFullscreenListener = listener => {
+  if ('onfullscreenchange' in document) {
+    document.addEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in document) {
+    document.addEventListener('webkitfullscreenchange', listener);
+  } else if ('onmozfullscreenchange' in document) {
+    document.addEventListener('mozfullscreenchange', listener);
+  }
+};
+
+const detachFullscreenListener = listener => {
+  if ('onfullscreenchange' in document) {
+    document.removeEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in document) {
+    document.removeEventListener('webkitfullscreenchange', listener);
+  } else if ('onmozfullscreenchange' in document) {
+    document.removeEventListener('mozfullscreenchange', listener);
+  }
+};
 
 const messages = defineMessages({
   revealAll: { id: 'status.show_more_all', defaultMessage: 'Show more for all' },

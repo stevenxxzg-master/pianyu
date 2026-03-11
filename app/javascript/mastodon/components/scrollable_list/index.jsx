@@ -12,7 +12,6 @@ import { throttle } from 'lodash';
 import { ScrollContainer } from 'mastodon/containers/scroll_container';
 
 import IntersectionObserverArticleContainer from '../../containers/intersection_observer_article_container';
-import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../../features/ui/util/fullscreen';
 import IntersectionObserverWrapper from '../../features/ui/util/intersection_observer_wrapper';
 
 import { LoadMore } from '../load_more';
@@ -23,6 +22,28 @@ import { Scrollable, ItemList } from './components';
 const MOUSE_IDLE_DELAY = 300;
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
+
+const isFullscreen = () => !!(document.fullscreenElement ?? document.webkitFullscreenElement ?? document.mozFullScreenElement);
+
+const attachFullscreenListener = listener => {
+  if ('onfullscreenchange' in document) {
+    document.addEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in document) {
+    document.addEventListener('webkitfullscreenchange', listener);
+  } else if ('onmozfullscreenchange' in document) {
+    document.addEventListener('mozfullscreenchange', listener);
+  }
+};
+
+const detachFullscreenListener = listener => {
+  if ('onfullscreenchange' in document) {
+    document.removeEventListener('fullscreenchange', listener);
+  } else if ('onwebkitfullscreenchange' in document) {
+    document.removeEventListener('webkitfullscreenchange', listener);
+  } else if ('onmozfullscreenchange' in document) {
+    document.removeEventListener('mozfullscreenchange', listener);
+  }
+};
 
 /**
  *
