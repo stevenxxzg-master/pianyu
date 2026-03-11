@@ -13,6 +13,7 @@ import UnfoldLessIcon from '@/material-icons/400-24px/unfold_less.svg?react';
 import UnfoldMoreIcon from '@/material-icons/400-24px/unfold_more.svg?react';
 import type { IconProp } from 'mastodon/components/icon';
 import { Icon } from 'mastodon/components/icon';
+import { MobileNavigationButton } from 'mastodon/components/mobile_navigation_button';
 import { ButtonInTabsBar } from 'mastodon/features/ui/util/columns_context';
 import { useIdentity } from 'mastodon/identity_context';
 
@@ -165,7 +166,12 @@ export const ColumnHeader: React.FC<Props> = ({
     active: !collapsed,
   });
 
-  let extraContent, pinButton, moveButtons, backButton, collapseButton;
+  let extraContent,
+    pinButton,
+    moveButtons,
+    backButton,
+    collapseButton,
+    mobileNavigationButton;
 
   if (children) {
     extraContent = (
@@ -262,6 +268,12 @@ export const ColumnHeader: React.FC<Props> = ({
     );
   }
 
+  if (!multiColumn) {
+    mobileNavigationButton = (
+      <MobileNavigationButton className='column-header__button--menu' />
+    );
+  }
+
   const hasIcon = icon && iconComponent;
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const hasTitle = (hasIcon || backButton) && title;
@@ -297,6 +309,7 @@ export const ColumnHeader: React.FC<Props> = ({
         <div className='column-header__buttons'>
           {extraButton}
           {collapseButton}
+          {mobileNavigationButton}
         </div>
       </h1>
 
