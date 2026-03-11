@@ -33,7 +33,7 @@ export const messages = defineMessages({
     id: 'tabs_bar.notifications',
     defaultMessage: 'Notifications',
   },
-  profile: { id: 'report.category.title_account', defaultMessage: 'Profile' },
+  profile: { id: 'report.category.title_account', defaultMessage: 'profile' },
   menu: { id: 'tabs_bar.menu', defaultMessage: 'Menu' },
 });
 

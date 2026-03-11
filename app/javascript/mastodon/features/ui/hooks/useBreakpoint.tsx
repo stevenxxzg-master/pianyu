@@ -11,8 +11,20 @@ type Breakpoint = keyof typeof breakpoints;
 export const useBreakpoint = (breakpoint: Breakpoint) => {
   const query = `(max-width: ${breakpoints[breakpoint]}px)`;
 
+  const getMatches = () =>
+    typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      ? window.matchMedia(query).matches
+      : false;
+
   const isMatching = useSyncExternalStore(
     (callback) => {
+      if (
+        typeof window === 'undefined' ||
+        typeof window.matchMedia !== 'function'
+      ) {
+        return () => {};
+      }
+
       const mediaWatcher = window.matchMedia(query);
 
       mediaWatcher.addEventListener('change', callback);
@@ -21,7 +33,8 @@ export const useBreakpoint = (breakpoint: Breakpoint) => {
         mediaWatcher.removeEventListener('change', callback);
       };
     },
-    () => window.matchMedia(query).matches,
+    getMatches,
+    () => false,
   );
 
   return isMatching;

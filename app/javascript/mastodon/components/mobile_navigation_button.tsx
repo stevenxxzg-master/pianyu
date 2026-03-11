@@ -6,10 +6,10 @@ import classNames from 'classnames';
 
 import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import { toggleNavigation } from 'mastodon/actions/navigation';
+import { Icon } from 'mastodon/components/icon';
 import { messages as navigationBarMessages } from 'mastodon/features/ui/components/navigation_bar';
 import { useBreakpoint } from 'mastodon/features/ui/hooks/useBreakpoint';
 import { useIdentity } from 'mastodon/identity_context';
-import { Icon } from 'mastodon/components/icon';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 export const MobileNavigationButton: React.FC<{ className?: string }> = ({

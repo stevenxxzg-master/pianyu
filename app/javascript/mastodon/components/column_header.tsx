@@ -166,7 +166,12 @@ export const ColumnHeader: React.FC<Props> = ({
     active: !collapsed,
   });
 
-  let extraContent, pinButton, moveButtons, backButton, collapseButton, mobileNavigationButton;
+  let extraContent,
+    pinButton,
+    moveButtons,
+    backButton,
+    collapseButton,
+    mobileNavigationButton;
 
   if (children) {
     extraContent = (
