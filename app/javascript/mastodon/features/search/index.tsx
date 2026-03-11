@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import FindInPageIcon from '@/material-icons/400-24px/find_in_page.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
@@ -20,14 +21,11 @@ import ScrollableList from 'mastodon/components/scrollable_list';
 import { StatusQuoteManager } from 'mastodon/components/status_quoted';
 import { Search } from 'mastodon/features/compose/components/search';
 import { useSearchParam } from 'mastodon/hooks/useSearchParam';
+import { useIdentity } from 'mastodon/identity_context';
 import type { Hashtag as HashtagType } from 'mastodon/models/tags';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 import { SearchSection } from './components/search_section';
-
-const messages = defineMessages({
-  title: { id: 'search_results.title', defaultMessage: 'Search for "{q}"' },
-});
 
 const INITIAL_PAGE_LIMIT = 10;
 const INITIAL_DISPLAY = 4;
@@ -58,6 +56,70 @@ const renderStatuses = (statusIds: string[]) =>
 
 type SearchType = 'all' | ApiSearchType;
 
+const messages = defineMessages({
+  title: { id: 'search.page_title', defaultMessage: 'Search' },
+  pageTitleWithQuery: {
+    id: 'search_results.title',
+    defaultMessage: 'Search for "{q}"',
+  },
+  heroEyebrowDefault: {
+    id: 'search.hero.eyebrow.default',
+    defaultMessage: 'Light search',
+  },
+  heroEyebrowResults: {
+    id: 'search.hero.eyebrow.results',
+    defaultMessage: 'Best matches',
+  },
+  heroTitleDefault: {
+    id: 'search.hero.title.default',
+    defaultMessage: 'Start with a name, topic, or URL',
+  },
+  heroTitleResults: {
+    id: 'search.hero.title.results',
+    defaultMessage: 'Results for "{q}"',
+  },
+  heroDescriptionDefault: {
+    id: 'search.hero.description.default',
+    defaultMessage:
+      'Profiles, hashtags, and posts stay in one place, while Explore gives you a gentler way to browse.',
+  },
+  heroDescriptionResults: {
+    id: 'search.hero.description.results',
+    defaultMessage:
+      'Switch between people, hashtags, and posts without leaving the page or losing your search context.',
+  },
+  noResultsTitle: {
+    id: 'search.empty.no_results.title',
+    defaultMessage: 'No matches yet',
+  },
+  noResultsDescription: {
+    id: 'search.empty.no_results.description',
+    defaultMessage:
+      'Try a shorter query, change the filter, or browse Explore for people and topics first.',
+  },
+  noSearchTitle: {
+    id: 'search.empty.no_search.title',
+    defaultMessage: 'Search is quieter when you start with people or topics.',
+  },
+  noSearchDescription: {
+    id: 'search.empty.no_search.description',
+    defaultMessage:
+      'Use the field above to search directly, or open Explore when you want suggestions instead of a popularity feed.',
+  },
+  ctaOpenExplore: {
+    id: 'search.empty.open_explore',
+    defaultMessage: 'Open Explore',
+  },
+  ctaBrowseTopics: {
+    id: 'search.empty.browse_topics',
+    defaultMessage: 'Browse topics',
+  },
+  ctaFindPeople: {
+    id: 'search.empty.find_people',
+    defaultMessage: 'Find people',
+  },
+});
+
 const typeFromParam = (param?: string): SearchType => {
   if (param && ['all', 'accounts', 'statuses', 'hashtags'].includes(param)) {
     return param as SearchType;
@@ -69,8 +131,9 @@ const typeFromParam = (param?: string): SearchType => {
 export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
   multiColumn,
 }) => {
-  const columnRef = useRef<ColumnRef>(null);
   const intl = useIntl();
+  const columnRef = useRef<ColumnRef>(null);
+  const { signedIn } = useIdentity();
   const [q] = useSearchParam('q');
   const [type, setType] = useSearchParam('type');
   const isLoading = useAppSelector((state) => state.search.loading);
@@ -78,9 +141,13 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
   const dispatch = useAppDispatch();
   const mappedType = typeFromParam(type);
   const trimmedValue = q?.trim() ?? '';
+  const hasQuery = trimmedValue.length > 0;
+  const pageTitle = hasQuery
+    ? intl.formatMessage(messages.pageTitleWithQuery, { q: trimmedValue })
+    : intl.formatMessage(messages.title);
 
   useEffect(() => {
-    if (trimmedValue.length > 0) {
+    if (hasQuery) {
       void dispatch(
         submitSearch({
           q: trimmedValue,
@@ -88,7 +155,7 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
         }),
       );
     }
-  }, [dispatch, trimmedValue, mappedType]);
+  }, [dispatch, hasQuery, trimmedValue, mappedType]);
 
   const handleHeaderClick = useCallback(() => {
     columnRef.current?.scrollTop();
@@ -116,16 +183,63 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
     }
   }, [dispatch, mappedType]);
 
-  // We request 1 more result than we display so we can tell if there'd be a next page
   const hasMore =
-    mappedType !== 'all' && results
+    hasQuery && mappedType !== 'all' && results
       ? results[mappedType].length > INITIAL_PAGE_LIMIT &&
         results[mappedType].length % INITIAL_PAGE_LIMIT === 1
       : false;
 
+  const emptyState = hasQuery ? (
+    <div className='search-results__empty-state'>
+      <div className='search-results__empty-state__icon'>
+        <Icon id='search' icon={SearchIcon} />
+      </div>
+      <h3>{intl.formatMessage(messages.noResultsTitle)}</h3>
+      <p>{intl.formatMessage(messages.noResultsDescription)}</p>
+      <div className='search-results__empty-state__actions'>
+        <Link className='search-results__empty-state__action' to='/explore'>
+          {intl.formatMessage(messages.ctaOpenExplore)}
+        </Link>
+        <Link
+          className='search-results__empty-state__action'
+          to='/explore/tags'
+        >
+          {intl.formatMessage(messages.ctaBrowseTopics)}
+        </Link>
+      </div>
+    </div>
+  ) : (
+    <div className='search-results__empty-state'>
+      <div className='search-results__empty-state__icon'>
+        <Icon id='search' icon={SearchIcon} />
+      </div>
+      <h3>{intl.formatMessage(messages.noSearchTitle)}</h3>
+      <p>{intl.formatMessage(messages.noSearchDescription)}</p>
+      <div className='search-results__empty-state__actions'>
+        {signedIn && (
+          <Link
+            className='search-results__empty-state__action'
+            to='/explore/suggestions'
+          >
+            {intl.formatMessage(messages.ctaFindPeople)}
+          </Link>
+        )}
+        <Link
+          className='search-results__empty-state__action'
+          to='/explore/tags'
+        >
+          {intl.formatMessage(messages.ctaBrowseTopics)}
+        </Link>
+        <Link className='search-results__empty-state__action' to='/explore'>
+          {intl.formatMessage(messages.ctaOpenExplore)}
+        </Link>
+      </div>
+    </div>
+  );
+
   let filteredResults;
 
-  if (results) {
+  if (results && hasQuery) {
     switch (mappedType) {
       case 'all':
         filteredResults =
@@ -211,24 +325,75 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
   }
 
   return (
-    <Column
-      bindToDocument={!multiColumn}
-      ref={columnRef}
-      label={intl.formatMessage(messages.title, { q })}
-    >
+    <Column bindToDocument={!multiColumn} ref={columnRef} label={pageTitle}>
       <ColumnHeader
         icon={'search'}
         iconComponent={SearchIcon}
-        title={intl.formatMessage(messages.title, { q })}
+        title={pageTitle}
         onClick={handleHeaderClick}
         multiColumn={multiColumn}
       />
 
-      <div className='explore__search-header'>
-        <Search singleColumn initialValue={trimmedValue} key={trimmedValue} />
+      <div className='explore__search-header search-page__hero'>
+        <div className='search-page__hero__content'>
+          <div className='search-page__hero__copy'>
+            <span className='search-page__eyebrow'>
+              {intl.formatMessage(
+                hasQuery
+                  ? messages.heroEyebrowResults
+                  : messages.heroEyebrowDefault,
+              )}
+            </span>
+            <h2>
+              {intl.formatMessage(
+                hasQuery
+                  ? messages.heroTitleResults
+                  : messages.heroTitleDefault,
+                hasQuery ? { q: trimmedValue } : undefined,
+              )}
+            </h2>
+            <p>
+              {intl.formatMessage(
+                hasQuery
+                  ? messages.heroDescriptionResults
+                  : messages.heroDescriptionDefault,
+              )}
+            </p>
+          </div>
+
+          <div className='search-page__hero__search'>
+            <Search
+              singleColumn
+              initialValue={trimmedValue}
+              key={trimmedValue}
+              modernized
+            />
+          </div>
+
+          <div className='search-page__hero__meta'>
+            <span>
+              <FormattedMessage
+                id='search_results.accounts'
+                defaultMessage='Profiles'
+              />
+            </span>
+            <span>
+              <FormattedMessage
+                id='search_results.hashtags'
+                defaultMessage='Hashtags'
+              />
+            </span>
+            <span>
+              <FormattedMessage
+                id='search_results.statuses'
+                defaultMessage='Posts'
+              />
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className='account__section-headline'>
+      <div className='account__section-headline search-page__tabs'>
         <button
           onClick={handleSelectAll}
           className={mappedType === 'all' ? 'active' : undefined}
@@ -268,26 +433,14 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
         </button>
       </div>
 
-      <div className='explore__search-results' data-nosnippet>
+      <div className='search-page__results' data-nosnippet>
         <ScrollableList
           scrollKey='search-results'
           isLoading={isLoading}
           showLoading={isLoading && !results}
           onLoadMore={handleLoadMore}
           hasMore={hasMore}
-          emptyMessage={
-            trimmedValue.length > 0 ? (
-              <FormattedMessage
-                id='search_results.no_results'
-                defaultMessage='No results.'
-              />
-            ) : (
-              <FormattedMessage
-                id='search_results.no_search_yet'
-                defaultMessage='Try searching for posts, profiles or hashtags.'
-              />
-            )
-          }
+          emptyMessage={emptyState}
           bindToDocument
         >
           {filteredResults}
@@ -295,7 +448,7 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
       </div>
 
       <Helmet>
-        <title>{intl.formatMessage(messages.title, { q })}</title>
+        <title>{pageTitle}</title>
         <meta name='robots' content='noindex' />
       </Helmet>
     </Column>

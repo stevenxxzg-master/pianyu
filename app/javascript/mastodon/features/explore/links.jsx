@@ -47,7 +47,10 @@ class Links extends PureComponent {
       return (
         <div className='explore__links scrollable scrollable--flex'>
           <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.explore_statuses' defaultMessage='Nothing is trending right now. Check back later!' />
+            <FormattedMessage
+              id='empty_column.explore_links'
+              defaultMessage='No shared links are bubbling up right now. Check back later.'
+            />
           </div>
         </div>
       );
