@@ -5,6 +5,8 @@
                   as: resource_name,
                   url: session_path(resource_name),
                   html: { method: :post, id: 'webauthn-form', class: [hidden:] }) do |f|
+  %h2.sr-only= t('simple_form.title.sessions.webauthn')
+
   .actions
     = f.button :button, t('auth.use_security_key'), class: 'js-webauthn', type: :submit
 
