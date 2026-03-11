@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 
-import type { List } from 'immutable';
-
 import { defineMessages, useIntl } from 'react-intl';
+
+import type { List } from 'immutable';
 
 import { useLayout } from '@/mastodon/hooks/useLayout';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
@@ -118,7 +118,9 @@ export const ComposePanel: React.FC = () => {
             </p>
           </div>
 
-          {!hideComposer && <ComposeFormContainer singleColumn surface='sidebar' />}
+          {!hideComposer && (
+            <ComposeFormContainer singleColumn surface='sidebar' />
+          )}
           {hideComposer && (
             <div className='compose-panel__handoff'>
               <h3>{intl.formatMessage(handoffCopy.title)}</h3>

@@ -124,7 +124,10 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
 
           <div className='publish-page__grid'>
             <div className='publish-page__main'>
-              <ComposeFormContainer singleColumn={!multiColumn} surface='page' />
+              <ComposeFormContainer
+                singleColumn={!multiColumn}
+                surface='page'
+              />
             </div>
 
             <aside
