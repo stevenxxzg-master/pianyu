@@ -2,9 +2,12 @@
   = t('challenge.prompt')
 
 = simple_form_for @challenge, url: request.get? ? auth_challenge_path : '' do |f|
+  %h1.title= t('auth.security')
+  %p.lead= t('challenge.prompt')
+
   = f.input :return_to, as: :hidden
 
-  .field-group
+  .fields-group
     = f.input :current_password,
               input_html: { autocomplete: 'current-password', autofocus: true },
               label: t('challenge.prompt'),
