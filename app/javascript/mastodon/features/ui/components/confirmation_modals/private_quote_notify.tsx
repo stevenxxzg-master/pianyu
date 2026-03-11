@@ -13,6 +13,16 @@ import classes from './styles.module.css';
 
 export const PRIVATE_QUOTE_MODAL_ID = 'quote/private_notify';
 
+interface SubmitComposeOptions {
+  onSuccess?: (status: { url: string }) => void;
+  redirectOnSuccess?: boolean;
+  surface?: string | null;
+}
+
+interface PrivateQuoteNotifyProps extends BaseConfirmationModalProps {
+  submitOptions?: SubmitComposeOptions;
+}
+
 const messages = defineMessages({
   title: {
     id: 'confirmations.private_quote_notify.title',
@@ -36,10 +46,10 @@ const messages = defineMessages({
 
 export const PrivateQuoteNotify = forwardRef<
   HTMLDivElement,
-  BaseConfirmationModalProps
+  PrivateQuoteNotifyProps
 >(
   (
-    { onClose },
+    { onClose, submitOptions },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _ref,
   ) => {
@@ -52,13 +62,13 @@ export const PrivateQuoteNotify = forwardRef<
 
     const dispatch = useAppDispatch();
     const handleConfirm = useCallback(() => {
-      dispatch(submitCompose());
+      dispatch(submitCompose(submitOptions));
       if (dismiss) {
         dispatch(
           changeSetting(['dismissed_banners', PRIVATE_QUOTE_MODAL_ID], true),
         );
       }
-    }, [dismiss, dispatch]);
+    }, [dismiss, dispatch, submitOptions]);
 
     return (
       <ConfirmationModal

@@ -12,6 +12,16 @@ import { useAppDispatch, useAppSelector } from 'mastodon/store';
 import type { BaseConfirmationModalProps } from './confirmation_modal';
 import { ConfirmationModal } from './confirmation_modal';
 
+interface SubmitComposeOptions {
+  onSuccess?: (status: { url: string }) => void;
+  redirectOnSuccess?: boolean;
+  surface?: string | null;
+}
+
+interface ConfirmMissingAltTextModalProps extends BaseConfirmationModalProps {
+  submitOptions?: SubmitComposeOptions;
+}
+
 const messages = defineMessages({
   title: {
     id: 'confirmations.missing_alt_text.title',
@@ -33,8 +43,8 @@ const messages = defineMessages({
 });
 
 export const ConfirmMissingAltTextModal: React.FC<
-  BaseConfirmationModalProps
-> = ({ onClose }) => {
+  ConfirmMissingAltTextModalProps
+> = ({ onClose, submitOptions }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const mediaId = useAppSelector(
@@ -64,8 +74,8 @@ export const ConfirmMissingAltTextModal: React.FC<
   }, [dispatch, mediaId]);
 
   const handleSecondary = useCallback(() => {
-    dispatch(submitCompose());
-  }, [dispatch]);
+    dispatch(submitCompose(submitOptions));
+  }, [dispatch, submitOptions]);
 
   return (
     <ConfirmationModal

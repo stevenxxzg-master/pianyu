@@ -24,6 +24,7 @@ export const COMPOSE_CHANGE          = 'COMPOSE_CHANGE';
 export const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST';
 export const COMPOSE_SUBMIT_SUCCESS  = 'COMPOSE_SUBMIT_SUCCESS';
 export const COMPOSE_SUBMIT_FAIL     = 'COMPOSE_SUBMIT_FAIL';
+export const COMPOSE_DISMISS_SUCCESS = 'COMPOSE_DISMISS_SUCCESS';
 export const COMPOSE_REPLY           = 'COMPOSE_REPLY';
 export const COMPOSE_REPLY_CANCEL    = 'COMPOSE_REPLY_CANCEL';
 export const COMPOSE_DIRECT          = 'COMPOSE_DIRECT';
@@ -190,8 +191,14 @@ export function directCompose(account) {
   };
 }
 
-export function submitCompose(successCallback) {
+const normalizeSubmitOptions = (options = {}) => (typeof options === 'function' ? { onSuccess: options } : options);
+
+const usesInlineComposeSuccess = (surface) => surface === 'page' || surface === 'sidebar';
+
+export function submitCompose(options) {
   return function (dispatch, getState) {
+    const submitOptions = normalizeSubmitOptions(options);
+    const { onSuccess, redirectOnSuccess = false, surface = null } = submitOptions;
     const status   = getState().getIn(['compose', 'text'], '');
     const media    = getState().getIn(['compose', 'media_attachments']);
     const statusId = getState().getIn(['compose', 'id'], null);
@@ -253,14 +260,15 @@ export function submitCompose(successCallback) {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
     }).then(function (response) {
-      if ((browserHistory.location.pathname === '/publish' || browserHistory.location.pathname === '/statuses/new') && window.history.state) {
-        browserHistory.goBack();
-      }
+      const inlineSuccess = usesInlineComposeSuccess(surface) && !redirectOnSuccess;
 
       dispatch(insertIntoTagHistory(response.data.tags, status));
-      dispatch(submitComposeSuccess({ ...response.data }));
-      if (typeof successCallback === 'function') {
-        successCallback(response.data);
+      dispatch(submitComposeSuccess({ ...response.data }, {
+        surface,
+        mode: statusId === null ? 'publish' : 'save',
+      }));
+      if (typeof onSuccess === 'function') {
+        onSuccess(response.data);
       }
 
       // To make the app more responsive, immediately push the status
@@ -287,12 +295,14 @@ export function submitCompose(successCallback) {
         insertIfOnline(`account:${response.data.account.id}`);
       }
 
-      dispatch(showAlert({
-        message: statusId === null ? messages.published : messages.saved,
-        action: messages.open,
-        dismissAfter: 10000,
-        onClick: () => browserHistory.push(`/@${response.data.account.username}/${response.data.id}`),
-      }));
+      if (!redirectOnSuccess && !inlineSuccess) {
+        dispatch(showAlert({
+          message: statusId === null ? messages.published : messages.saved,
+          action: messages.open,
+          dismissAfter: 10000,
+          onClick: () => browserHistory.push(`/@${response.data.account.username}/${response.data.id}`),
+        }));
+      }
     }).catch(function (error) {
       dispatch(submitComposeFail(error));
     });
@@ -305,10 +315,17 @@ export function submitComposeRequest() {
   };
 }
 
-export function submitComposeSuccess(status) {
+export function submitComposeSuccess(status, meta = {}) {
   return {
     type: COMPOSE_SUBMIT_SUCCESS,
     status: status,
+    meta,
+  };
+}
+
+export function dismissComposeSuccess() {
+  return {
+    type: COMPOSE_DISMISS_SUCCESS,
   };
 }
 

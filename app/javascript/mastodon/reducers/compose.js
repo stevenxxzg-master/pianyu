@@ -22,6 +22,7 @@ import {
   COMPOSE_SUBMIT_REQUEST,
   COMPOSE_SUBMIT_SUCCESS,
   COMPOSE_SUBMIT_FAIL,
+  COMPOSE_DISMISS_SUCCESS,
   COMPOSE_UPLOAD_REQUEST,
   COMPOSE_UPLOAD_SUCCESS,
   COMPOSE_UPLOAD_FAIL,
@@ -90,6 +91,10 @@ const initialState = ImmutableMap({
   resetFileKey: Math.floor((Math.random() * 0x10000)),
   idempotencyKey: null,
   tagHistory: ImmutableList(),
+  last_submitted_status: null,
+  last_submit_surface: null,
+  last_submit_mode: null,
+  last_submitted_at: null,
 
   // Quotes
   quoted_status_id: null,
@@ -132,6 +137,24 @@ function clearAll(state) {
     map.set('idempotencyKey', uuid());
     map.set('quoted_status_id', null);
     map.set('quote_policy', state.get('default_quote_policy'));
+  });
+}
+
+function clearComposeSuccess(state) {
+  return state.withMutations(map => {
+    map.set('last_submitted_status', null);
+    map.set('last_submit_surface', null);
+    map.set('last_submit_mode', null);
+    map.set('last_submitted_at', null);
+  });
+}
+
+function setComposeSuccess(state, action) {
+  return clearComposeSuccess(state).withMutations(map => {
+    map.set('last_submitted_status', fromJS(action.status));
+    map.set('last_submit_surface', action.meta?.surface ?? null);
+    map.set('last_submit_mode', action.meta?.mode ?? 'publish');
+    map.set('last_submitted_at', Date.now());
   });
 }
 
@@ -339,7 +362,7 @@ export const composeReducer = (state = initialState, action) => {
   } else if (quoteCompose.match(action)) {
     const status = action.payload;
     const isDirect = state.get('privacy') === 'direct';
-    return state
+    return clearComposeSuccess(state)
       .set('quoted_status_id', isDirect ? null : status.get('id'))
       .update('spoiler', spoiler => (spoiler) || !!status.get('spoiler_text'))
       .update('spoiler_text', (spoiler_text) => spoiler_text || status.get('spoiler_text'))
@@ -350,15 +373,15 @@ export const composeReducer = (state = initialState, action) => {
         return visibility;
       });
   } else if (quoteComposeCancel.match(action)) {
-    return state.set('quoted_status_id', null);
+    return clearComposeSuccess(state).set('quoted_status_id', null);
   } else if (setComposeQuotePolicy.match(action)) {
-    return state.set('quote_policy', action.payload);
+    return clearComposeSuccess(state).set('quote_policy', action.payload);
   } else if (pasteLinkCompose.pending.match(action)) {
-    return state.set('fetching_link', action.meta.requestId);
+    return clearComposeSuccess(state).set('fetching_link', action.meta.requestId);
   } else if (pasteLinkCompose.fulfilled.match(action) || pasteLinkCompose.rejected.match(action)) {
-    return action.meta.requestId === state.get('fetching_link') ? state.set('fetching_link', null) : state;
+    return action.meta.requestId === state.get('fetching_link') ? clearComposeSuccess(state).set('fetching_link', null) : state;
   } else if (cancelPasteLinkCompose.match(action)) {
-    return state.set('fetching_link', null);
+    return clearComposeSuccess(state).set('fetching_link', null);
   }
 
   switch(action.type) {
@@ -383,7 +406,7 @@ export const composeReducer = (state = initialState, action) => {
         )
       );
   case COMPOSE_SENSITIVITY_CHANGE:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       if (!state.get('spoiler')) {
         map.set('sensitive', !state.get('sensitive'));
       }
@@ -391,7 +414,7 @@ export const composeReducer = (state = initialState, action) => {
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_SPOILERNESS_CHANGE:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.set('spoiler', !state.get('spoiler'));
       map.set('idempotencyKey', uuid());
 
@@ -401,17 +424,17 @@ export const composeReducer = (state = initialState, action) => {
     });
   case COMPOSE_SPOILER_TEXT_CHANGE:
     if (!state.get('spoiler')) return state;
-    return state
+    return clearComposeSuccess(state)
       .set('spoiler_text', action.text)
       .set('idempotencyKey', uuid());
   case COMPOSE_CHANGE:
-    return state
+    return clearComposeSuccess(state)
       .set('text', action.text)
       .set('idempotencyKey', uuid());
   case COMPOSE_COMPOSING_CHANGE:
     return state.set('is_composing', action.value);
   case COMPOSE_REPLY:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.set('id', null);
       map.set('in_reply_to', action.status.get('id'));
       map.set('text', statusToTextMentions(state, action.status));
@@ -443,28 +466,31 @@ export const composeReducer = (state = initialState, action) => {
       }
     });
   case COMPOSE_SUBMIT_REQUEST:
-    return state.set('is_submitting', true);
+    return clearComposeSuccess(state).set('is_submitting', true);
 
   case COMPOSE_REPLY_CANCEL:
   case COMPOSE_RESET:
+    return clearComposeSuccess(clearAll(state));
   case COMPOSE_SUBMIT_SUCCESS:
-    return clearAll(state);
+    return setComposeSuccess(clearAll(state), action);
+  case COMPOSE_DISMISS_SUCCESS:
+    return clearComposeSuccess(state);
   case COMPOSE_SUBMIT_FAIL:
     return state.set('is_submitting', false);
   case COMPOSE_UPLOAD_REQUEST:
-    return state.set('is_uploading', true).update('pending_media_attachments', n => n + 1);
+    return clearComposeSuccess(state).set('is_uploading', true).update('pending_media_attachments', n => n + 1);
   case COMPOSE_UPLOAD_PROCESSING:
-    return state.set('is_processing', true);
+    return clearComposeSuccess(state).set('is_processing', true);
   case COMPOSE_UPLOAD_SUCCESS:
-    return appendMedia(state, fromJS(action.media), action.file);
+    return appendMedia(clearComposeSuccess(state), fromJS(action.media), action.file);
   case COMPOSE_UPLOAD_FAIL:
-    return state
+    return clearComposeSuccess(state)
       .set('is_uploading', false)
       .set('is_processing', false)
       .set('progress', 0)
       .update('pending_media_attachments', n => n - 1);
   case COMPOSE_UPLOAD_UNDO:
-    return removeMedia(state, action.media_id);
+    return removeMedia(clearComposeSuccess(state), action.media_id);
   case COMPOSE_UPLOAD_PROGRESS:
     return state.set('progress', calculateProgress(action.loaded, action.total));
   case THUMBNAIL_UPLOAD_REQUEST:
@@ -474,7 +500,7 @@ export const composeReducer = (state = initialState, action) => {
   case THUMBNAIL_UPLOAD_FAIL:
     return state.set('isUploadingThumbnail', false);
   case THUMBNAIL_UPLOAD_SUCCESS:
-    return state
+    return clearComposeSuccess(state)
       .set('isUploadingThumbnail', false)
       .update('media_attachments', list => list.map(item => {
         if (item.get('id') === action.media.id) {
@@ -484,14 +510,14 @@ export const composeReducer = (state = initialState, action) => {
         return item;
       }));
   case COMPOSE_MENTION:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_DIRECT:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
       map.set('privacy', 'direct');
       map.set('focusDate', new Date());
@@ -503,7 +529,7 @@ export const composeReducer = (state = initialState, action) => {
   case COMPOSE_SUGGESTIONS_READY:
     return state.set('suggestions', ImmutableList(normalizeSuggestions(state, action))).set('suggestion_token', action.token);
   case COMPOSE_SUGGESTION_SELECT:
-    return insertSuggestion(state, action.position, action.token, action.completion, action.path);
+    return insertSuggestion(clearComposeSuccess(state), action.position, action.token, action.completion, action.path);
   case COMPOSE_SUGGESTION_IGNORE:
     return ignoreSuggestion(state, action.position, action.token, action.completion, action.path);
   case COMPOSE_SUGGESTION_TAGS_UPDATE:
@@ -519,9 +545,9 @@ export const composeReducer = (state = initialState, action) => {
       return state;
     }
   case COMPOSE_EMOJI_INSERT:
-    return insertEmoji(state, action.position, action.emoji, action.needsSpace);
+    return insertEmoji(clearComposeSuccess(state), action.position, action.emoji, action.needsSpace);
   case REDRAFT:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
@@ -558,7 +584,7 @@ export const composeReducer = (state = initialState, action) => {
       }
     });
   case COMPOSE_SET_STATUS:
-    return state.withMutations(map => {
+    return clearComposeSuccess(state).withMutations(map => {
       map.set('id', action.status.get('id'));
       map.set('text', action.text);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
@@ -595,19 +621,19 @@ export const composeReducer = (state = initialState, action) => {
       }
     });
   case COMPOSE_POLL_ADD:
-    return state.set('poll', initialPoll);
+    return clearComposeSuccess(state).set('poll', initialPoll);
   case COMPOSE_POLL_REMOVE:
-    return state.set('poll', null);
+    return clearComposeSuccess(state).set('poll', null);
   case COMPOSE_POLL_OPTION_CHANGE:
-    return updatePoll(state, action.index, action.title, action.maxOptions);
+    return updatePoll(clearComposeSuccess(state), action.index, action.title, action.maxOptions);
   case COMPOSE_POLL_SETTINGS_CHANGE:
-    return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
+    return clearComposeSuccess(state).update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case COMPOSE_LANGUAGE_CHANGE:
-    return state.set('language', action.language);
+    return clearComposeSuccess(state).set('language', action.language);
   case COMPOSE_FOCUS:
-    return state.set('focusDate', new Date()).update('text', text => text.length > 0 ? text : action.defaultText);
+    return clearComposeSuccess(state).set('focusDate', new Date()).update('text', text => text.length > 0 ? text : action.defaultText);
   case COMPOSE_CHANGE_MEDIA_ORDER:
-    return state.update('media_attachments', list => {
+    return clearComposeSuccess(state).update('media_attachments', list => {
       const indexA = list.findIndex(x => x.get('id') === action.a);
       const moveItem = list.get(indexA);
       const indexB = list.findIndex(x => x.get('id') === action.b);
