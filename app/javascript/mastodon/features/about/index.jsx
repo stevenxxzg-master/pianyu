@@ -23,6 +23,7 @@ import {
 } from 'mastodon/initial_state';
 import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
 import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
+import { isValidUrl } from 'mastodon/utils/checks';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
@@ -161,13 +162,18 @@ class About extends PureComponent {
         : []),
     ];
 
+  const safeStatusPageUrl =
+    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
+      ? statusPageUrl
+      : undefined;
+
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
         <PublicPageLayout
           asideDescription={intl.formatMessage(messages.navDescription)}
           asideFooter={
-            statusPageUrl ? (
-              <a href={statusPageUrl} rel='noopener' target='_blank'>
+            safeStatusPageUrl ? (
+              <a href={safeStatusPageUrl} rel='noopener' target='_blank'>
                 {intl.formatMessage(messages.statusLink)}
               </a>
             ) : undefined

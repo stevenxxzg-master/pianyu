@@ -21,6 +21,7 @@ import {
   statusPageUrl,
   title as siteTitle,
 } from 'mastodon/initial_state';
+import { isValidUrl } from 'mastodon/utils/checks';
 
 const messages = defineMessages({
   title: { id: 'terms_of_service.title', defaultMessage: 'Terms of Service' },
@@ -133,6 +134,11 @@ const TermsOfService: React.FC<{
     },
   ];
 
+  const safeStatusPageUrl =
+    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
+      ? statusPageUrl
+      : undefined;
+
   return (
     <Column
       bindToDocument={!multiColumn}
@@ -141,8 +147,8 @@ const TermsOfService: React.FC<{
       <PublicPageLayout
         asideDescription={intl.formatMessage(messages.navDescription)}
         asideFooter={
-          statusPageUrl ? (
-            <a href={statusPageUrl} rel='noopener' target='_blank'>
+          safeStatusPageUrl ? (
+            <a href={safeStatusPageUrl} rel='noopener' target='_blank'>
               {intl.formatMessage(messages.statusLink)}
             </a>
           ) : undefined

@@ -17,6 +17,7 @@ import {
   termsOfServiceEnabled,
   title as siteTitle,
 } from 'mastodon/initial_state';
+import { isValidUrl } from 'mastodon/utils/checks';
 
 const messages = defineMessages({
   title: { id: 'privacy_policy.title', defaultMessage: 'Privacy Policy' },
@@ -124,6 +125,11 @@ const PrivacyPolicy: React.FC<{
       : []),
   ];
 
+  const safeStatusPageUrl =
+    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
+      ? statusPageUrl
+      : undefined;
+
   return (
     <Column
       bindToDocument={!multiColumn}
@@ -132,8 +138,8 @@ const PrivacyPolicy: React.FC<{
       <PublicPageLayout
         asideDescription={intl.formatMessage(messages.navDescription)}
         asideFooter={
-          statusPageUrl ? (
-            <a href={statusPageUrl} rel='noopener' target='_blank'>
+          safeStatusPageUrl ? (
+            <a href={safeStatusPageUrl} rel='noopener' target='_blank'>
               {intl.formatMessage(messages.statusLink)}
             </a>
           ) : undefined
