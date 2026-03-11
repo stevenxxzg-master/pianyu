@@ -27,7 +27,7 @@ export const LoadGap = <T,>({ disabled, param, onClick }: Props<T>) => {
 
   return (
     <button
-      className='load-more load-gap'
+      className='load-more load-more--gap load-gap'
       disabled={disabled}
       onClick={handleClick}
       aria-label={intl.formatMessage(messages.load_more)}

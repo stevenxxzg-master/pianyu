@@ -17,7 +17,7 @@ export const LoadMore: React.FC<Props> = ({
   return (
     <button
       type='button'
-      className='load-more'
+      className='load-more load-more--older'
       disabled={disabled || loading || !visible}
       style={{ visibility: visible ? 'visible' : 'hidden' }}
       onClick={onClick}
