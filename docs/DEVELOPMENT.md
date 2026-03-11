@@ -95,6 +95,13 @@ development environment configured with the software needed for this project.
 - Check out the [Mastodon docs] for tips on working with emails in development (you'll need this when creating new user accounts) as well as a list of useful commands for testing and updating your dev instance.
 - You can optionally populate your database with sample data by running `bin/rails dev:populate_sample_data`. This will create a `@showcase_account` account with various types of contents.
 
+## Visual baselines
+
+- Run `mise exec -- yarn storybook` and open `Pages/Key Visual Baselines` to review the critical M5 page baselines for home, publish, notifications, profile, landing, and login.
+- Run `mise exec -- yarn test:storybook` for the Storybook Vitest browser checks.
+- Run `mise exec -- yarn build-storybook` before publishing Chromatic updates or when you want a local static snapshot of the baseline catalog.
+- Continue using `Components/*` stories for design-system level review; the page-baseline catalog is intended to complement, not replace, those component stories.
+
 [codespace]: https://codespaces.new/mastodon/mastodon?quickstart=1&devcontainer_path=.devcontainer%2Fcodespaces%2Fdevcontainer.json
 [CONTRIBUTING]: ../CONTRIBUTING.md
 [Dev Container extension]: https://containers.dev/supporting#dev-containers

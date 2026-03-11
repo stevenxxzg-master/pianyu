@@ -6,3 +6,36 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.sb-page-canvas {
+  min-height: 100vh;
+  padding: 32px 20px 48px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background:
+    radial-gradient(circle at top, rgb(99 100 255 / 10%), transparent 45%),
+    linear-gradient(180deg, #f7f9fc 0%, #eef2f8 100%);
+}
+
+[data-color-scheme='dark'] .sb-page-canvas {
+  background:
+    radial-gradient(circle at top, rgb(153 169 255 / 14%), transparent 40%),
+    linear-gradient(180deg, #101722 0%, #0b1017 100%);
+}
+
+.sb-page-canvas__column {
+  width: min(100%, 720px);
+}
+
+.sb-page-canvas__column .column {
+  margin-inline: auto;
+}
+
+.sb-page-canvas--auth {
+  padding-block: 56px;
+}
+
+.sb-page-canvas--auth .container-alt {
+  width: min(100%, 1100px);
+}
