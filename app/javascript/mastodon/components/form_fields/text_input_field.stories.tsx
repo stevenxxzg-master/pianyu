@@ -23,7 +23,9 @@ export const Simple: Story = {
   play: async ({ canvas, userEvent }) => {
     const input = await canvas.findByRole('textbox', { name: 'Label' });
 
-    await expect(canvas.getByText('This is a description of this form field')).toBeVisible();
+    await expect(
+      canvas.getByText('This is a description of this form field'),
+    ).toBeVisible();
     await userEvent.type(input, 'Test value');
     await expect(input).toHaveValue('Test value');
   },

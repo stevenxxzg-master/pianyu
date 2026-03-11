@@ -92,7 +92,9 @@ const primaryCardTest: Story['play'] = async ({ canvasElement }) => {
   await expect(canvas.getByRole('button', { name: 'Mute' })).toBeVisible();
 
   await userEvent.click(canvas.getByRole('button', { name: 'More' }));
-  await expect(await canvas.findByRole('menuitem', { name: 'Mute notifications' })).toBeVisible();
+  await expect(
+    await canvas.findByRole('menuitem', { name: 'Mute notifications' }),
+  ).toBeVisible();
 };
 
 export const Primary: Story = {
@@ -116,7 +118,9 @@ export const WithBio: Story = {
     withBio: true,
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByText('This is a test user account.')).toBeVisible();
+    await expect(
+      canvas.getByText('This is a test user account.'),
+    ).toBeVisible();
   },
 };
 

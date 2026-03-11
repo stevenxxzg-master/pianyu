@@ -35,7 +35,9 @@ export const Default: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText('Pronouns')).toBeVisible();
     await expect(canvas.getByText('they/them')).toBeVisible();
-    await expect(canvas.getByRole('link', { name: 'bowie-the-db.meow' })).toHaveAttribute('href', 'https://example.com');
+    await expect(
+      canvas.getByRole('link', { name: 'bowie-the-db.meow' }),
+    ).toHaveAttribute('href', 'https://example.com');
   },
 };
 

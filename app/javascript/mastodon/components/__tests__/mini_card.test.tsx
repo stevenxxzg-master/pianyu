@@ -22,7 +22,9 @@ describe('<MiniCardList />', () => {
     );
 
     expect(screen.getByText('Website')).toBeTruthy();
-    expect(screen.getByRole('link', { name: 'example.com' }).getAttribute('href')).toBe('https://example.com');
+    expect(
+      screen.getByRole('link', { name: 'example.com' }).getAttribute('href'),
+    ).toBe('https://example.com');
     expect(screen.getByText('Location')).toBeTruthy();
     expect(container.querySelector('svg')).toBeTruthy();
   });

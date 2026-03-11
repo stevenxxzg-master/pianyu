@@ -18,7 +18,8 @@ describe('<TextInputField />', () => {
     fireEvent.change(input, { target: { value: 'alice' } });
 
     expect(screen.getByText('Find accounts and posts')).toBeTruthy();
-    if (!(input instanceof HTMLInputElement)) throw new TypeError('Expected text input');
+    if (!(input instanceof HTMLInputElement))
+      throw new TypeError('Expected text input');
     expect(input.value).toBe('alice');
     expect(container.querySelector('svg')).toBeTruthy();
   });
@@ -28,7 +29,8 @@ describe('<TextInputField />', () => {
 
     const input = screen.getByRole('textbox');
 
-    if (!(input instanceof HTMLInputElement)) throw new TypeError('Expected text input');
+    if (!(input instanceof HTMLInputElement))
+      throw new TypeError('Expected text input');
     expect(input.disabled).toBe(true);
     expect(input.value).toBe("This value can't be changed");
   });
