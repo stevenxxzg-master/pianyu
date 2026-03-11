@@ -1,106 +1,50 @@
-import { useCallback } from 'react';
-
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'mastodon/actions/modal';
-import { registrationsOpen, sso_redirect } from 'mastodon/initial_state';
-import { useAppDispatch, useAppSelector } from 'mastodon/store';
+import { Link } from 'react-router-dom';
+
+import { IconLogo } from 'mastodon/components/logo';
+import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
 
 export const SignInBanner: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  const openClosedRegistrationsModal = useCallback(
-    () =>
-      dispatch(
-        openModal({ modalType: 'CLOSED_REGISTRATIONS', modalProps: {} }),
-      ),
-    [dispatch],
-  );
-
-  let signupButton: React.ReactNode;
-
-  const signupUrl = useAppSelector(
-    (state) =>
-      (state.server.getIn(['server', 'registrations', 'url'], null) as
-        | string
-        | null) ?? '/auth/sign_up',
-  );
-
-  if (sso_redirect) {
-    return (
-      <div className='sign-in-banner'>
-        <p>
-          <strong>
-            <FormattedMessage
-              id='sign_in_banner.mastodon_is'
-              defaultMessage="Mastodon is the best way to keep up with what's happening."
-            />
-          </strong>
-        </p>
-        <p>
-          <FormattedMessage
-            id='sign_in_banner.follow_anyone'
-            defaultMessage='Follow anyone across the fediverse and see it all in chronological order. No algorithms, ads, or clickbait in sight.'
-          />
-        </p>
-        <a
-          href={sso_redirect}
-          data-method='post'
-          className='button button--block button-secondary'
-        >
-          <FormattedMessage
-            id='sign_in_banner.sso_redirect'
-            defaultMessage='Login or Register'
-          />
-        </a>
-      </div>
-    );
-  }
-
-  if (registrationsOpen) {
-    signupButton = (
-      <a href={signupUrl} className='button button--block'>
-        <FormattedMessage
-          id='sign_in_banner.create_account'
-          defaultMessage='Create account'
-        />
-      </a>
-    );
-  } else {
-    signupButton = (
-      <button
-        className='button button--block'
-        onClick={openClosedRegistrationsModal}
-        type='button'
-      >
-        <FormattedMessage
-          id='sign_in_banner.create_account'
-          defaultMessage='Create account'
-        />
-      </button>
-    );
-  }
-
   return (
     <div className='sign-in-banner'>
-      <p>
-        <strong>
+      <div className='sign-in-banner__brand'>
+        <IconLogo />
+        <span>
           <FormattedMessage
-            id='sign_in_banner.mastodon_is'
-            defaultMessage="Mastodon is the best way to keep up with what's happening."
+            id='sign_in_banner.brand'
+            defaultMessage='Public home'
           />
-        </strong>
-      </p>
+        </span>
+      </div>
+
+      <h2>
+        <FormattedMessage
+          id='sign_in_banner.title'
+          defaultMessage='Read first, join when the room feels right.'
+        />
+      </h2>
+
       <p>
         <FormattedMessage
-          id='sign_in_banner.follow_anyone'
-          defaultMessage='Follow anyone across the fediverse and see it all in chronological order. No algorithms, ads, or clickbait in sight.'
+          id='sign_in_banner.description'
+          defaultMessage='Discovery stays chronological, local, and calm so first-time visitors can understand the community before opening an account.'
         />
       </p>
-      {signupButton}
-      <a href='/auth/sign_in' className='button button--block button-secondary'>
-        <FormattedMessage id='sign_in_banner.sign_in' defaultMessage='Login' />
-      </a>
+
+      <PublicAuthButtons block className='sign-in-banner__actions' />
+
+      <div className='sign-in-banner__links'>
+        <Link to='/about'>
+          <FormattedMessage
+            id='footer.about_this_server'
+            defaultMessage='About this server'
+          />
+        </Link>
+        <Link to='/explore'>
+          <FormattedMessage id='explore.title' defaultMessage='Trending' />
+        </Link>
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@
 class Auth::RegistrationsController < Devise::RegistrationsController
   include RegistrationHelper
   include Auth::RegistrationSpamConcern
+  include SafeRedirectConcern
 
   layout :determine_layout
 
@@ -39,6 +40,10 @@ class Auth::RegistrationsController < Devise::RegistrationsController
 
   def destroy
     not_found
+  end
+
+  def redirect_to_sign_up
+    redirect_to_safe_resource(helpers.available_sign_up_path)
   end
 
   protected

@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
-import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { useIntl, defineMessages } from 'react-intl';
 
 import classNames from 'classnames';
 import { NavLink, useRouteMatch } from 'react-router-dom';
@@ -12,13 +12,11 @@ import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import NotificationsActiveIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
 import SearchIcon from '@/material-icons/400-24px/search.svg?react';
-import { openModal } from 'mastodon/actions/modal';
 import { toggleNavigation } from 'mastodon/actions/navigation';
-import { fetchServer } from 'mastodon/actions/server';
 import { Icon } from 'mastodon/components/icon';
 import { IconWithBadge } from 'mastodon/components/icon_with_badge';
+import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
 import { useIdentity } from 'mastodon/identity_context';
-import { registrationsOpen, sso_redirect } from 'mastodon/initial_state';
 import { selectUnreadNotificationGroupsCount } from 'mastodon/selectors/notifications';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
@@ -81,79 +79,6 @@ const NotificationsButton = () => {
   );
 };
 
-const LoginOrSignUp: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const signupUrl = useAppSelector(
-    (state) =>
-      (state.server.getIn(['server', 'registrations', 'url'], null) as
-        | string
-        | null) ?? '/auth/sign_up',
-  );
-
-  const openClosedRegistrationsModal = useCallback(() => {
-    dispatch(openModal({ modalType: 'CLOSED_REGISTRATIONS', modalProps: {} }));
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchServer());
-  }, [dispatch]);
-
-  if (sso_redirect) {
-    return (
-      <div className='ui__navigation-bar__sign-up'>
-        <a
-          href={sso_redirect}
-          data-method='post'
-          className='button button--block button-secondary'
-        >
-          <FormattedMessage
-            id='sign_in_banner.sso_redirect'
-            defaultMessage='Login or Register'
-          />
-        </a>
-      </div>
-    );
-  } else {
-    let signupButton;
-
-    if (registrationsOpen) {
-      signupButton = (
-        <a href={signupUrl} className='button'>
-          <FormattedMessage
-            id='sign_in_banner.create_account'
-            defaultMessage='Create account'
-          />
-        </a>
-      );
-    } else {
-      signupButton = (
-        <button
-          className='button'
-          onClick={openClosedRegistrationsModal}
-          type='button'
-        >
-          <FormattedMessage
-            id='sign_in_banner.create_account'
-            defaultMessage='Create account'
-          />
-        </button>
-      );
-    }
-
-    return (
-      <div className='ui__navigation-bar__sign-up'>
-        {signupButton}
-        <a href='/auth/sign_in' className='button button-secondary'>
-          <FormattedMessage
-            id='sign_in_banner.sign_in'
-            defaultMessage='Login'
-          />
-        </a>
-      </div>
-    );
-  }
-};
-
 export const NavigationBar: React.FC = () => {
   const { signedIn } = useIdentity();
   const dispatch = useAppDispatch();
@@ -166,7 +91,9 @@ export const NavigationBar: React.FC = () => {
 
   return (
     <div className='ui__navigation-bar'>
-      {!signedIn && <LoginOrSignUp />}
+      {!signedIn && (
+        <PublicAuthButtons className='ui__navigation-bar__sign-up' />
+      )}
 
       <div
         className={classNames('ui__navigation-bar__items', {

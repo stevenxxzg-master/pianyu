@@ -1,0 +1,1014 @@
+@use 'variables' as *;
+
+.about {
+  position: relative;
+  padding: clamp(18px, 3vw, 32px);
+  border-top: 1px solid var(--color-border-primary);
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in oklab, var(--color-bg-brand-softer) 85%, transparent),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(
+          in oklab,
+          var(--color-bg-brand-softer) 28%,
+          var(--color-bg-primary)
+        )
+        0%,
+      var(--color-bg-primary) 32%
+    );
+  overflow: hidden;
+  isolation: isolate;
+
+  @media screen and (min-width: $no-gap-breakpoint) {
+    border-radius: 4px;
+  }
+
+  @media screen and (max-width: $no-gap-breakpoint) {
+    padding-bottom: 112px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 38%,
+      color-mix(in oklab, var(--color-bg-brand-softer) 32%, transparent) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__footer {
+    color: var(--color-text-tertiary);
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 18px;
+  }
+
+  &__section {
+    margin-top: 20px;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--color-border-primary);
+      background: color-mix(in oklab, var(--color-bg-primary) 88%, white 12%);
+      color: var(--color-text-primary);
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 22px;
+      cursor: pointer;
+      box-shadow: 0 16px 40px rgb(15 23 42 / 5%);
+    }
+
+    &.active &__title {
+      border-radius: 20px 20px 0 0;
+      border-bottom-color: transparent;
+    }
+
+    &__body {
+      padding: 20px;
+      border: 1px solid var(--color-border-primary);
+      border-top: 0;
+      border-radius: 0 0 20px 20px;
+      background: color-mix(in oklab, var(--color-bg-primary) 94%, white 6%);
+      font-size: 15px;
+      line-height: 24px;
+      box-shadow: 0 18px 44px rgb(15 23 42 / 4%);
+    }
+  }
+
+  &__domain-blocks {
+    margin-top: 18px;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--color-bg-primary);
+
+    &__domain {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--color-border-primary);
+      font-size: 14px;
+      line-height: 21px;
+      color: var(--color-text-secondary);
+
+      &:nth-child(2n) {
+        background: color-mix(
+          in oklab,
+          var(--color-bg-secondary) 86%,
+          white 14%
+        );
+      }
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &__header {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      &__type {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-brand);
+      }
+
+      h6 {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text-primary);
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.public-home {
+  display: grid;
+  gap: 24px;
+
+  &__hero,
+  &__section,
+  &__panel,
+  .link-footer {
+    backdrop-filter: blur(12px);
+  }
+
+  &__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 24px;
+    padding: clamp(20px, 4vw, 32px);
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+    border-radius: 28px;
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-bg-brand-softer) 88%, white 12%) 0%,
+      color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 68%
+    );
+    box-shadow: 0 28px 80px rgb(15 23 42 / 8%);
+  }
+
+  &__hero__content {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+  }
+
+  &__hero__visual {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+
+  &__hero__image {
+    width: 100%;
+    aspect-ratio: 0.98;
+    border-radius: 24px;
+    object-fit: cover;
+    background: var(--color-bg-tertiary);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 22%);
+  }
+
+  &__hero__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  &__eyebrow,
+  &__section__eyebrow,
+  .public-preview-card__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-text-brand);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  &__eyebrow__line {
+    width: 42px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.45;
+  }
+
+  &__hero__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 80%, white 20%);
+    border-radius: 22px;
+    background: rgb(255 255 255 / 76%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 42%);
+  }
+
+  &__hero__mark-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--color-text-brand);
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-size: clamp(2.5rem, 5vw, 4.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  &__hero__actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  &__hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    a {
+      color: var(--color-text-brand);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__auth,
+  .public-preview-card__actions,
+  .public-auth-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__auth .button,
+  .public-preview-card__actions .button,
+  .public-auth-buttons .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 168px;
+    white-space: nowrap;
+  }
+
+  &__stat-card {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+    min-height: 112px;
+    border-radius: 20px;
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    background: rgb(255 255 255 / 70%);
+    box-shadow: 0 16px 40px rgb(15 23 42 / 4%);
+
+    strong {
+      color: var(--color-text-primary);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      line-height: 1.2;
+      font-weight: 700;
+    }
+  }
+
+  &__stat-card__label {
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__section,
+  &__panel {
+    padding: 22px;
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 86%, white 14%);
+    border-radius: 24px;
+    background: color-mix(in oklab, var(--color-bg-primary) 94%, white 6%);
+    box-shadow: 0 24px 60px rgb(15 23 42 / 5%);
+  }
+
+  &__section {
+    display: grid;
+    gap: 18px;
+  }
+
+  &__section__intro {
+    display: grid;
+    gap: 10px;
+    max-width: 56ch;
+  }
+
+  &__feature-grid,
+  &__showcase-grid,
+  &__detail-grid,
+  &__support-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  &__feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  &__showcase-grid,
+  &__detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  &__detail-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+
+  &__feature-card,
+  &__showcase-card,
+  &__support-card {
+    position: relative;
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    border-radius: 20px;
+    background: color-mix(in oklab, var(--color-bg-secondary) 86%, white 14%);
+  }
+
+  &__feature-card {
+    padding: 18px;
+    display: grid;
+    gap: 12px;
+  }
+
+  &__feature-card__icon,
+  &__showcase-card__icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(
+      in oklab,
+      var(--color-bg-brand-softer) 82%,
+      white 18%
+    );
+    color: var(--color-text-brand);
+  }
+
+  &__showcase-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+
+    &:hover,
+    &:focus,
+    &:active {
+      transform: translateY(-2px);
+      border-color: color-mix(
+        in oklab,
+        var(--color-text-brand) 45%,
+        var(--color-border-primary)
+      );
+      box-shadow: 0 16px 44px rgb(86 56 204 / 12%);
+      text-decoration: none;
+    }
+  }
+
+  &__showcase-card__content {
+    display: grid;
+    gap: 6px;
+
+    p {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+  }
+
+  &__showcase-card__arrow {
+    width: 18px;
+    height: 18px;
+    color: var(--color-text-tertiary);
+  }
+
+  &__panel {
+    display: grid;
+    gap: 16px;
+  }
+
+  &__panel__header,
+  &__panel__skeleton {
+    display: grid;
+    gap: 10px;
+  }
+
+  &__panel__empty,
+  &__section-copy {
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  &__support-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &__support-card {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  &__support-card__label {
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__support-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--color-text-brand);
+      text-decoration: underline;
+    }
+  }
+
+  &__prose {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .account {
+    padding: 0;
+    border: 0;
+  }
+
+  .account__avatar-wrapper {
+    margin-inline-start: 0;
+  }
+
+  .account__relationship {
+    display: none;
+  }
+}
+
+.public-preview-card {
+  margin: 14px 14px 0;
+  padding: 18px;
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 82%, white 18%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 92%, white 8%) 100%
+  );
+  box-shadow: 0 18px 50px rgb(15 23 42 / 6%);
+
+  h2 {
+    margin: 10px 0 8px;
+    color: var(--color-text-primary);
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  &__actions {
+    margin-top: 16px;
+  }
+}
+
+.public-auth-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.server-banner {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border-radius: 22px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 78%, white 22%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
+  );
+  box-shadow: 0 22px 56px rgb(15 23 42 / 6%);
+
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-brand);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .logo--icon {
+    width: 28px;
+    height: 28px;
+    color: var(--color-text-brand);
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  &__hero {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.08;
+    margin: 0;
+    border-radius: 18px;
+    object-fit: cover;
+    background: var(--color-bg-tertiary);
+  }
+
+  &__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  &__meta__column {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid
+      color-mix(in oklab, var(--color-border-primary) 88%, white 12%);
+    border-radius: 18px;
+    background: rgb(255 255 255 / 72%);
+  }
+
+  &__meta__empty,
+  &__number-label {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  &__number {
+    color: var(--color-text-primary);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    a {
+      color: var(--color-text-brand);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  h4 {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .account {
+    padding: 0;
+    border: 0;
+  }
+
+  .account__avatar-wrapper {
+    margin-inline-start: 0;
+  }
+
+  .account__relationship {
+    display: none;
+  }
+}
+
+.layout-multiple-columns {
+  .public-home {
+    &__hero,
+    &__feature-grid,
+    &__showcase-grid,
+    &__detail-grid,
+    &__support-grid,
+    &__hero__cards {
+      grid-template-columns: 1fr;
+    }
+
+    &__hero__content h1 {
+      max-width: none;
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+    }
+
+    &__auth,
+    .public-auth-buttons {
+      flex-direction: column;
+    }
+
+    &__auth .button,
+    .public-auth-buttons .button {
+      width: 100%;
+    }
+  }
+
+  .server-banner__meta,
+  .link-footer__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sign-in-banner {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border-radius: 22px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-bg-brand-softer) 80%, white 20%) 0%,
+    color-mix(in oklab, var(--color-bg-primary) 94%, white 6%) 100%
+  );
+  box-shadow: 0 22px 56px rgb(15 23 42 / 6%);
+
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-brand);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .logo--icon {
+    width: 28px;
+    height: 28px;
+    color: var(--color-text-brand);
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family:
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  &__actions {
+    width: 100%;
+  }
+
+  &__links {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+
+    a {
+      color: var(--color-text-brand);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.link-footer {
+  display: grid;
+  gap: 22px;
+  margin-top: 26px;
+  padding: 22px;
+  border: 1px solid
+    color-mix(in oklab, var(--color-border-primary) 84%, white 16%);
+  border-radius: 24px;
+  background: color-mix(in oklab, var(--color-bg-primary) 94%, white 6%);
+  box-shadow: 0 22px 56px rgb(15 23 42 / 5%);
+
+  &__brand {
+    display: grid;
+    gap: 12px;
+    max-width: 40ch;
+
+    &-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--color-text-brand);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .logo--icon {
+      width: 30px;
+      height: 30px;
+      color: var(--color-text-brand);
+    }
+
+    p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  &__group {
+    display: grid;
+    gap: 10px;
+
+    > span {
+      color: var(--color-text-tertiary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: var(--color-text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.5;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: var(--color-text-brand);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.ui__navigation-bar {
+  &__sign-up {
+    display: flex;
+    align-items: center;
+    max-width: calc(100vw - 84px);
+    padding-inline-start: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .public-auth-buttons {
+      flex-wrap: nowrap;
+      gap: 6px;
+    }
+
+    .button {
+      min-width: 0;
+      padding: 7px 12px;
+      font-size: 13px;
+      line-height: 16px;
+    }
+  }
+}
+
+.rules-list {
+  li {
+    border-radius: 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-border-primary);
+    background: color-mix(in oklab, var(--color-bg-secondary) 84%, white 16%);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.rules-languages {
+  margin-top: 16px;
+}
+
+@media screen and (width <= 1400px) {
+  .public-home {
+    &__hero,
+    &__feature-grid,
+    &__showcase-grid,
+    &__detail-grid,
+    &__support-grid,
+    &__hero__cards,
+    .link-footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__hero__content h1 {
+      max-width: 10ch;
+      font-size: clamp(2rem, 4.2vw, 3rem);
+      line-height: 1.02;
+    }
+
+    &__hero__image {
+      aspect-ratio: 1.45;
+    }
+  }
+
+  .server-banner__meta,
+  .link-footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .server-banner__hero {
+    aspect-ratio: 1.4;
+  }
+}
+
+@media screen and (width <= 960px) {
+  .public-home {
+    &__hero__content h1 {
+      max-width: none;
+    }
+  }
+}
+
+@media screen and (width <= 600px) {
+  .public-home {
+    gap: 20px;
+
+    &__hero,
+    &__section,
+    &__panel,
+    .link-footer {
+      padding: 18px;
+      border-radius: 20px;
+    }
+
+    &__auth,
+    .public-preview-card__actions,
+    .public-auth-buttons {
+      flex-direction: column;
+    }
+
+    &__auth .button,
+    .public-preview-card__actions .button,
+    .public-auth-buttons .button {
+      width: 100%;
+    }
+
+    &__hero__links,
+    .sign-in-banner__links,
+    .link-footer__meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .public-preview-card {
+    margin: 10px 10px 0;
+    padding: 16px;
+  }
+
+  .sign-in-banner h2 {
+    font-size: 24px;
+  }
+}

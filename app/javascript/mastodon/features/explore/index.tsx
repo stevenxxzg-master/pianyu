@@ -3,13 +3,14 @@ import { useCallback, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
-import { NavLink, Switch, Route } from 'react-router-dom';
+import { Link, NavLink, Route, Switch } from 'react-router-dom';
 
 import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
 import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
 import { ColumnHeader } from 'mastodon/components/column_header';
 import { SymbolLogo } from 'mastodon/components/logo';
+import { PublicAuthButtons } from 'mastodon/components/public_auth_buttons';
 import { Search } from 'mastodon/features/compose/components/search';
 import { useBreakpoint } from 'mastodon/features/ui/hooks/useBreakpoint';
 import { useIdentity } from 'mastodon/identity_context';
@@ -21,6 +22,15 @@ import Tags from './tags';
 
 const messages = defineMessages({
   title: { id: 'explore.title', defaultMessage: 'Trending' },
+  previewTitle: {
+    id: 'explore.preview.title',
+    defaultMessage: 'A calmer way to sample this community in public.',
+  },
+  previewDescription: {
+    id: 'explore.preview.description',
+    defaultMessage:
+      'Use discovery to scan posts, topics, and news before deciding whether this community is your pace.',
+  },
 });
 
 const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
@@ -46,6 +56,28 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
         onClick={handleHeaderClick}
         multiColumn={multiColumn}
       />
+
+      {!signedIn && (
+        <div className='public-preview-card public-preview-card--explore'>
+          <div className='public-preview-card__eyebrow'>
+            <FormattedMessage
+              id='explore.preview.eyebrow'
+              defaultMessage='Public discovery'
+            />
+          </div>
+          <h2>{intl.formatMessage(messages.previewTitle)}</h2>
+          <p>{intl.formatMessage(messages.previewDescription)}</p>
+          <div className='public-preview-card__actions'>
+            <PublicAuthButtons />
+            <Link className='button button-secondary' to='/about'>
+              <FormattedMessage
+                id='explore.preview.about'
+                defaultMessage='About this server'
+              />
+            </Link>
+          </div>
+        </div>
+      )}
 
       <div className='explore__search-header'>
         <Search singleColumn />
