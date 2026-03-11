@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import { openModal } from 'mastodon/actions/modal';
+import { dropdownIcons, navigationIcons } from 'mastodon/components/app_icons';
 import { Dropdown } from 'mastodon/components/dropdown_menu';
 import { Icon } from 'mastodon/components/icon';
 import { useIdentity } from 'mastodon/identity_context';
@@ -53,35 +53,51 @@ export const MoreLink: React.FC = () => {
       {
         href: '/filters',
         text: intl.formatMessage(messages.filters),
+        icon: dropdownIcons.filters,
+        iconId: 'filters',
       },
       {
         to: '/mutes',
         text: intl.formatMessage(messages.mutes),
+        icon: dropdownIcons.mutes,
+        iconId: 'mutes',
       },
       {
         to: '/blocks',
         text: intl.formatMessage(messages.blocks),
+        icon: dropdownIcons.blocks,
+        iconId: 'blocks',
       },
       {
         to: '/domain_blocks',
         text: intl.formatMessage(messages.domainBlocks),
+        icon: dropdownIcons.domainBlocks,
+        iconId: 'domain-blocks',
       },
       null,
       {
         href: '/settings/privacy',
         text: intl.formatMessage(messages.privacyAndReach),
+        icon: dropdownIcons.privacyAndReach,
+        iconId: 'privacy',
       },
       {
         href: '/statuses_cleanup',
         text: intl.formatMessage(messages.automatedDeletion),
+        icon: dropdownIcons.automatedDeletion,
+        iconId: 'automated-deletion',
       },
       {
         href: '/auth/edit',
         text: intl.formatMessage(messages.accountSettings),
+        icon: dropdownIcons.accountSettings,
+        iconId: 'account-settings',
       },
       {
         href: '/settings/export',
         text: intl.formatMessage(messages.importExport),
+        icon: dropdownIcons.importExport,
+        iconId: 'import-export',
       },
     ];
 
@@ -89,6 +105,8 @@ export const MoreLink: React.FC = () => {
       arr.push(null, {
         href: '/admin/reports',
         text: intl.formatMessage(messages.moderation),
+        icon: dropdownIcons.moderation,
+        iconId: 'moderation',
       });
     }
 
@@ -96,6 +114,8 @@ export const MoreLink: React.FC = () => {
       arr.push({
         href: '/admin/dashboard',
         text: intl.formatMessage(messages.administration),
+        icon: dropdownIcons.administration,
+        iconId: 'administration',
       });
     }
 
@@ -106,6 +126,8 @@ export const MoreLink: React.FC = () => {
     arr.push(null, {
       text: intl.formatMessage(messages.logout),
       action: handleLogoutClick,
+      icon: dropdownIcons.logout,
+      iconId: 'logout',
     });
 
     return arr;
@@ -114,7 +136,11 @@ export const MoreLink: React.FC = () => {
   return (
     <Dropdown items={menu} placement='bottom-start'>
       <button className='column-link column-link--transparent' type='button'>
-        <Icon id='' icon={MoreHorizIcon} className='column-link__icon' />
+        <Icon
+          id='more'
+          icon={navigationIcons.more}
+          className='column-link__icon'
+        />
 
         <FormattedMessage id='navigation_bar.more' defaultMessage='More' />
       </button>

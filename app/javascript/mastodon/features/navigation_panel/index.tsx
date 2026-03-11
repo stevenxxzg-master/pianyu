@@ -10,29 +10,11 @@ import type { Map as ImmutableMap } from 'immutable';
 import { animated, useSpring } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 
-import AddIcon from '@/material-icons/400-24px/add.svg?react';
-import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
-import BookmarksActiveIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
-import BookmarksIcon from '@/material-icons/400-24px/bookmarks.svg?react';
-import CollectionsActiveIcon from '@/material-icons/400-24px/category-fill.svg?react';
-import CollectionsIcon from '@/material-icons/400-24px/category.svg?react';
-import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
-import HomeIcon from '@/material-icons/400-24px/home.svg?react';
-import InfoIcon from '@/material-icons/400-24px/info.svg?react';
-import NotificationsActiveIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
-import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
-import PersonAddActiveIcon from '@/material-icons/400-24px/person_add-fill.svg?react';
-import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
-import PublicIcon from '@/material-icons/400-24px/public.svg?react';
-import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
-import StarActiveIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarIcon from '@/material-icons/400-24px/star.svg?react';
-import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
 import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import { openNavigation, closeNavigation } from 'mastodon/actions/navigation';
 import { Account } from 'mastodon/components/account';
+import { brandIcons, navigationIcons } from 'mastodon/components/app_icons';
 import { IconWithBadge } from 'mastodon/components/icon_with_badge';
-import { WordmarkLogo } from 'mastodon/components/logo';
 import { Search } from 'mastodon/features/compose/components/search';
 import { ColumnLink } from 'mastodon/features/ui/components/column_link';
 import { getNavigationSkipLinkId } from 'mastodon/features/ui/components/skip_links';
@@ -58,6 +40,8 @@ import { ListPanel } from './components/list_panel';
 import { MoreLink } from './components/more_link';
 import { SignInBanner } from './components/sign_in_banner';
 import { Trends } from './components/trends';
+
+const BrandWordmark = brandIcons.wordmark;
 
 const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
@@ -121,7 +105,7 @@ const NotificationsLink = () => {
       icon={
         <IconWithBadge
           id='bell'
-          icon={NotificationsIcon}
+          icon={navigationIcons.notifications}
           count={count}
           className='column-link__icon'
         />
@@ -129,7 +113,7 @@ const NotificationsLink = () => {
       activeIcon={
         <IconWithBadge
           id='bell'
-          icon={NotificationsActiveIcon}
+          icon={navigationIcons.notificationsActive}
           count={count}
           className='column-link__icon'
         />
@@ -166,7 +150,7 @@ const FollowRequestsLink: React.FC = () => {
       icon={
         <IconWithBadge
           id='user-plus'
-          icon={PersonAddIcon}
+          icon={navigationIcons.followRequests}
           count={count}
           className='column-link__icon'
         />
@@ -174,7 +158,7 @@ const FollowRequestsLink: React.FC = () => {
       activeIcon={
         <IconWithBadge
           id='user-plus'
-          icon={PersonAddActiveIcon}
+          icon={navigationIcons.followRequestsActive}
           count={count}
           className='column-link__icon'
         />
@@ -237,7 +221,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
           className='column-link column-link--logo'
           id={getNavigationSkipLinkId()}
         >
-          <WordmarkLogo />
+          <BrandWordmark />
         </Link>
       </div>
 
@@ -254,8 +238,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               <ColumnLink
                 to='/publish'
                 icon='plus'
-                iconComponent={AddIcon}
-                activeIconComponent={AddIcon}
+                iconComponent={navigationIcons.compose}
+                activeIconComponent={navigationIcons.compose}
                 text={intl.formatMessage(messages.compose)}
                 className='button navigation-panel__compose-button'
               />
@@ -264,8 +248,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               transparent
               to='/home'
               icon='home'
-              iconComponent={HomeIcon}
-              activeIconComponent={HomeActiveIcon}
+              iconComponent={navigationIcons.home}
+              activeIconComponent={navigationIcons.homeActive}
               text={intl.formatMessage(messages.home)}
             />
           </>
@@ -276,7 +260,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
             transparent
             to='/explore'
             icon='explore'
-            iconComponent={TrendingUpIcon}
+            iconComponent={navigationIcons.explore}
             text={intl.formatMessage(messages.explore)}
           />
         )}
@@ -291,7 +275,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 : '/public/remote'
             }
             icon='globe'
-            iconComponent={PublicIcon}
+            iconComponent={navigationIcons.publicFeed}
             isActive={isFirehoseActive}
             text={intl.formatMessage(
               canViewFeed(signedIn, permissions, localLiveFeedAccess) &&
@@ -320,16 +304,16 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               transparent
               to='/favourites'
               icon='star'
-              iconComponent={StarIcon}
-              activeIconComponent={StarActiveIcon}
+              iconComponent={navigationIcons.favourite}
+              activeIconComponent={navigationIcons.favouriteActive}
               text={intl.formatMessage(messages.favourites)}
             />
             <ColumnLink
               transparent
               to='/bookmarks'
               icon='bookmarks'
-              iconComponent={BookmarksIcon}
-              activeIconComponent={BookmarksActiveIcon}
+              iconComponent={navigationIcons.bookmarks}
+              activeIconComponent={navigationIcons.bookmarksActive}
               text={intl.formatMessage(messages.bookmarks)}
             />
             {areCollectionsEnabled() && (
@@ -337,8 +321,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 transparent
                 to='/collections'
                 icon='collections'
-                iconComponent={CollectionsIcon}
-                activeIconComponent={CollectionsActiveIcon}
+                iconComponent={navigationIcons.collections}
+                activeIconComponent={navigationIcons.collectionsActive}
                 text={intl.formatMessage(messages.collections)}
               />
             )}
@@ -346,7 +330,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               transparent
               to='/conversations'
               icon='at'
-              iconComponent={AlternateEmailIcon}
+              iconComponent={navigationIcons.direct}
               text={intl.formatMessage(messages.direct)}
             />
 
@@ -356,7 +340,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               transparent
               href='/settings/preferences'
               icon='cog'
-              iconComponent={SettingsIcon}
+              iconComponent={navigationIcons.preferences}
               text={intl.formatMessage(messages.preferences)}
             />
 
@@ -369,7 +353,7 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
             transparent
             to='/about'
             icon='ellipsis-h'
-            iconComponent={InfoIcon}
+            iconComponent={navigationIcons.about}
             text={intl.formatMessage(messages.about)}
           />
         </div>

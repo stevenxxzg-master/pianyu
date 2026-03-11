@@ -4,13 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
-import AddIcon from '@/material-icons/400-24px/add.svg?react';
-import ArrowBackIcon from '@/material-icons/400-24px/arrow_back.svg?react';
-import ChevronLeftIcon from '@/material-icons/400-24px/chevron_left.svg?react';
-import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
-import CloseIcon from '@/material-icons/400-24px/close.svg?react';
-import UnfoldLessIcon from '@/material-icons/400-24px/unfold_less.svg?react';
-import UnfoldMoreIcon from '@/material-icons/400-24px/unfold_more.svg?react';
+import { actionIcons, navigationIcons } from 'mastodon/components/app_icons';
 import type { IconProp } from 'mastodon/components/icon';
 import { Icon } from 'mastodon/components/icon';
 import { ButtonInTabsBar } from 'mastodon/features/ui/util/columns_context';
@@ -62,7 +56,7 @@ const BackButton: React.FC<{
     >
       <Icon
         id='chevron-left'
-        icon={ArrowBackIcon}
+        icon={actionIcons.back}
         className='column-back-button__icon'
       />
       {!hasTitle && (
@@ -182,7 +176,7 @@ export const ColumnHeader: React.FC<Props> = ({
         onClick={handlePin}
         type='button'
       >
-        <Icon id='times' icon={CloseIcon} />{' '}
+        <Icon id='times' icon={actionIcons.close} />{' '}
         <FormattedMessage id='column_header.unpin' defaultMessage='Unpin' />
       </button>
     );
@@ -196,7 +190,7 @@ export const ColumnHeader: React.FC<Props> = ({
           onClick={handleMoveLeft}
           type='button'
         >
-          <Icon id='chevron-left' icon={ChevronLeftIcon} />
+          <Icon id='chevron-left' icon={actionIcons.chevronLeft} />
         </button>
         <button
           title={intl.formatMessage(messages.moveRight)}
@@ -205,7 +199,7 @@ export const ColumnHeader: React.FC<Props> = ({
           onClick={handleMoveRight}
           type='button'
         >
-          <Icon id='chevron-right' icon={ChevronRightIcon} />
+          <Icon id='chevron-right' icon={actionIcons.chevronRight} />
         </button>
       </div>
     );
@@ -216,7 +210,7 @@ export const ColumnHeader: React.FC<Props> = ({
         onClick={handlePin}
         type='button'
       >
-        <Icon id='plus' icon={AddIcon} />{' '}
+        <Icon id='plus' icon={navigationIcons.compose} />{' '}
         <FormattedMessage id='column_header.pin' defaultMessage='Pin' />
       </button>
     );
@@ -254,7 +248,7 @@ export const ColumnHeader: React.FC<Props> = ({
         <i className='icon-with-badge'>
           <Icon
             id='sliders'
-            icon={collapsed ? UnfoldMoreIcon : UnfoldLessIcon}
+            icon={collapsed ? actionIcons.expand : actionIcons.collapse}
           />
           {collapseIssues && <i className='icon-with-badge__issue-badge' />}
         </i>

@@ -8,13 +8,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import BookmarkIcon from '@/material-icons/400-24px/bookmark-fill.svg?react';
-import BookmarkBorderIcon from '@/material-icons/400-24px/bookmark.svg?react';
-import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarBorderIcon from '@/material-icons/400-24px/star.svg?react';
+import { actionIcons } from 'mastodon/components/app_icons';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 import { WithRouterPropTypes } from 'mastodon/utils/react_router';
@@ -371,11 +365,11 @@ class StatusActionBar extends ImmutablePureComponent {
 
     if (status.get('in_reply_to_id', null) === null) {
       replyIcon = 'reply';
-      replyIconComponent = ReplyIcon;
+      replyIconComponent = actionIcons.reply;
       replyTitle = intl.formatMessage(messages.reply);
     } else {
       replyIcon = 'reply-all';
-      replyIconComponent = ReplyAllIcon;
+      replyIconComponent = actionIcons.replyAll;
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
@@ -388,16 +382,16 @@ class StatusActionBar extends ImmutablePureComponent {
     return (
       <div className='status__action-bar'>
         <div className='status__action-bar__button-wrapper'>
-          <IconButton className='status__action-bar__button' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} counter={status.get('replies_count')} />
+          <IconButton className='status__action-bar__button' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? actionIcons.reply : replyIconComponent} onClick={this.handleReplyClick} counter={status.get('replies_count')} />
         </div>
         <div className='status__action-bar__button-wrapper'>
           <BoostButton status={status} counters={withCounters} />
         </div>
         <div className='status__action-bar__button-wrapper'>
-          <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
+          <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? actionIcons.favouriteActive : actionIcons.favourite} onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
         </div>
         <div className='status__action-bar__button-wrapper'>
-          <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} />
+          <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconComponent={status.get('bookmarked') ? actionIcons.bookmarkActive : actionIcons.bookmark} onClick={this.handleBookmarkClick} />
         </div>
         <RemoveQuoteHint className='status__action-bar__button-wrapper' canShowHint={shouldShowQuoteRemovalHint}>
           {(dismissQuoteHint) => (
@@ -415,7 +409,7 @@ class StatusActionBar extends ImmutablePureComponent {
               <IconButton
                 className='status__action-bar__button'
                 icon='ellipsis-h'
-                iconComponent={MoreHorizIcon}
+                iconComponent={actionIcons.more}
                 title={intl.formatMessage(messages.more)}
               />
             </Dropdown>

@@ -9,6 +9,15 @@
   color: var(--color-text-primary);
 }
 
+.icon {
+  width: 28px;
+  height: 28px;
+  padding: 10px;
+  border-radius: 999px;
+  color: var(--color-text-brand);
+  background: var(--color-bg-brand-softer);
+}
+
 .content {
   h3 {
     font-size: 17px;

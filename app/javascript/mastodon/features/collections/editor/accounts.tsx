@@ -4,14 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { useHistory, useLocation } from 'react-router-dom';
 
-import CancelIcon from '@/material-icons/400-24px/cancel.svg?react';
-import CheckIcon from '@/material-icons/400-24px/check.svg?react';
-import WarningIcon from '@/material-icons/400-24px/warning.svg?react';
 import { showAlertForError } from 'mastodon/actions/alerts';
 import { openModal } from 'mastodon/actions/modal';
 import { apiFollowAccount } from 'mastodon/api/accounts';
 import type { ApiCollectionJSON } from 'mastodon/api_types/collections';
 import { Account } from 'mastodon/components/account';
+import { actionIcons, stateIcons } from 'mastodon/components/app_icons';
 import { Avatar } from 'mastodon/components/avatar';
 import { Badge } from 'mastodon/components/badge';
 import { Button } from 'mastodon/components/button';
@@ -72,7 +70,7 @@ const AddedAccountItem: React.FC<{
               defaultMessage='Last posted over a week ago'
             />
           }
-          icon={<WarningIcon />}
+          icon={<Icon id='warning' icon={stateIcons.warning} />}
           className={classes.accountBadge}
         />
       ),
@@ -93,7 +91,7 @@ const AddedAccountItem: React.FC<{
             defaultMessage: 'Remove this account',
           })}
           icon='remove'
-          iconComponent={CancelIcon}
+          iconComponent={actionIcons.cancel}
           onClick={handleRemoveAccount}
         />
       )}
@@ -118,7 +116,7 @@ const SuggestedAccountItem: React.FC<SuggestionItem> = ({ id, isSelected }) => {
       {isSelected && (
         <Icon
           id='checked'
-          icon={CheckIcon}
+          icon={actionIcons.check}
           className={classes.selectedSuggestionIcon}
         />
       )}
@@ -380,6 +378,8 @@ export const CollectionAccounts: React.FC<{
             className={classes.scrollableInner}
             emptyMessage={
               <EmptyState
+                icon={stateIcons.collectionsEmpty}
+                iconId='collections-empty'
                 title={
                   <FormattedMessage
                     id='collections.accounts.empty_title'

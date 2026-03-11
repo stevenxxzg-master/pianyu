@@ -1,7 +1,6 @@
 import { useState, useCallback, useId } from 'react';
 
-import KeyboardArrowDownIcon from '@/material-icons/400-24px/keyboard_arrow_down.svg?react';
-import KeyboardArrowUpIcon from '@/material-icons/400-24px/keyboard_arrow_up.svg?react';
+import { actionIcons } from 'mastodon/components/app_icons';
 import type { IconProp } from 'mastodon/components/icon';
 import { IconButton } from 'mastodon/components/icon_button';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
@@ -59,8 +58,8 @@ export const CollapsiblePanel: React.FC<{
                 loading
                   ? LoadingIndicator
                   : expanded
-                    ? KeyboardArrowUpIcon
-                    : KeyboardArrowDownIcon
+                    ? actionIcons.panelCollapse
+                    : actionIcons.panelExpand
               }
               title={expanded ? collapseTitle : expandTitle}
               onClick={handleClick}

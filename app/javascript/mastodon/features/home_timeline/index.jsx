@@ -8,10 +8,8 @@ import { Helmet } from 'react-helmet';
 
 import { connect } from 'react-redux';
 
-import CampaignIcon from '@/material-icons/400-24px/campaign.svg?react';
-import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
-import { SymbolLogo } from 'mastodon/components/logo';
 import { fetchAnnouncements, toggleShowAnnouncements } from 'mastodon/actions/announcements';
+import { brandIcons, navigationIcons } from 'mastodon/components/app_icons';
 import { IconWithBadge } from 'mastodon/components/icon_with_badge';
 import { NotSignedInIndicator } from 'mastodon/components/not_signed_in_indicator';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
@@ -41,6 +39,8 @@ const mapStateToProps = state => ({
   unreadAnnouncements: state.getIn(['announcements', 'items']).count(item => !item.get('read')),
   showAnnouncements: state.getIn(['announcements', 'show']),
 });
+
+const BrandIcon = brandIcons.icon;
 
 class HomeTimeline extends PureComponent {
   static propTypes = {
@@ -143,7 +143,7 @@ class HomeTimeline extends PureComponent {
           aria-label={intl.formatMessage(showAnnouncements ? messages.hide_announcements : messages.show_announcements)}
           onClick={this.handleToggleAnnouncementsClick}
         >
-          <IconWithBadge id='bullhorn' icon={CampaignIcon} count={unreadAnnouncements} />
+          <IconWithBadge id='bullhorn' icon={navigationIcons.announcements} count={unreadAnnouncements} />
         </button>
       );
     }
@@ -152,7 +152,7 @@ class HomeTimeline extends PureComponent {
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.title)}>
         <ColumnHeader
           icon='home'
-          iconComponent={matchesBreakpoint ? SymbolLogo : HomeIcon}
+          iconComponent={matchesBreakpoint ? BrandIcon : navigationIcons.homeActive}
           active={hasUnread}
           title={intl.formatMessage(messages.title)}
           onPin={this.handlePin}

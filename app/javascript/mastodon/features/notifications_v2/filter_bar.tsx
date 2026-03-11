@@ -3,13 +3,8 @@ import { useCallback } from 'react';
 
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
-import InsertChartIcon from '@/material-icons/400-24px/insert_chart.svg?react';
-import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
-import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star.svg?react';
 import { setNotificationsFilter } from 'mastodon/actions/notification_groups';
+import { actionIcons, navigationIcons } from 'mastodon/components/app_icons';
 import { Icon } from 'mastodon/components/icon';
 import {
   selectSettingsNotificationsQuickFilterActive,
@@ -82,7 +77,7 @@ export const FilterBar: React.FC = () => {
           key='mention'
           title={intl.formatMessage(tooltips.mentions)}
         >
-          <Icon id='reply-all' icon={ReplyAllIcon} />
+          <Icon id='reply-all' icon={actionIcons.replyAll} />
         </BarButton>
         <BarButton
           selectedFilter={selectedFilter}
@@ -90,7 +85,7 @@ export const FilterBar: React.FC = () => {
           key='favourite'
           title={intl.formatMessage(tooltips.favourites)}
         >
-          <Icon id='star' icon={StarIcon} />
+          <Icon id='star' icon={actionIcons.favourite} />
         </BarButton>
         <BarButton
           selectedFilter={selectedFilter}
@@ -98,7 +93,7 @@ export const FilterBar: React.FC = () => {
           key='reblog'
           title={intl.formatMessage(tooltips.boosts)}
         >
-          <Icon id='retweet' icon={RepeatIcon} />
+          <Icon id='retweet' icon={actionIcons.repeat} />
         </BarButton>
         <BarButton
           selectedFilter={selectedFilter}
@@ -106,7 +101,7 @@ export const FilterBar: React.FC = () => {
           key='poll'
           title={intl.formatMessage(tooltips.polls)}
         >
-          <Icon id='tasks' icon={InsertChartIcon} />
+          <Icon id='tasks' icon={actionIcons.filterChart} />
         </BarButton>
         <BarButton
           selectedFilter={selectedFilter}
@@ -114,7 +109,7 @@ export const FilterBar: React.FC = () => {
           key='status'
           title={intl.formatMessage(tooltips.statuses)}
         >
-          <Icon id='home' icon={HomeIcon} />
+          <Icon id='home' icon={navigationIcons.homeActive} />
         </BarButton>
         <BarButton
           selectedFilter={selectedFilter}
@@ -122,7 +117,7 @@ export const FilterBar: React.FC = () => {
           key='follow'
           title={intl.formatMessage(tooltips.follows)}
         >
-          <Icon id='user-plus' icon={PersonAddIcon} />
+          <Icon id='user-plus' icon={navigationIcons.followRequests} />
         </BarButton>
       </div>
     );
