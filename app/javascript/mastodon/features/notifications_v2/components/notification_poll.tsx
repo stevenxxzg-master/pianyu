@@ -31,6 +31,7 @@ export const NotificationPoll: React.FC<{
     accountIds={notification.sampleAccountIds}
     count={notification.notifications_count}
     statusId={notification.statusId}
+    timestamp={notification.latest_page_notification_at}
     labelRenderer={
       notification.sampleAccountIds[0] === me
         ? labelRendererOwn
