@@ -7,12 +7,9 @@ import {
   domain,
   localLiveFeedAccess,
   profile_directory as canProfileDirectory,
-  source_url,
-  statusPageUrl,
   termsOfServiceEnabled,
   version,
 } from 'mastodon/initial_state';
-import { isValidUrl } from 'mastodon/utils/checks';
 
 const messages = defineMessages({
   brandMark: { id: 'footer.brand_mark', defaultMessage: 'Public home' },
@@ -31,7 +28,6 @@ const messages = defineMessages({
   trending: { id: 'footer.trending', defaultMessage: 'Trending posts' },
   localPulse: { id: 'footer.local_pulse', defaultMessage: 'Local pulse' },
   directory: { id: 'footer.directory', defaultMessage: 'Profiles directory' },
-  status: { id: 'footer.status', defaultMessage: 'Status' },
   privacy: { id: 'footer.privacy_policy', defaultMessage: 'Privacy policy' },
   terms: { id: 'footer.terms_of_service', defaultMessage: 'Terms of service' },
   apps: { id: 'footer.get_app', defaultMessage: 'Get the app' },
@@ -49,14 +45,6 @@ export const LinkFooter: React.FC<{
   const intl = useIntl();
   const linkTarget = multiColumn ? '_blank' : undefined;
   const showLocalPulse = localLiveFeedAccess === 'public';
-  const safeStatusPageUrl =
-    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
-      ? statusPageUrl
-      : null;
-  const safeSourceUrl =
-    source_url && isValidUrl(source_url, ['https:', 'http:'])
-      ? source_url
-      : null;
 
   return (
     <div className='link-footer'>
@@ -91,11 +79,6 @@ export const LinkFooter: React.FC<{
 
         <div className='link-footer__group'>
           <span>{intl.formatMessage(messages.trust)}</span>
-          {safeStatusPageUrl && (
-            <a href={safeStatusPageUrl} rel='noopener' target='_blank'>
-              {intl.formatMessage(messages.status)}
-            </a>
-          )}
           <Link to='/privacy-policy' rel='privacy-policy' target={linkTarget}>
             {intl.formatMessage(messages.privacy)}
           </Link>
@@ -122,11 +105,9 @@ export const LinkFooter: React.FC<{
           <Link to='/keyboard-shortcuts' target={linkTarget}>
             {intl.formatMessage(messages.shortcuts)}
           </Link>
-          {safeSourceUrl && (
-            <a href={safeSourceUrl} rel='noopener' target='_blank'>
-              {intl.formatMessage(messages.source)}
-            </a>
-          )}
+          <a href='/about/source-code' rel='noopener' target='_blank'>
+            {intl.formatMessage(messages.source)}
+          </a>
         </div>
       </div>
 

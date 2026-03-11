@@ -1,14 +1,12 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
 import { openModal } from 'mastodon/actions/modal';
-import { fetchServer } from 'mastodon/actions/server';
 import { registrationsOpen, sso_redirect } from 'mastodon/initial_state';
-import { useAppDispatch, useAppSelector } from 'mastodon/store';
-import { isValidUrl } from 'mastodon/utils/checks';
+import { useAppDispatch } from 'mastodon/store';
 
 const messages = defineMessages({
   createAccount: {
@@ -28,33 +26,8 @@ export const PublicAuthButtons: React.FC<{
 }> = ({ block = false, className }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const safeSsoRedirect =
-    sso_redirect && isValidUrl(sso_redirect, ['https:', 'http:'])
-      ? sso_redirect
-      : null;
-  const hasServerConfig = useAppSelector((state) =>
-    Boolean(
-      state.server.getIn(['server', 'uri']) ||
-      state.server.getIn(['server', 'title']) ||
-      state.server.getIn(['server', 'registrations', 'url']),
-    ),
-  );
-  const serverLoading = useAppSelector(
-    (state) => state.server.getIn(['server', 'isLoading'], false) as boolean,
-  );
-
-  const signupUrl = useAppSelector(
-    (state) =>
-      (state.server.getIn(['server', 'registrations', 'url'], null) as
-        | string
-        | null) ?? '/auth/sign_up',
-  );
-
-  useEffect(() => {
-    if (!hasServerConfig && !serverLoading) {
-      dispatch(fetchServer());
-    }
-  }, [dispatch, hasServerConfig, serverLoading]);
+  const hasSeamlessExternalLogin = Boolean(sso_redirect);
+  const signUpHref = '/auth/sign_up/redirect';
 
   const handleClosedRegistrations = useCallback(() => {
     dispatch(openModal({ modalType: 'CLOSED_REGISTRATIONS', modalProps: {} }));
@@ -70,14 +43,10 @@ export const PublicAuthButtons: React.FC<{
 
   let signupButton: React.ReactNode;
 
-  if (safeSsoRedirect) {
+  if (hasSeamlessExternalLogin) {
     return (
       <div className={classNames('public-auth-buttons', className)}>
-        <a
-          href={safeSsoRedirect}
-          data-method='post'
-          className={secondaryButtonClassName}
-        >
+        <a href='/auth/sign_in' className={secondaryButtonClassName}>
           {intl.formatMessage(messages.loginOrRegister)}
         </a>
       </div>
@@ -86,7 +55,7 @@ export const PublicAuthButtons: React.FC<{
 
   if (registrationsOpen) {
     signupButton = (
-      <a href={signupUrl} className={buttonClassName}>
+      <a href={signUpHref} className={buttonClassName}>
         {intl.formatMessage(messages.createAccount)}
       </a>
     );

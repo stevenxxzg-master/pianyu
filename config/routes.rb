@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get '/invite/:invite_code', to: 'auth/registrations#new', as: :public_invite
+    get '/auth/sign_up/redirect', to: 'auth/registrations#redirect_to_sign_up', as: :redirect_user_registration
 
     resource :unsubscribe, only: [:show, :create], controller: :mail_subscriptions
 
@@ -230,8 +231,10 @@ Rails.application.routes.draw do
   draw(:web_app)
 
   get '/web/(*any)', to: redirect('/%{any}', status: 302), as: :web, defaults: { any: '' }, format: false
-  get '/about',      to: 'about#show'
-  get '/about/more', to: redirect('/about')
+  get '/about',             to: 'about#show'
+  get '/about/more',        to: redirect('/about')
+  get '/about/status-page', to: 'about#status_page'
+  get '/about/source-code', to: 'about#source_code'
 
   get '/privacy-policy',   to: 'privacy#show', as: :privacy_policy
   get '/terms-of-service', to: 'terms_of_service#show', as: :terms_of_service

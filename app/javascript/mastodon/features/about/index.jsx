@@ -25,10 +25,8 @@ import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
 import {
   localLiveFeedAccess,
   profile_directory as canProfileDirectory,
-  statusPageUrl,
 } from 'mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
-import { isValidUrl } from 'mastodon/utils/checks';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
@@ -160,9 +158,13 @@ const messages = defineMessages({
     id: 'public_home.admin.description',
     defaultMessage: 'The public entry keeps the essential trust links close at hand so first-time visitors can quickly verify who runs the space and how to get help.',
   },
-  status: { id: 'footer.status', defaultMessage: 'Status' },
   directory: { id: 'footer.directory', defaultMessage: 'Profiles directory' },
   privacy: { id: 'footer.privacy_policy', defaultMessage: 'Privacy policy' },
+  source: { id: 'footer.source_code', defaultMessage: 'View source code' },
+  sourceLink: {
+    id: 'public_home.admin.source_link',
+    defaultMessage: 'Review the platform source',
+  },
   notAvailable: {
     id: 'about.not_available',
     defaultMessage: 'This information has not been made available on this server.',
@@ -214,10 +216,6 @@ const About = ({ multiColumn }) => {
   const activeUsers = server.getIn(['usage', 'users', 'active_month']);
   const rulesCount = server.get('rules')?.size ?? 0;
   const showLocalPulse = localLiveFeedAccess === 'public';
-  const safeStatusPageUrl =
-    statusPageUrl && isValidUrl(statusPageUrl, ['https:', 'http:'])
-      ? statusPageUrl
-      : null;
   const description =
     !isLoading && server.get('description')
       ? server.get('description')
@@ -514,17 +512,6 @@ const About = ({ multiColumn }) => {
                   )}
                 </article>
 
-                {safeStatusPageUrl && (
-                  <article className='public-home__support-card'>
-                    <span className='public-home__support-card__label'>
-                      {intl.formatMessage(messages.status)}
-                    </span>
-                    <a className='public-home__support-link' href={safeStatusPageUrl} rel='noopener' target='_blank'>
-                      {safeStatusPageUrl}
-                    </a>
-                  </article>
-                )}
-
                 {canProfileDirectory && (
                   <article className='public-home__support-card'>
                     <span className='public-home__support-card__label'>
@@ -549,6 +536,15 @@ const About = ({ multiColumn }) => {
                       defaultMessage='Read data and privacy notes'
                     />
                   </Link>
+                </article>
+
+                <article className='public-home__support-card'>
+                  <span className='public-home__support-card__label'>
+                    {intl.formatMessage(messages.source)}
+                  </span>
+                  <a className='public-home__support-link' href='/about/source-code' rel='noopener' target='_blank'>
+                    {intl.formatMessage(messages.sourceLink)}
+                  </a>
                 </article>
               </div>
             </section>
