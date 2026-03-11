@@ -8,6 +8,21 @@ module BrowserErrorsHelpers
   def error_message(error)
     error.keys.map { |key| "#{key.to_s.titleize}: #{error[key]}" }.join("\n")
   end
+
+  def js_error_match_targets(error)
+    [
+      error[:text],
+      error[:page],
+      error.dig(:location, 'url'),
+      error.dig(:location, :url),
+    ].compact
+  end
+
+  def js_error_ignored?(pattern, error)
+    js_error_match_targets(error).any? do |target|
+      pattern.is_a?(Regexp) ? pattern.match?(target) : pattern.to_s == target
+    end
+  end
 end
 
 RSpec.configure do |config|
@@ -32,7 +47,7 @@ RSpec.configure do |config|
     ].concat(@ignored_js_errors_for_spec)
 
     errors = example.metadata[:js_console_messages].reject do |msg|
-      ignored_errors.any? { |pattern| pattern.match(msg[:text]) }
+      ignored_errors.any? { |pattern| js_error_ignored?(pattern, msg) }
     end
 
     if errors.present?
