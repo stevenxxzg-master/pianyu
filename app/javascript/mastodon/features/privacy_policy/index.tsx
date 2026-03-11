@@ -9,14 +9,14 @@ import type { ApiPrivacyPolicyJSON } from 'mastodon/api_types/instance';
 import { Column } from 'mastodon/components/column';
 import { FormattedDateWrapper } from 'mastodon/components/formatted_date';
 import { Skeleton } from 'mastodon/components/skeleton';
+import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
+import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 import {
   domain as siteDomain,
   statusPageUrl,
   termsOfServiceEnabled,
   title as siteTitle,
 } from 'mastodon/initial_state';
-import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
-import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 
 const messages = defineMessages({
   title: { id: 'privacy_policy.title', defaultMessage: 'Privacy Policy' },

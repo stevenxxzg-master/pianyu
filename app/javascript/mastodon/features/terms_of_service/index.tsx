@@ -14,13 +14,13 @@ import { apiGetTermsOfService } from 'mastodon/api/instance';
 import type { ApiTermsOfServiceJSON } from 'mastodon/api_types/instance';
 import { Column } from 'mastodon/components/column';
 import { Skeleton } from 'mastodon/components/skeleton';
+import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
+import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 import {
   domain as siteDomain,
   statusPageUrl,
   title as siteTitle,
 } from 'mastodon/initial_state';
-import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
-import { PublicPageLayout } from 'mastodon/features/ui/components/public_page_layout';
 
 const messages = defineMessages({
   title: { id: 'terms_of_service.title', defaultMessage: 'Terms of Service' },

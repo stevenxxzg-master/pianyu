@@ -136,14 +136,20 @@ export const PublicPageLayout: FC<PublicPageLayoutProps> = ({
                   {navItems.map((item) => (
                     <PublicPageNavLink
                       item={item}
-                      key={typeof item.label === 'string' ? item.label : item.to ?? item.href ?? 'item'}
+                      key={
+                        typeof item.label === 'string'
+                          ? item.label
+                          : (item.to ?? item.href ?? 'item')
+                      }
                     />
                   ))}
                 </nav>
               )}
 
               {asideFooter && (
-                <div className='public-page__aside-card__footer'>{asideFooter}</div>
+                <div className='public-page__aside-card__footer'>
+                  {asideFooter}
+                </div>
               )}
             </div>
           </aside>
