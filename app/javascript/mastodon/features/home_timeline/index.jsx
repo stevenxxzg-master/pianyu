@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -32,6 +32,8 @@ const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
   show_announcements: { id: 'home.show_announcements', defaultMessage: 'Show announcements' },
   hide_announcements: { id: 'home.hide_announcements', defaultMessage: 'Hide announcements' },
+  empty_title: { id: 'empty_column.home_title', defaultMessage: 'Start with people you want to hear from' },
+  empty_body: { id: 'empty_column.home_body', defaultMessage: 'Follow more people to fill your home timeline with their latest posts.' },
 });
 
 const mapStateToProps = state => ({
@@ -127,6 +129,10 @@ class HomeTimeline extends PureComponent {
     const { intl, hasUnread, columnId, multiColumn, hasAnnouncements, unreadAnnouncements, showAnnouncements, matchesBreakpoint } = this.props;
     const pinned = !!columnId;
     const { signedIn } = this.props.identity;
+    const columnClassName = classNames('home-timeline', {
+      'home-timeline--multi-column': multiColumn,
+      'home-timeline--single-column': !multiColumn,
+    });
     const banners = [
       <CriticalUpdateBanner key='critical-update-banner' />,
       <AnnualReportTimeline key='annual-report' />
@@ -149,7 +155,7 @@ class HomeTimeline extends PureComponent {
     }
 
     return (
-      <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.title)}>
+      <Column bindToDocument={!multiColumn} ref={this.setRef} className={columnClassName} label={intl.formatMessage(messages.title)}>
         <ColumnHeader
           icon='home'
           iconComponent={matchesBreakpoint ? SymbolLogo : HomeIcon}
@@ -168,13 +174,23 @@ class HomeTimeline extends PureComponent {
 
         {signedIn ? (
           <StatusListContainer
+            className='home-timeline__list'
             prepend={banners}
             alwaysPrepend
             trackScroll={!pinned}
             scrollKey={`home_timeline-${columnId}`}
             onLoadMore={this.handleLoadMore}
             timelineId='home'
-            emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Follow more people to fill it up.' />}
+            emptyMessage={(
+              <div className='home-timeline__empty-state'>
+                <strong className='home-timeline__empty-title'>
+                  {intl.formatMessage(messages.empty_title)}
+                </strong>
+                <span className='home-timeline__empty-copy'>
+                  {intl.formatMessage(messages.empty_body)}
+                </span>
+              </div>
+            )}
             bindToDocument={!multiColumn}
           />
         ) : <NotSignedInIndicator />}
