@@ -4,7 +4,6 @@ import type { FC, MouseEventHandler } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
-import { useParams } from 'react-router';
 
 import { fetchFeaturedTags } from '@/mastodon/actions/featured_tags';
 import { useAppHistory } from '@/mastodon/components/router';
@@ -12,6 +11,8 @@ import { Tag } from '@/mastodon/components/tags/tag';
 import { useOverflowButton } from '@/mastodon/hooks/useOverflow';
 import { selectAccountFeaturedTags } from '@/mastodon/selectors/accounts';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
+
+import { buildAccountActivityLocation } from '../common';
 
 import { useAccountContext } from './context';
 import classes from './styles.module.scss';
@@ -80,9 +81,7 @@ export const FeaturedTags: FC<{ accountId: string }> = ({ accountId }) => {
 };
 
 function useTagNavigate() {
-  // Get current account, tag, and filters.
-  const { acct, tagged } = useParams<{ acct: string; tagged?: string }>();
-  const { boosts, replies } = useAccountContext();
+  const { acct, boosts, replies, tagged } = useAccountContext();
 
   const history = useAppHistory();
 
@@ -93,25 +92,16 @@ function useTagNavigate() {
         return;
       }
 
-      // Determine whether to navigate to or from the tag.
-      let url = `/@${acct}/tagged/${encodeURIComponent(name)}`;
-      if (name === tagged) {
-        url = `/@${acct}`;
-      }
+      const nextTagged = name === tagged ? undefined : name;
 
-      // Append filters.
-      const params = new URLSearchParams();
-      if (boosts) {
-        params.append('boosts', '1');
-      }
-      if (replies) {
-        params.append('replies', '1');
-      }
-
-      history.push({
-        pathname: url,
-        search: params.toString(),
-      });
+      history.push(
+        buildAccountActivityLocation({
+          acct,
+          tagged: nextTagged,
+          boosts,
+          replies,
+        }),
+      );
     },
     [acct, tagged, boosts, replies, history],
   );

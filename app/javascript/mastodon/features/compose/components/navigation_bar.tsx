@@ -4,7 +4,8 @@ import { useIntl, defineMessages } from 'react-intl';
 
 import CloseIcon from '@/material-icons/400-24px/close.svg?react';
 import { cancelReplyCompose } from 'mastodon/actions/compose';
-import { Account } from 'mastodon/components/account';
+import { CurrentAccountCard } from 'mastodon/components/current_account_card';
+import cardStyles from 'mastodon/components/current_account_card.module.scss';
 import { IconButton } from 'mastodon/components/icon_button';
 import { me } from 'mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
@@ -29,17 +30,19 @@ export const NavigationBar: React.FC = () => {
   }
 
   return (
-    <div className='navigation-bar'>
-      <Account id={me} minimal />
-
-      {isReplying && (
-        <IconButton
-          title={intl.formatMessage(messages.cancel)}
-          icon=''
-          iconComponent={CloseIcon}
-          onClick={handleCancelClick}
-        />
-      )}
+    <div className={`navigation-bar ${cardStyles.wrapper}`}>
+      <CurrentAccountCard
+        extraAction={
+          isReplying ? (
+            <IconButton
+              title={intl.formatMessage(messages.cancel)}
+              icon=''
+              iconComponent={CloseIcon}
+              onClick={handleCancelClick}
+            />
+          ) : undefined
+        }
+      />
     </div>
   );
 };

@@ -762,6 +762,8 @@
   "mute_modal.title": "隐藏该用户？",
   "mute_modal.you_wont_see_mentions": "你看不到提及对方的嘟文。",
   "mute_modal.you_wont_see_posts": "对方可以看到你的嘟文，但是你看不到对方的。",
+  "navigation.account_card.kicker": "我的账号",
+  "navigation.account_card.profile": "查看个人资料",
   "navigation_bar.about": "关于",
   "navigation_bar.account_settings": "密码与安全",
   "navigation_bar.administration": "管理",

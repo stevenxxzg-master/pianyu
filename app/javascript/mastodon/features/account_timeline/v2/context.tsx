@@ -7,10 +7,19 @@ import {
   useState,
 } from 'react';
 
+import { useLocation, useParams } from 'react-router';
+
+import { useAppHistory } from '@/mastodon/components/router';
+import { useSearchParams } from '@/mastodon/hooks/useSearchParam';
 import { useStorageState } from '@/mastodon/hooks/useStorage';
+import { useAppSelector } from '@/mastodon/store';
+
+import { buildAccountActivityLocation } from '../common';
 
 interface AccountTimelineContextValue {
   accountId: string;
+  acct?: string;
+  tagged?: string;
   boosts: boolean;
   replies: boolean;
   showAllPinned: boolean;
@@ -22,38 +31,79 @@ interface AccountTimelineContextValue {
 const AccountTimelineContext =
   createContext<AccountTimelineContextValue | null>(null);
 
+const parseBooleanParam = (value: string | null) => {
+  if (value === null) {
+    return null;
+  }
+
+  return value === '1' || value === 'true';
+};
+
 export const AccountTimelineProvider: FC<{
   accountId: string;
   children: ReactNode;
 }> = ({ accountId, children }) => {
+  const { acct: acctParam, tagged } = useParams<{
+    acct?: string;
+    tagged?: string;
+  }>();
+  const location = useLocation();
+  const history = useAppHistory();
+  const searchParams = useSearchParams();
+  const account = useAppSelector((state) => state.accounts.get(accountId));
+  const acct = acctParam ?? account?.acct;
+
   const storageOptions = {
     type: 'session',
     prefix: `filters-${accountId}:`,
   } as const;
 
-  const [boosts, setBoosts] = useStorageState<boolean>(
+  const [storedBoosts, setStoredBoosts] = useStorageState<boolean>(
     'boosts',
     true,
     storageOptions,
   );
 
-  const [replies, setReplies] = useStorageState<boolean>(
-    'replies',
-    false,
-    storageOptions,
+  const boostsFromQuery = parseBooleanParam(searchParams.get('boosts'));
+  const boosts = boostsFromQuery ?? storedBoosts;
+
+  const routeIncludesReplies = location.pathname.endsWith('/with_replies');
+  const repliesFromQuery = tagged
+    ? parseBooleanParam(searchParams.get('replies'))
+    : null;
+  const replies = repliesFromQuery ?? routeIncludesReplies;
+
+  const pushLocation = useCallback(
+    (nextBoosts: boolean, nextReplies: boolean) => {
+      if (!acct) {
+        return;
+      }
+
+      history.push(
+        buildAccountActivityLocation({
+          acct,
+          tagged,
+          boosts: nextBoosts,
+          replies: nextReplies,
+        }),
+      );
+    },
+    [acct, history, tagged],
   );
 
   const handleSetBoosts = useCallback(
     (value: boolean) => {
-      setBoosts(value);
+      setStoredBoosts(value);
+      pushLocation(value, replies);
     },
-    [setBoosts],
+    [pushLocation, replies, setStoredBoosts],
   );
+
   const handleSetReplies = useCallback(
     (value: boolean) => {
-      setReplies(value);
+      pushLocation(boosts, value);
     },
-    [setReplies],
+    [boosts, pushLocation],
   );
 
   const [showAllPinned, setShowAllPinned] = useState(false);
@@ -65,6 +115,8 @@ export const AccountTimelineProvider: FC<{
   const value = useMemo(
     () => ({
       accountId,
+      acct,
+      tagged,
       boosts,
       replies,
       showAllPinned,
@@ -73,6 +125,7 @@ export const AccountTimelineProvider: FC<{
       onShowAllPinned: handleShowAllPinned,
     }),
     [
+      acct,
       accountId,
       boosts,
       handleSetBoosts,
@@ -80,6 +133,7 @@ export const AccountTimelineProvider: FC<{
       handleShowAllPinned,
       replies,
       showAllPinned,
+      tagged,
     ],
   );
 
