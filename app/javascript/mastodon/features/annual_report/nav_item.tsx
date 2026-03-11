@@ -5,8 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
-import IconPlanet from '@/images/icons/icon_planet.svg?react';
 import { openModal } from '@/mastodon/actions/modal';
+import { stateIcons } from '@/mastodon/components/app_icons';
 import { Icon } from '@/mastodon/components/icon';
 import {
   createAppSelector,
@@ -40,7 +40,12 @@ export const AnnualReportNavItem: FC = () => {
       className={classNames('column-link column-link--transparent', { active })}
       onClick={handleClick}
     >
-      <Icon icon={IconPlanet} id='wrapstodon-planet' width='24' height='24' />
+      <Icon
+        icon={stateIcons.annualReport}
+        id='wrapstodon-planet'
+        width='24'
+        height='24'
+      />
       <span>Wrapstodon {year}</span>
       <span className={classNames('column-link__badge', classes.navItemBadge)}>
         <FormattedMessage

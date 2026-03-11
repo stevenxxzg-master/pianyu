@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module BrandingHelper
+  BRAND_NAME = 'Mastodon'
+
   def logo_as_symbol(version = :icon)
     case version
     when :icon
@@ -11,14 +13,28 @@ module BrandingHelper
   end
 
   def _logo_as_symbol_wordmark
-    content_tag(:svg, tag.use(href: '#logo-symbol-wordmark'), viewBox: '0 0 261 66', class: 'logo logo--wordmark')
+    content_tag(
+      :svg,
+      tag.use(href: '#logo-symbol-wordmark'),
+      viewBox: '0 0 261 66',
+      class: 'logo logo--wordmark',
+      role: 'img',
+      'aria-label': BRAND_NAME
+    )
   end
 
   def _logo_as_symbol_icon
-    content_tag(:svg, tag.use(href: '#logo-symbol-icon'), viewBox: '0 0 79 79', class: 'logo logo--icon')
+    content_tag(
+      :svg,
+      tag.use(href: '#logo-symbol-icon'),
+      viewBox: '0 0 79 79',
+      class: 'logo logo--icon',
+      role: 'img',
+      'aria-label': BRAND_NAME
+    )
   end
 
   def render_logo
-    image_tag(frontend_asset_path('images/logo.svg'), alt: 'Mastodon', class: 'logo logo--icon')
+    _logo_as_symbol_icon
   end
 end

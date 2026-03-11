@@ -5,11 +5,10 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { NavLink, Switch, Route } from 'react-router-dom';
 
-import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
+import { brandIcons, navigationIcons } from 'mastodon/components/app_icons';
 import { Column } from 'mastodon/components/column';
 import type { ColumnRef } from 'mastodon/components/column';
 import { ColumnHeader } from 'mastodon/components/column_header';
-import { SymbolLogo } from 'mastodon/components/logo';
 import { Search } from 'mastodon/features/compose/components/search';
 import { useBreakpoint } from 'mastodon/features/ui/hooks/useBreakpoint';
 import { useIdentity } from 'mastodon/identity_context';
@@ -22,6 +21,8 @@ import Tags from './tags';
 const messages = defineMessages({
   title: { id: 'explore.title', defaultMessage: 'Trending' },
 });
+
+const BrandIcon = brandIcons.icon;
 
 const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
   const { signedIn } = useIdentity();
@@ -41,7 +42,7 @@ const Explore: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
     >
       <ColumnHeader
         icon={'explore'}
-        iconComponent={logoRequired ? SymbolLogo : TrendingUpIcon}
+        iconComponent={logoRequired ? BrandIcon : navigationIcons.explore}
         title={intl.formatMessage(messages.title)}
         onClick={handleHeaderClick}
         multiColumn={multiColumn}

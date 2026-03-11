@@ -8,16 +8,13 @@ import { Link } from 'react-router-dom';
 import type { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import elephantUIPlane from '@/images/elephant_ui_plane.svg';
-import EditIcon from '@/material-icons/400-24px/edit_square.svg?react';
-import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
-import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
-import LogoutIcon from '@/material-icons/400-24px/logout.svg?react';
-import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
-import NotificationsIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
-import PublicIcon from '@/material-icons/400-24px/public.svg?react';
-import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
 import { mountCompose, unmountCompose } from 'mastodon/actions/compose';
 import { openModal } from 'mastodon/actions/modal';
+import {
+  actionIcons,
+  dropdownIcons,
+  navigationIcons,
+} from 'mastodon/components/app_icons';
 import { Column } from 'mastodon/components/column';
 import { ColumnHeader } from 'mastodon/components/column_header';
 import { Icon } from 'mastodon/components/icon';
@@ -99,7 +96,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             aria-label={intl.formatMessage(navbarMessages.menu)}
             onClick={scrollNavbarIntoView}
           >
-            <Icon id='bars' icon={MenuIcon} />
+            <Icon id='menu' icon={navigationIcons.menu} />
           </Link>
           {!columns.some((column) => column.get('id') === 'HOME') && (
             <Link
@@ -108,7 +105,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
               title={intl.formatMessage(navbarMessages.home)}
               aria-label={intl.formatMessage(navbarMessages.home)}
             >
-              <Icon id='home' icon={HomeIcon} />
+              <Icon id='home' icon={navigationIcons.homeActive} />
             </Link>
           )}
           {!columns.some((column) => column.get('id') === 'NOTIFICATIONS') && (
@@ -118,7 +115,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
               title={intl.formatMessage(navbarMessages.notifications)}
               aria-label={intl.formatMessage(navbarMessages.notifications)}
             >
-              <Icon id='bell' icon={NotificationsIcon} />
+              <Icon id='bell' icon={navigationIcons.notificationsActive} />
             </Link>
           )}
           {!columns.some((column) => column.get('id') === 'COMMUNITY') && (
@@ -128,7 +125,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
               title={intl.formatMessage(messages.live_feed_local)}
               aria-label={intl.formatMessage(messages.live_feed_local)}
             >
-              <Icon id='users' icon={PeopleIcon} />
+              <Icon id='users' icon={navigationIcons.localFeed} />
             </Link>
           )}
           {!columns.some((column) => column.get('id') === 'PUBLIC') && (
@@ -138,7 +135,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
               title={intl.formatMessage(messages.live_feed_public)}
               aria-label={intl.formatMessage(messages.live_feed_public)}
             >
-              <Icon id='globe' icon={PublicIcon} />
+              <Icon id='globe' icon={navigationIcons.publicFeed} />
             </Link>
           )}
           <a
@@ -147,7 +144,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             title={intl.formatMessage(messages.preferences)}
             aria-label={intl.formatMessage(messages.preferences)}
           >
-            <Icon id='cog' icon={SettingsIcon} />
+            <Icon id='cog' icon={navigationIcons.preferences} />
           </a>
           <a
             href='/auth/sign_out'
@@ -156,7 +153,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             aria-label={intl.formatMessage(messages.logout)}
             onClick={handleLogoutClick}
           >
-            <Icon id='sign-out' icon={LogoutIcon} />
+            <Icon id='sign-out' icon={dropdownIcons.logout} />
           </a>
         </nav>
 
@@ -182,7 +179,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
     >
       <ColumnHeader
         icon='pencil'
-        iconComponent={EditIcon}
+        iconComponent={actionIcons.edit}
         title={intl.formatMessage(navbarMessages.publish)}
         multiColumn={multiColumn}
         showBackButton

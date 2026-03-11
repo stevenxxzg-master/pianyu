@@ -299,6 +299,10 @@
   text-decoration: none;
   gap: 4px;
   flex: 0 0 auto;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 
   a {
     display: flex;
@@ -1759,6 +1763,19 @@ body > [data-popper-placement] {
   margin-top: 16px;
 }
 
+.status__action-bar__button,
+.detailed-status__button .icon-button {
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 10px;
+}
+
+.status__action-bar__button .icon,
+.detailed-status__button .icon-button .icon {
+  width: 20px;
+  height: 20px;
+}
+
 .detailed-status__action-bar-dropdown {
   flex: 1 1 auto;
   display: flex;
@@ -2854,6 +2871,8 @@ a.account__display-name {
 }
 
 .dropdown-menu__item {
+  --dropdown-icon-size: 18px;
+
   font-size: 13px;
   line-height: 18px;
   font-weight: 500;
@@ -2894,6 +2913,12 @@ a.account__display-name {
     color: inherit;
     text-align: inherit;
     border-radius: 4px;
+
+    .icon {
+      width: var(--dropdown-icon-size);
+      height: var(--dropdown-icon-size);
+      flex-shrink: 0;
+    }
 
     &:focus,
     &:hover,
@@ -3046,20 +3071,42 @@ a.account__display-name {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    min-height: 44px;
     background: transparent;
     border: none;
     gap: 8px;
     font-size: 12px;
     font-weight: 500;
     line-height: 16px;
-    padding-top: 11px;
-    padding-bottom: 15px;
+    padding: 11px 16px 15px;
     border-top: 4px solid transparent;
+    border-radius: 12px 12px 0 0;
     text-decoration: none;
     color: inherit;
+    transition:
+      color 160ms ease,
+      background-color 160ms ease,
+      border-top-color 160ms ease;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
 
     &.active {
       color: var(--color-text-brand);
+      background: color-mix(
+        in oklab,
+        var(--color-bg-brand-softer),
+        transparent 12%
+      );
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-primary);
+      background: var(--color-bg-brand-softer);
     }
 
     &:focus {
@@ -3068,7 +3115,6 @@ a.account__display-name {
 
     &:focus-visible {
       border-top-color: var(--color-text-brand);
-      border-radius: 0;
     }
   }
 }
@@ -3185,6 +3231,7 @@ a.account__display-name {
 .drawer__tab {
   display: flex;
   flex: 1 1 auto;
+  min-height: 44px;
   padding: 13px 3px 11px;
   color: var(--color-text-secondary);
   text-decoration: none;
@@ -3192,6 +3239,21 @@ a.account__display-name {
   font-size: 16px;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text-primary);
+    background: var(--color-bg-brand-softer);
+  }
 }
 
 .column,
@@ -3509,6 +3571,15 @@ a.account__display-name {
 .icon-with-badge {
   display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
 
   &__badge {
     position: absolute;
@@ -4043,11 +4114,19 @@ a.account__display-name {
 }
 
 .column-link {
+  --column-link-icon-size: 20px;
+  --column-link-hover-bg: color-mix(
+    in oklab,
+    var(--color-bg-brand-softer),
+    transparent 18%
+  );
+
   box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
+  min-height: 44px;
   padding: 10px;
   padding-inline-start: 14px;
   overflow: hidden;
@@ -4062,27 +4141,57 @@ a.account__display-name {
   );
   background: transparent;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: 12px;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
 
   &:hover,
   &:active,
   &:focus-visible {
     color: var(--color-text-primary);
+    background: var(--column-link-hover-bg);
   }
 
   &.active {
     color: var(--color-text-brand);
+    background: var(--color-bg-brand-softer);
   }
 
   &:focus-visible {
     outline: none;
     border-color: var(--color-text-brand);
-    background: var(--color-bg-brand-softer);
   }
 
   &--logo {
+    min-height: auto;
     padding: 8px;
     padding-inline-start: 12px;
+    background: transparent;
+  }
+}
+
+.column-link__icon {
+  width: var(--column-link-icon-size);
+  height: var(--column-link-icon-size);
+  flex-shrink: 0;
+}
+
+.navigation-panel__list-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .icon-button {
+    min-width: 36px;
+    min-height: 36px;
+    border-radius: 10px;
+  }
+
+  .icon-button .icon {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -8058,8 +8167,11 @@ a.status-card {
 
   button,
   a {
-    display: block;
+    display: flex;
     flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     color: var(--color-text-secondary);
     padding: 15px 0;
     font-size: 14px;
@@ -8069,9 +8181,29 @@ a.status-card {
     position: relative;
     width: 100%;
     white-space: nowrap;
+    transition:
+      color 160ms ease,
+      background-color 160ms ease;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-primary);
+      background: var(--color-bg-brand-softer);
+      outline: 0;
+    }
 
     &.active {
       color: var(--color-text-primary);
+      background: color-mix(
+        in oklab,
+        var(--color-bg-brand-softer),
+        transparent 12%
+      );
 
       &::before {
         display: block;

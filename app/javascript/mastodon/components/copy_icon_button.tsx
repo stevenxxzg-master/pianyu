@@ -4,8 +4,8 @@ import { defineMessages } from 'react-intl';
 
 import classNames from 'classnames';
 
-import ContentCopyIcon from '@/material-icons/400-24px/content_copy.svg?react';
 import { showAlert } from 'mastodon/actions/alerts';
+import { actionIcons } from 'mastodon/components/app_icons';
 import { IconButton } from 'mastodon/components/icon_button';
 import { useAppDispatch } from 'mastodon/store';
 
@@ -40,7 +40,7 @@ export const CopyIconButton: React.FC<{
       title={title}
       onClick={handleClick}
       icon='copy-icon'
-      iconComponent={ContentCopyIcon}
+      iconComponent={actionIcons.copy}
       aria-describedby={ariaDescribedBy}
     />
   );

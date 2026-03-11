@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { useIntl, defineMessages } from 'react-intl';
 
-import ListAltActiveIcon from '@/material-icons/400-24px/list_alt-fill.svg?react';
-import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
 import { fetchLists } from 'mastodon/actions/lists';
+import { navigationIcons } from 'mastodon/components/app_icons';
 import { ColumnLink } from 'mastodon/features/ui/components/column_link';
 import { getOrderedLists } from 'mastodon/selectors/lists';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
@@ -41,8 +40,8 @@ export const ListPanel: React.FC = () => {
     <CollapsiblePanel
       to='/lists'
       icon='list-ul'
-      iconComponent={ListAltIcon}
-      activeIconComponent={ListAltActiveIcon}
+      iconComponent={navigationIcons.list}
+      activeIconComponent={navigationIcons.listActive}
       title={intl.formatMessage(messages.lists)}
       collapseTitle={intl.formatMessage(messages.collapse)}
       expandTitle={intl.formatMessage(messages.expand)}
@@ -52,8 +51,8 @@ export const ListPanel: React.FC = () => {
         <ColumnLink
           icon='list-ul'
           key={list.id}
-          iconComponent={ListAltIcon}
-          activeIconComponent={ListAltActiveIcon}
+          iconComponent={navigationIcons.list}
+          activeIconComponent={navigationIcons.listActive}
           text={list.title}
           to={`/lists/${list.id}`}
           transparent
