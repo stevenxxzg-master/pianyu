@@ -3400,7 +3400,6 @@ a.account__display-name {
   }
 }
 
-
 @media screen and (width >= 760px) {
   .layout-single-column {
     background:
@@ -3418,10 +3417,11 @@ a.account__display-name {
         180deg,
         var(--color-shell-canvas) 0%,
         color-mix(
-          in oklab,
-          var(--color-shell-canvas),
-          var(--color-bg-primary) 28%
-        ) 48%,
+            in oklab,
+            var(--color-shell-canvas),
+            var(--color-bg-primary) 28%
+          )
+          48%,
         var(--color-bg-primary) 100%
       );
   }
@@ -3433,7 +3433,10 @@ a.account__display-name {
   .layout-single-column .columns-area__panels {
     display: grid;
     grid-template-areas: 'navigation main compose';
-    grid-template-columns: minmax(272px, 304px) minmax(0, 1fr) minmax(300px, 336px);
+    grid-template-columns: minmax(272px, 304px) minmax(0, 1fr) minmax(
+        300px,
+        336px
+      );
     align-items: start;
     gap: clamp(20px, 2vw, 32px);
     max-width: 1680px;
@@ -3455,7 +3458,8 @@ a.account__display-name {
       color-mix(in oklab, var(--color-shell-stage), white 22%),
       color-mix(in oklab, var(--color-shell-stage), var(--color-bg-primary) 38%)
     );
-    border: 1px solid color-mix(in oklab, var(--color-shell-stroke), transparent 22%);
+    border: 1px solid
+      color-mix(in oklab, var(--color-shell-stroke), transparent 22%);
     box-shadow: var(--shadow-shell-soft);
     opacity: 0.68;
     pointer-events: none;
@@ -3478,8 +3482,12 @@ a.account__display-name {
     min-width: 0;
   }
 
-  .layout-single-column .columns-area__panels__pane--navigational .columns-area__panels__pane__inner,
-  .layout-single-column .columns-area__panels__pane--compositional .columns-area__panels__pane__inner {
+  .layout-single-column
+    .columns-area__panels__pane--navigational
+    .columns-area__panels__pane__inner,
+  .layout-single-column
+    .columns-area__panels__pane--compositional
+    .columns-area__panels__pane__inner {
     width: 100%;
     position: sticky;
     top: clamp(20px, 2vw, 32px);
@@ -3508,7 +3516,11 @@ a.account__display-name {
     background: linear-gradient(
       180deg,
       color-mix(in oklab, var(--color-shell-surface-elevated), white 4%),
-      color-mix(in oklab, var(--color-shell-stage), var(--color-shell-surface) 55%)
+      color-mix(
+        in oklab,
+        var(--color-shell-stage),
+        var(--color-shell-surface) 55%
+      )
     );
     border: 1px solid var(--color-shell-stroke);
     box-shadow: var(--shadow-shell);
@@ -3622,7 +3634,11 @@ a.account__display-name {
     background: linear-gradient(
       180deg,
       color-mix(in oklab, var(--color-shell-surface), white 4%),
-      color-mix(in oklab, var(--color-shell-surface-elevated), var(--color-shell-stage) 18%)
+      color-mix(
+        in oklab,
+        var(--color-shell-surface-elevated),
+        var(--color-shell-stage) 18%
+      )
     );
     box-shadow: var(--shadow-shell);
     backdrop-filter: blur(22px);
@@ -3696,7 +3712,11 @@ a.account__display-name {
     background: linear-gradient(
       135deg,
       color-mix(in oklab, var(--color-shell-section), white 10%),
-      color-mix(in oklab, var(--color-shell-section), var(--color-shell-accent-soft) 18%)
+      color-mix(
+        in oklab,
+        var(--color-shell-section),
+        var(--color-shell-accent-soft) 18%
+      )
     );
   }
 
@@ -3776,7 +3796,9 @@ a.account__display-name {
   }
 
   .layout-single-column .navigation-panel__section .column-link,
-  .layout-single-column .navigation-panel__section .button.navigation-panel__compose-button,
+  .layout-single-column
+    .navigation-panel__section
+    .button.navigation-panel__compose-button,
   .layout-single-column .navigation-panel__section .more-button {
     min-height: 50px;
     padding: 8px 12px;

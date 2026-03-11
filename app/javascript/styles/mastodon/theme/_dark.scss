@@ -155,7 +155,6 @@
     0 8px 10px -6px var(--color-shadow-primary);
   --overlay-icon-shadow: drop-shadow(0 0 8px var(--color-shadow-primary));
 
-
   /* APP SHELL TOKENS */
 
   --color-shell-canvas: color-mix(
@@ -163,11 +162,7 @@
     var(--color-bg-primary),
     #6f4df5 10%
   );
-  --color-shell-stage: color-mix(
-    in oklab,
-    var(--color-bg-primary),
-    #f5f7ff 4%
-  );
+  --color-shell-stage: color-mix(in oklab, var(--color-bg-primary), #f5f7ff 4%);
   --color-shell-surface: color-mix(
     in oklab,
     var(--color-bg-primary),
