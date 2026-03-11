@@ -2,6 +2,17 @@ import { resolve } from 'node:path';
 
 import type { StorybookConfig } from '@storybook/react-vite';
 
+const STORYBOOK_PREBUNDLED_LODASH_DEPS = [
+  'lodash/debounce.js',
+  'lodash/throttle.js',
+  'lodash/groupBy.js',
+  'lodash/minBy.js',
+  'lodash/isEqual.js',
+  'lodash/difference.js',
+  'lodash/escapeRegExp.js',
+  'lodash/noop.js',
+];
+
 const config: StorybookConfig = {
   stories: ['../app/javascript/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
@@ -37,8 +48,7 @@ const config: StorybookConfig = {
       ...config.optimizeDeps,
       include: [
         ...(config.optimizeDeps?.include ?? []),
-        'lodash/debounce.js',
-        'lodash/throttle.js',
+        ...STORYBOOK_PREBUNDLED_LODASH_DEPS,
       ],
     };
     return config;
