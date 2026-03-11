@@ -13,24 +13,57 @@ import { debounce } from 'lodash';
 import RefreshIcon from '@/material-icons/400-24px/refresh.svg?react';
 import { fetchFavourites, expandFavourites } from 'mastodon/actions/interactions';
 import { Account } from 'mastodon/components/account';
+import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
-import { Icon }  from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
+import {
+  SecondaryPageChip,
+  SecondaryPageEmptyState,
+  SecondaryPageHero,
+  secondaryPageClasses,
+} from 'mastodon/components/secondary_page';
 import ScrollableList from 'mastodon/components/scrollable_list';
-import Column from 'mastodon/features/ui/components/column';
 
 const messages = defineMessages({
+  heading: { id: 'column.favourites', defaultMessage: 'Favorites' },
   refresh: { id: 'refresh', defaultMessage: 'Refresh' },
+  eyebrow: { id: 'favourites.detail.eyebrow', defaultMessage: 'Post activity' },
+  description: {
+    id: 'favourites.detail.description',
+    defaultMessage:
+      'See who has favorited this post in the same card language used by the refreshed secondary views.',
+  },
+  count: {
+    id: 'favourites.detail.count',
+    defaultMessage: '{count, plural, =0 {No favorites yet} one {1 person here} other {# people here}}',
+  },
+  emptyTitle: {
+    id: 'favourites.detail.empty_title',
+    defaultMessage: 'No favorites on this post yet',
+  },
 });
 
 const mapStateToProps = (state, props) => ({
-  accountIds: state.getIn(['user_lists', 'favourited_by', props.params.statusId, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'favourited_by', props.params.statusId, 'next']),
-  isLoading: state.getIn(['user_lists', 'favourited_by', props.params.statusId, 'isLoading'], true),
+  accountIds: state.getIn([
+    'user_lists',
+    'favourited_by',
+    props.params.statusId,
+    'items',
+  ]),
+  hasMore: !!state.getIn([
+    'user_lists',
+    'favourited_by',
+    props.params.statusId,
+    'next',
+  ]),
+  isLoading: state.getIn(
+    ['user_lists', 'favourited_by', props.params.statusId, 'isLoading'],
+    true,
+  ),
 });
 
 class Favourites extends ImmutablePureComponent {
-
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -41,7 +74,7 @@ class Favourites extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     if (!this.props.accountIds) {
       this.props.dispatch(fetchFavourites(this.props.params.statusId));
     }
@@ -55,27 +88,74 @@ class Favourites extends ImmutablePureComponent {
     this.props.dispatch(expandFavourites(this.props.params.statusId));
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { intl, accountIds, hasMore, isLoading, multiColumn } = this.props;
 
     if (!accountIds) {
       return (
         <Column>
-          <LoadingIndicator />
+          <div className='scrollable'>
+            <LoadingIndicator />
+          </div>
         </Column>
       );
     }
 
-    const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has favorited this post yet. When someone does, they will show up here.' />;
+    const headerCard = (
+      <SecondaryPageHero
+        eyebrow={intl.formatMessage(messages.eyebrow)}
+        title={intl.formatMessage(messages.heading)}
+        description={intl.formatMessage(messages.description)}
+        actions={
+          <button
+            type='button'
+            className='button button-secondary'
+            onClick={this.handleRefresh}
+          >
+            <Icon id='refresh' icon={RefreshIcon} />
+            {intl.formatMessage(messages.refresh)}
+          </button>
+        }
+        meta={
+          <SecondaryPageChip>
+            {intl.formatMessage(messages.count, { count: accountIds.size })}
+          </SecondaryPageChip>
+        }
+      />
+    );
+
+    const emptyMessage = (
+      <SecondaryPageEmptyState
+        iconId='refresh'
+        icon={RefreshIcon}
+        title={intl.formatMessage(messages.emptyTitle)}
+        message={
+          <FormattedMessage
+            id='empty_column.favourites'
+            defaultMessage='No one has favorited this post yet. When someone does, they will show up here.'
+          />
+        }
+        actions={
+          <button
+            type='button'
+            className='button button-secondary'
+            onClick={this.handleRefresh}
+          >
+            {intl.formatMessage(messages.refresh)}
+          </button>
+        }
+      />
+    );
 
     return (
-      <Column bindToDocument={!multiColumn}>
+      <Column
+        bindToDocument={!multiColumn}
+        label={intl.formatMessage(messages.heading)}
+      >
         <ColumnHeader
           showBackButton
+          title={intl.formatMessage(messages.heading)}
           multiColumn={multiColumn}
-          extraButton={(
-            <button type='button' className='column-header__button' title={intl.formatMessage(messages.refresh)} aria-label={intl.formatMessage(messages.refresh)} onClick={this.handleRefresh}><Icon id='refresh' icon={RefreshIcon} /></button>
-          )}
         />
 
         <ScrollableList
@@ -83,12 +163,19 @@ class Favourites extends ImmutablePureComponent {
           onLoadMore={this.handleLoadMore}
           hasMore={hasMore}
           isLoading={isLoading}
+          prepend={headerCard}
+          alwaysPrepend
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >
-          {accountIds.map(id =>
-            <Account key={id} id={id} />,
-          )}
+          {accountIds.map((id) => (
+            <Account
+              key={id}
+              id={id}
+              className={secondaryPageClasses.accountCard}
+              withBorder={false}
+            />
+          ))}
         </ScrollableList>
 
         <Helmet>
@@ -97,7 +184,6 @@ class Favourites extends ImmutablePureComponent {
       </Column>
     );
   }
-
 }
 
 export default connect(mapStateToProps)(injectIntl(Favourites));

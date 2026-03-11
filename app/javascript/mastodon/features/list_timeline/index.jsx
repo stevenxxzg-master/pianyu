@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DeleteIcon from '@/material-icons/400-24px/delete.svg?react';
 import EditIcon from '@/material-icons/400-24px/edit.svg?react';
@@ -19,162 +18,199 @@ import { connectListStream } from 'mastodon/actions/streaming';
 import { expandListTimeline } from 'mastodon/actions/timelines';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
-import { Icon }  from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
+import {
+  SecondaryPageChip,
+  SecondaryPageEmptyState,
+  SecondaryPageHero,
+} from 'mastodon/components/secondary_page';
 import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 import StatusListContainer from 'mastodon/features/ui/containers/status_list_container';
-import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
-const mapStateToProps = (state, props) => ({
-  list: state.getIn(['lists', props.params.id]),
-  hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
+const messages = defineMessages({
+  edit: { id: 'lists.edit', defaultMessage: 'Edit list' },
+  delete: { id: 'lists.delete', defaultMessage: 'Delete list' },
+  manageMembers: {
+    id: 'column.list_members',
+    defaultMessage: 'Manage list members',
+  },
+  eyebrow: { id: 'list_timeline.eyebrow', defaultMessage: 'Custom timeline' },
+  description: {
+    id: 'list_timeline.description',
+    defaultMessage:
+      'Stay focused on one curated group without losing the modern M5 title, action, and empty-state language.',
+  },
+  unread: { id: 'list_timeline.unread', defaultMessage: 'Unread updates' },
+  live: { id: 'list_timeline.live', defaultMessage: 'Live list feed' },
+  emptyTitle: {
+    id: 'list_timeline.empty_title',
+    defaultMessage: 'This list is ready for members',
+  },
 });
 
-class ListTimeline extends PureComponent {
+const ListTimeline = ({ columnId, multiColumn }) => {
+  const dispatch = useDispatch();
+  const intl = useIntl();
+  const history = useHistory();
+  const columnRef = useRef(null);
+  const { id } = useParams();
+  const list = useSelector((state) => state.getIn(['lists', id]));
+  const hasUnread = useSelector(
+    (state) => state.getIn(['timelines', `list:${id}`, 'unread']) > 0,
+  );
+  const pinned = !!columnId;
 
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    columnId: PropTypes.string,
-    hasUnread: PropTypes.bool,
-    multiColumn: PropTypes.bool,
-    list: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
-    intl: PropTypes.object.isRequired,
-    ...WithRouterPropTypes,
-  };
-
-  handlePin = () => {
-    const { columnId, dispatch } = this.props;
-
-    if (columnId) {
-      dispatch(removeColumn(columnId));
-    } else {
-      dispatch(addColumn('LIST', { id: this.props.params.id }));
-      this.props.history.push('/');
-    }
-  };
-
-  handleMove = (dir) => {
-    const { columnId, dispatch } = this.props;
-    dispatch(moveColumn(columnId, dir));
-  };
-
-  handleHeaderClick = () => {
-    this.column.scrollTop();
-  };
-
-  componentDidMount () {
-    const { dispatch } = this.props;
-    const { id } = this.props.params;
-
+  useEffect(() => {
     dispatch(fetchList(id));
     dispatch(expandListTimeline(id));
 
-    this.disconnect = dispatch(connectListStream(id));
-  }
+    const disconnect = dispatch(connectListStream(id));
 
-  componentDidUpdate (prevProps) {
-    const { dispatch, params: {id} } = this.props;
-
-    if (id !== prevProps.params.id) {
-      if (this.disconnect) {
-        this.disconnect();
-        this.disconnect = null;
+    return () => {
+      if (disconnect) {
+        disconnect();
       }
+    };
+  }, [dispatch, id]);
 
-      dispatch(fetchList(id));
-      dispatch(expandListTimeline(id));
-
-      this.disconnect = dispatch(connectListStream(id));
+  const handlePin = useCallback(() => {
+    if (columnId) {
+      dispatch(removeColumn(columnId));
+    } else {
+      dispatch(addColumn('LIST', { id }));
+      history.push('/');
     }
-  }
+  }, [columnId, dispatch, history, id]);
 
-  componentWillUnmount () {
-    if (this.disconnect) {
-      this.disconnect();
-      this.disconnect = null;
-    }
-  }
+  const handleMove = useCallback(
+    (dir) => {
+      dispatch(moveColumn(columnId, dir));
+    },
+    [columnId, dispatch],
+  );
 
-  setRef = c => {
-    this.column = c;
-  };
+  const handleHeaderClick = useCallback(() => {
+    columnRef.current?.scrollTop();
+  }, []);
 
-  handleLoadMore = maxId => {
-    const { id } = this.props.params;
-    this.props.dispatch(expandListTimeline(id, { maxId }));
-  };
+  const handleLoadMore = useCallback(
+    (maxId) => {
+      dispatch(expandListTimeline(id, { maxId }));
+    },
+    [dispatch, id],
+  );
 
-  handleDeleteClick = () => {
-    const { dispatch, columnId } = this.props;
-    const { id } = this.props.params;
+  const handleDeleteClick = useCallback(() => {
+    dispatch(
+      openModal({
+        modalType: 'CONFIRM_DELETE_LIST',
+        modalProps: { listId: id, columnId },
+      }),
+    );
+  }, [dispatch, id, columnId]);
 
-    dispatch(openModal({ modalType: 'CONFIRM_DELETE_LIST', modalProps: { listId: id, columnId } }));
-  };
-
-  render () {
-    const { hasUnread, columnId, multiColumn, list } = this.props;
-    const { id } = this.props.params;
-    const pinned = !!columnId;
-    const title  = list ? list.get('title') : id;
-
-    if (typeof list === 'undefined') {
-      return (
-        <Column>
-          <div className='scrollable'>
-            <LoadingIndicator />
-          </div>
-        </Column>
-      );
-    } else if (list === false) {
-      return (
-        <BundleColumnError multiColumn={multiColumn} errorType='routing' />
-      );
-    }
-
+  if (typeof list === 'undefined') {
     return (
-      <Column bindToDocument={!multiColumn} ref={this.setRef} label={title}>
-        <ColumnHeader
-          icon='list-ul'
-          iconComponent={ListAltIcon}
-          active={hasUnread}
-          title={title}
-          onPin={this.handlePin}
-          onMove={this.handleMove}
-          onClick={this.handleHeaderClick}
-          pinned={pinned}
-          multiColumn={multiColumn}
-        >
-          <div className='column-settings'>
-            <section className='column-header__links'>
-              <Link to={`/lists/${id}/edit`} className='text-btn column-header__setting-btn'>
-                <Icon id='pencil' icon={EditIcon} /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
-              </Link>
-
-              <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleDeleteClick}>
-                <Icon id='trash' icon={DeleteIcon} /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
-              </button>
-            </section>
-          </div>
-        </ColumnHeader>
-
-        <StatusListContainer
-          trackScroll={!pinned}
-          scrollKey={`list_timeline-${columnId}`}
-          timelineId={`list:${id}`}
-          onLoadMore={this.handleLoadMore}
-          emptyMessage={<FormattedMessage id='empty_column.list' defaultMessage='There is nothing in this list yet. When members of this list post new statuses, they will appear here.' />}
-          bindToDocument={!multiColumn}
-        />
-
-        <Helmet>
-          <title>{title}</title>
-          <meta name='robots' content='noindex' />
-        </Helmet>
+      <Column>
+        <div className='scrollable'>
+          <LoadingIndicator />
+        </div>
       </Column>
     );
   }
 
-}
+  if (list === false) {
+    return <BundleColumnError multiColumn={multiColumn} errorType='routing' />;
+  }
 
-export default withRouter(connect(mapStateToProps)(ListTimeline));
+  const title = list ? list.get('title') : id;
+
+  const headerCard = (
+    <SecondaryPageHero
+      eyebrow={intl.formatMessage(messages.eyebrow)}
+      title={title}
+      description={intl.formatMessage(messages.description)}
+      actions={
+        <>
+          <Link to={`/lists/${id}/edit`} className='button button-secondary'>
+            <Icon id='pencil' icon={EditIcon} />
+            {intl.formatMessage(messages.edit)}
+          </Link>
+          <Link to={`/lists/${id}/members`} className='button button-secondary'>
+            {intl.formatMessage(messages.manageMembers)}
+          </Link>
+          <button
+            type='button'
+            className='button button-secondary button--destructive'
+            onClick={handleDeleteClick}
+          >
+            <Icon id='trash' icon={DeleteIcon} />
+            {intl.formatMessage(messages.delete)}
+          </button>
+        </>
+      }
+      meta={
+        <SecondaryPageChip>
+          {intl.formatMessage(hasUnread ? messages.unread : messages.live)}
+        </SecondaryPageChip>
+      }
+    />
+  );
+
+  return (
+    <Column bindToDocument={!multiColumn} ref={columnRef} label={title}>
+      <ColumnHeader
+        icon='list-ul'
+        iconComponent={ListAltIcon}
+        active={hasUnread}
+        title={title}
+        onPin={handlePin}
+        onMove={handleMove}
+        onClick={handleHeaderClick}
+        pinned={pinned}
+        multiColumn={multiColumn}
+      />
+
+      <StatusListContainer
+        trackScroll={!pinned}
+        scrollKey={`list_timeline-${columnId}`}
+        timelineId={`list:${id}`}
+        onLoadMore={handleLoadMore}
+        prepend={headerCard}
+        alwaysPrepend
+        emptyMessage={
+          <SecondaryPageEmptyState
+            iconId='list-ul'
+            icon={ListAltIcon}
+            title={intl.formatMessage(messages.emptyTitle)}
+            message={
+              <FormattedMessage
+                id='empty_column.list'
+                defaultMessage='There is nothing in this list yet. When members of this list post new statuses, they will appear here.'
+              />
+            }
+            actions={
+              <Link to={`/lists/${id}/members`} className='button button-secondary'>
+                {intl.formatMessage(messages.manageMembers)}
+              </Link>
+            }
+          />
+        }
+        bindToDocument={!multiColumn}
+      />
+
+      <Helmet>
+        <title>{title}</title>
+        <meta name='robots' content='noindex' />
+      </Helmet>
+    </Column>
+  );
+};
+
+ListTimeline.propTypes = {
+  columnId: PropTypes.string,
+  multiColumn: PropTypes.bool,
+};
+
+export default ListTimeline;

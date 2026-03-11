@@ -68,6 +68,7 @@ const messages = defineMessages({
 interface AccountProps {
   size?: number;
   id: string;
+  className?: string;
   hidden?: boolean;
   minimal?: boolean;
   defaultAction?: 'block' | 'mute';
@@ -81,6 +82,7 @@ interface AccountProps {
 export const Account: React.FC<AccountProps> = ({
   id,
   size = 46,
+  className,
   hidden,
   minimal,
   defaultAction,
@@ -290,7 +292,7 @@ export const Account: React.FC<AccountProps> = ({
 
   return (
     <div
-      className={classNames('account', {
+      className={classNames('account', className, {
         'account--minimal': minimal,
         'account--without-border': !withBorder,
       })}
