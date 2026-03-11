@@ -12,6 +12,7 @@ import {
 import { Hotkeys } from 'mastodon/components/hotkeys';
 import type { IconProp } from 'mastodon/components/icon';
 import { Icon } from 'mastodon/components/icon';
+import { RelativeTimestamp } from 'mastodon/components/relative_timestamp';
 import { StatusQuoteManager } from 'mastodon/components/status_quoted';
 import { getStatusHidden } from 'mastodon/selectors/filters';
 import { useAppSelector, useAppDispatch } from 'mastodon/store';
@@ -26,6 +27,7 @@ export const NotificationWithStatus: React.FC<{
   statusId: string | undefined;
   count: number;
   labelRenderer: LabelRenderer;
+  timestamp?: string;
   unread: boolean;
 }> = ({
   icon,
@@ -34,6 +36,7 @@ export const NotificationWithStatus: React.FC<{
   statusId,
   count,
   labelRenderer,
+  timestamp,
   type,
   unread,
 }) => {
@@ -102,10 +105,19 @@ export const NotificationWithStatus: React.FC<{
         tabIndex={0}
       >
         <div className='notification-ungrouped__header'>
-          <div className='notification-ungrouped__header__icon'>
-            <Icon icon={icon} id={iconId} />
+          <div className='notification-ungrouped__header__main'>
+            <div className='notification-ungrouped__header__icon'>
+              <Icon icon={icon} id={iconId} />
+            </div>
+
+            <div className='notification-ungrouped__header__label'>{label}</div>
           </div>
-          {label}
+
+          {timestamp && (
+            <span className='notification-ungrouped__header__time'>
+              <RelativeTimestamp timestamp={timestamp} />
+            </span>
+          )}
         </div>
 
         <StatusQuoteManager

@@ -27,6 +27,7 @@ export const NotificationQuote: React.FC<{
       count={notification.notifications_count}
       statusId={notification.statusId}
       labelRenderer={quoteLabelRenderer}
+      timestamp={notification.latest_page_notification_at}
       unread={unread}
     />
   );

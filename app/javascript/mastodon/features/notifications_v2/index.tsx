@@ -23,13 +23,14 @@ import { NotSignedInIndicator } from 'mastodon/components/not_signed_in_indicato
 import { useIdentity } from 'mastodon/identity_context';
 import type { NotificationGap } from 'mastodon/reducers/notification_groups';
 import {
-  selectUnreadNotificationGroupsCount,
+  selectDisplayedUnreadNotificationGroupsCount,
   selectPendingNotificationGroupsCount,
   selectAnyPendingNotification,
   selectNotificationGroups,
 } from 'mastodon/selectors/notifications';
 import {
   selectNeedsNotificationPermission,
+  selectSettingsNotificationsQuickFilterActive,
   selectSettingsNotificationsShowUnread,
 } from 'mastodon/selectors/settings';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
@@ -57,7 +58,48 @@ const messages = defineMessages({
     id: 'notifications.mark_as_read',
     defaultMessage: 'Mark every notification as read',
   },
+  unreadNotifications: {
+    id: 'notifications.column_settings.unread_notifications.category',
+    defaultMessage: 'Unread notifications',
+  },
+  all: { id: 'notifications.filter.all', defaultMessage: 'All' },
+  mentions: { id: 'notifications.filter.mentions', defaultMessage: 'Mentions' },
+  favourites: {
+    id: 'notifications.filter.favourites',
+    defaultMessage: 'Favorites',
+  },
+  boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Boosts' },
+  polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
+  follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
+  statuses: {
+    id: 'notifications.filter.statuses',
+    defaultMessage: 'Updates from people you follow',
+  },
+  pending: {
+    id: 'load_pending',
+    defaultMessage: '{count, plural, one {# new item} other {# new items}}',
+  },
 });
+
+const filterLabels = {
+  all: messages.all,
+  mention: messages.mentions,
+  favourite: messages.favourites,
+  reblog: messages.boosts,
+  poll: messages.polls,
+  follow: messages.follows,
+  status: messages.statuses,
+} as const;
+
+const NotificationSectionBreak: React.FC<{
+  title: string;
+}> = ({ title }) => (
+  <article className='notifications-v2__section-break' aria-hidden='true'>
+    <span className='notifications-v2__section-break__line' />
+    <span className='notifications-v2__section-break__title'>{title}</span>
+    <span className='notifications-v2__section-break__line' />
+  </article>
+);
 
 export const Notifications: React.FC<{
   columnId?: string;
@@ -78,7 +120,7 @@ export const Notifications: React.FC<{
   const numPending = useAppSelector(selectPendingNotificationGroupsCount);
 
   const unreadNotificationsCount = useAppSelector(
-    selectUnreadNotificationGroupsCount,
+    selectDisplayedUnreadNotificationGroupsCount,
   );
 
   const anyPendingNotification = useAppSelector(selectAnyPendingNotification);
@@ -92,6 +134,9 @@ export const Notifications: React.FC<{
   const canMarkAsRead =
     useAppSelector(selectSettingsNotificationsShowUnread) &&
     anyPendingNotification;
+  const activeFilter = useAppSelector(
+    selectSettingsNotificationsQuickFilterActive,
+  );
 
   const needsNotificationPermission = useAppSelector(
     selectNeedsNotificationPermission,
@@ -170,44 +215,147 @@ export const Notifications: React.FC<{
   }, [dispatch]);
 
   const pinned = !!columnId;
+  const activeFilterLabel = intl.formatMessage(
+    filterLabels[activeFilter as keyof typeof filterLabels],
+  );
   const emptyMessage = (
-    <FormattedMessage
-      id='empty_column.notifications'
-      defaultMessage="You don't have any notifications yet. When other people interact with you, you will see it here."
-    />
+    <div className='notifications-v2__empty-state'>
+      <div className='notifications-v2__empty-state__icon'>
+        <Icon id='notifications' icon={NotificationsIcon} />
+      </div>
+
+      <div className='notifications-v2__empty-state__copy'>
+        <strong>{intl.formatMessage(messages.title)}</strong>
+        <span>
+          <FormattedMessage
+            id='empty_column.notifications'
+            defaultMessage="You don't have any notifications yet. When other people interact with you, you will see it here."
+          />
+        </span>
+      </div>
+    </div>
   );
 
   const { signedIn } = useIdentity();
-
-  const filterBar = signedIn ? <FilterBar /> : null;
+  const hasUnreadMarker = lastReadId !== '0';
 
   const scrollableContent = useMemo(() => {
     if (notifications.length === 0 && !hasMore) return null;
 
-    return notifications.map((item) =>
-      item.type === 'gap' ? (
-        <LoadGap
-          key={`${item.maxId}-${item.sinceId}`}
-          disabled={isLoading}
-          param={item}
-          onClick={handleLoadGap}
-        />
-      ) : (
+    let unreadSectionInserted = false;
+
+    return notifications.flatMap((item) => {
+      if (item.type === 'gap') {
+        return (
+          <LoadGap
+            key={`${item.maxId}-${item.sinceId}`}
+            disabled={isLoading}
+            param={item}
+            onClick={handleLoadGap}
+          />
+        );
+      }
+
+      const unread =
+        hasUnreadMarker &&
+        !!item.page_max_id &&
+        compareId(item.page_max_id, lastReadId) > 0;
+
+      const nodes = [];
+
+      if (unread && !unreadSectionInserted) {
+        nodes.push(
+          <NotificationSectionBreak
+            key='unread-section'
+            title={intl.formatMessage(messages.unreadNotifications)}
+          />,
+        );
+        unreadSectionInserted = true;
+      }
+
+      nodes.push(
         <NotificationGroup
           key={item.group_key}
           notificationGroupId={item.group_key}
-          unread={
-            lastReadId !== '0' &&
-            !!item.page_max_id &&
-            compareId(item.page_max_id, lastReadId) > 0
-          }
-        />
-      ),
-    );
-  }, [notifications, isLoading, hasMore, lastReadId, handleLoadGap]);
+          unread={unread}
+        />,
+      );
+
+      return nodes;
+    });
+  }, [
+    notifications,
+    isLoading,
+    hasMore,
+    lastReadId,
+    handleLoadGap,
+    hasUnreadMarker,
+    intl,
+  ]);
 
   const prepend = (
     <>
+      {signedIn && (
+        <div className='notifications-v2__toolbar'>
+          <div className='notifications-v2__toolbar__header'>
+            <div className='notifications-v2__toolbar__title'>
+              <div className='notifications-v2__toolbar__title-icon'>
+                <Icon id='notifications' icon={NotificationsIcon} />
+              </div>
+
+              <div className='notifications-v2__toolbar__title-copy'>
+                <strong>{intl.formatMessage(messages.title)}</strong>
+
+                <div className='notifications-v2__toolbar__pills'>
+                  <span className='notifications-v2__pill'>
+                    <span className='notifications-v2__pill-label'>
+                      {intl.formatMessage(messages.unreadNotifications)}
+                    </span>
+                    <strong>{unreadNotificationsCount}</strong>
+                  </span>
+
+                  <span className='notifications-v2__pill notifications-v2__pill--active-filter'>
+                    <span className='notifications-v2__pill-label'>
+                      {activeFilterLabel}
+                    </span>
+                  </span>
+
+                  {numPending > 0 && (
+                    <span className='notifications-v2__pill'>
+                      <span className='notifications-v2__pill-label'>
+                        {intl.formatMessage(messages.pending, {
+                          count: numPending,
+                        })}
+                      </span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {canMarkAsRead && (
+              <button
+                aria-label={intl.formatMessage(messages.markAsRead)}
+                title={intl.formatMessage(messages.markAsRead)}
+                onClick={handleMarkAsRead}
+                className='button button-secondary notifications-v2__toolbar__action'
+                type='button'
+              >
+                <Icon id='done-all' icon={DoneAllIcon} />
+                <span>
+                  <FormattedMessage
+                    id='notifications.mark_as_read'
+                    defaultMessage='Mark every notification as read'
+                  />
+                </span>
+              </button>
+            )}
+          </div>
+
+          <FilterBar />
+        </div>
+      )}
+
       {needsNotificationPermission && <NotificationsPermissionBanner />}
       <FilteredNotificationsBanner />
     </>
@@ -221,6 +369,7 @@ export const Notifications: React.FC<{
       showLoading={isLoading && notifications.length === 0}
       hasMore={hasMore}
       numPending={numPending}
+      className='notifications-v2__list'
       prepend={prepend}
       alwaysPrepend
       emptyMessage={emptyMessage}
@@ -237,20 +386,7 @@ export const Notifications: React.FC<{
   );
 
   const extraButton = (
-    <>
-      <FilteredNotificationsIconButton className='column-header__button' />
-      {canMarkAsRead && (
-        <button
-          aria-label={intl.formatMessage(messages.markAsRead)}
-          title={intl.formatMessage(messages.markAsRead)}
-          onClick={handleMarkAsRead}
-          className='column-header__button'
-          type='button'
-        >
-          <Icon id='done-all' icon={DoneAllIcon} />
-        </button>
-      )}
-    </>
+    <FilteredNotificationsIconButton className='column-header__button' />
   );
 
   return (
@@ -274,9 +410,7 @@ export const Notifications: React.FC<{
         <ColumnSettingsContainer />
       </ColumnHeader>
 
-      {filterBar}
-
-      {scrollContainer}
+      <div className='notifications-v2'>{scrollContainer}</div>
 
       <Helmet>
         <title>{intl.formatMessage(messages.title)}</title>
