@@ -111,6 +111,7 @@ class Status extends ImmutablePureComponent {
     unread: PropTypes.bool,
     featured: PropTypes.bool,
     showThread: PropTypes.bool,
+    threadDepth: PropTypes.number,
     showActions: PropTypes.bool,
     isQuotedPost: PropTypes.bool,
     shouldHighlightOnMount: PropTypes.bool,
@@ -381,6 +382,7 @@ class Status extends ImmutablePureComponent {
       unfocusable,
       unread,
       showThread,
+      threadDepth,
       showActions = true,
       isQuotedPost = false,
       scrollKey,
@@ -568,9 +570,11 @@ class Status extends ImmutablePureComponent {
         />
       );
 
+    const threadStyle = threadDepth ? { '--status-thread-depth': threadDepth } : undefined;
+
     return (
       <Hotkeys handlers={handlers} focusable={!unfocusable}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !this.props.muted })} tabIndex={this.props.muted || unfocusable ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader({intl, status, rebloggedByText, isQuote: isQuotedPost})} ref={this.handleRef} data-nosnippet={status.getIn(['account', 'noindex'], true) || undefined}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !this.props.muted })} tabIndex={this.props.muted || unfocusable ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader({intl, status, rebloggedByText, isQuote: isQuotedPost})} ref={this.handleRef} data-nosnippet={status.getIn(['account', 'noindex'], true) || undefined} style={threadStyle}>
           {!skipPrepend && prepend}
 
           <div

@@ -64,6 +64,8 @@ import { StatusQuoteManager } from '../../components/status_quoted';
 import { deleteModal } from '../../initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import { getAncestorsIds, getDescendantsIds } from 'mastodon/selectors/contexts';
+
+import { getThreadDepth } from './thread_depth';
 import Column from '../ui/components/column';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
@@ -99,6 +101,7 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
+      inReplyTos: state.contexts.inReplyTos,
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       pictureInPicture: getPictureInPicture(state, { id: props.params.statusId }),
@@ -136,6 +139,7 @@ class Status extends ImmutablePureComponent {
     isLoading: PropTypes.bool,
     ancestorsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     descendantsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    inReplyTos: PropTypes.objectOf(PropTypes.string),
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     multiColumn: PropTypes.bool,
@@ -462,7 +466,7 @@ class Status extends ImmutablePureComponent {
   };
 
   renderChildren (list, ancestors) {
-    const { params: { statusId } } = this.props;
+    const { params: { statusId }, inReplyTos } = this.props;
 
     return list.map((id, i) => (
       <StatusQuoteManager
@@ -472,6 +476,8 @@ class Status extends ImmutablePureComponent {
         previousId={i > 0 ? list[i - 1] : undefined}
         nextId={list[i + 1] || (ancestors && statusId)}
         rootId={statusId}
+        showThread
+        threadDepth={ancestors ? list.length - i : getThreadDepth(statusId, id, inReplyTos)}
         shouldHighlightOnMount={this.state.newRepliesIds.includes(id)}
       />
     ));
@@ -577,11 +583,15 @@ class Status extends ImmutablePureComponent {
         />
 
         <ScrollContainer scrollKey='thread' shouldUpdateScroll={this.shouldUpdateScroll} childRef={this.setContainerRef}>
-          <div className={classNames('item-list scrollable scrollable--flex', { fullscreen })} ref={this.setContainerRef}>
-            {ancestors}
+          <div className={classNames('item-list scrollable scrollable--flex status-detail__page', { fullscreen })} ref={this.setContainerRef}>
+            {ancestors && (
+              <div className='status-detail__section status-detail__section--ancestors'>
+                {ancestors}
+              </div>
+            )}
 
             <Hotkeys handlers={handlers}>
-              <div className={classNames('focusable', 'detailed-status__wrapper', `detailed-status__wrapper-${status.get('visibility')}`)} tabIndex={0} aria-label={textForScreenReader({intl, status})} ref={this.setStatusRef}>
+              <div className={classNames('focusable', 'detailed-status__wrapper', 'status-detail__focus-shell', `detailed-status__wrapper-${status.get('visibility')}`)} tabIndex={0} aria-label={textForScreenReader({intl, status})} ref={this.setStatusRef}>
                 <DetailedStatus
                   key={`details-${status.get('id')}`}
                   status={status}
@@ -625,7 +635,11 @@ class Status extends ImmutablePureComponent {
               </div>
             </Hotkeys>
 
-            {descendants}
+            {descendants && (
+              <div className='status-detail__section status-detail__section--replies'>
+                {descendants}
+              </div>
+            )}
             
             <RefreshController
               isLocal={isLocal}
