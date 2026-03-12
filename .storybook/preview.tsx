@@ -7,7 +7,7 @@ import { MemoryRouter, Route } from 'react-router';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
-import type { Preview } from '@storybook/react-vite';
+import type { Preview, StoryContext } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { action } from 'storybook/actions';
 
@@ -34,6 +34,21 @@ const localeFiles = import.meta.glob('@/mastodon/locales/*.json', {
 initialize({
   onUnhandledRequest: unhandledRequestHandler,
 });
+
+async function loadStorybookData(
+  context: StoryContext & Parameters<typeof mswLoader>[0],
+) {
+  const { locale } = context.globals as { locale?: string };
+
+  // Storybook executes loaders in parallel, so MSW must be installed before
+  // the emoji preloaders issue their fetches.
+  await mswLoader(context);
+  await importCustomEmojiData();
+  await importLegacyShortcodes();
+  await importEmojiData(locale ?? 'en');
+
+  return {};
+}
 
 const preview: Preview = {
   // Auto-generate docs: https://storybook.js.org/docs/writing-docs/autodocs
@@ -168,12 +183,7 @@ const preview: Preview = {
       </MemoryRouter>
     ),
   ],
-  loaders: [
-    mswLoader,
-    importCustomEmojiData,
-    importLegacyShortcodes,
-    ({ globals: { locale } }) => importEmojiData(locale as string),
-  ],
+  loaders: [loadStorybookData],
   parameters: {
     layout: 'centered',
 
