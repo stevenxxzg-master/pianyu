@@ -19,9 +19,8 @@ RSpec.describe 'M5 redesigned core flows', :inline_jobs, :js, :streaming do
       confirmed_at: Time.zone.now,
       account: Fabricate(
         :account,
-        username: 'alice',
         display_name: 'Alice QA',
-        avatar: attachment_fixture('avatar.gif'),
+        avatar: attachment_fixture('attachment.jpg'),
         header: attachment_fixture('attachment.jpg')
       )
     )
@@ -35,11 +34,11 @@ RSpec.describe 'M5 redesigned core flows', :inline_jobs, :js, :streaming do
     open_notifications
     open_favourited_status(status)
     open_bob_profile
-    expect(page).to have_title("bob (@bob@#{local_domain_uri.host})")
+    expect(page).to have_title("bob (@bob@#{Rails.configuration.x.local_domain})")
 
-    search_for_account('alice')
+    search_for_account(alice.account.username)
     open_alice_profile
-    expect(page).to have_title(/Alice QA \(@alice@#{Regexp.escape(local_domain_uri.host)}\)/)
+    expect(page).to have_title(/Alice QA \(@#{Regexp.escape(alice.account.username)}@#{Regexp.escape(Rails.configuration.x.local_domain)}\)/)
   end
 
   private
@@ -121,8 +120,8 @@ RSpec.describe 'M5 redesigned core flows', :inline_jobs, :js, :streaming do
   end
 
   def open_alice_profile
-    click_link nil, href: '/@alice', match: :first
+    click_link nil, href: "/@#{alice.account.username}", match: :first
 
-    expect(page).to have_current_path(%r{\A/(?:@alice|users/alice)\z})
+    expect(page).to have_current_path(%r{\A/(?:@#{Regexp.escape(alice.account.username)}|users/#{Regexp.escape(alice.account.username)})\z})
   end
 end

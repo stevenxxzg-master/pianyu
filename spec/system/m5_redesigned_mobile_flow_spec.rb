@@ -19,9 +19,8 @@ RSpec.describe 'M5 redesigned mobile flow', :inline_jobs, :js, :streaming do
       confirmed_at: Time.zone.now,
       account: Fabricate(
         :account,
-        username: 'alice',
         display_name: 'Alice QA',
-        avatar: attachment_fixture('avatar.gif'),
+        avatar: attachment_fixture('attachment.jpg'),
         header: attachment_fixture('attachment.jpg')
       )
     )
@@ -32,7 +31,7 @@ RSpec.describe 'M5 redesigned mobile flow', :inline_jobs, :js, :streaming do
     publish_mobile_status
     open_mobile_navigation_item('Notifications', '/notifications')
     open_mobile_navigation_item('Search', '/explore')
-    search_for_account('alice')
+    search_for_account(alice.account.username)
     open_alice_profile
 
     expect(page).to have_css('.account__header')
@@ -84,8 +83,8 @@ RSpec.describe 'M5 redesigned mobile flow', :inline_jobs, :js, :streaming do
   end
 
   def open_alice_profile
-    click_link nil, href: '/@alice', match: :first
+    click_link nil, href: "/@#{alice.account.username}", match: :first
 
-    expect(page).to have_current_path(%r{\A/(?:@alice|users/alice)\z})
+    expect(page).to have_current_path(%r{\A/(?:@#{Regexp.escape(alice.account.username)}|users/#{Regexp.escape(alice.account.username)})\z})
   end
 end
