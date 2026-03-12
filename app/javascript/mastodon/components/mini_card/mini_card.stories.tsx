@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect } from 'storybook/test';
 
 import LinkIcon from '@/material-icons/400-24px/link_2.svg?react';
 
@@ -7,6 +8,7 @@ import { MiniCardList } from './list';
 const meta = {
   title: 'Components/MiniCard',
   component: MiniCardList,
+  tags: ['test'],
 } satisfies Meta<typeof MiniCardList>;
 
 export default meta;
@@ -30,6 +32,13 @@ export const Default: Story = {
       { label: 'Location', value: 'Purris, France' },
     ],
   },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Pronouns')).toBeVisible();
+    await expect(canvas.getByText('they/them')).toBeVisible();
+    await expect(
+      canvas.getByRole('link', { name: 'bowie-the-db.meow' }),
+    ).toHaveAttribute('href', 'https://example.com');
+  },
 };
 
 export const LongValue: Story = {
@@ -47,6 +56,10 @@ export const LongValue: Story = {
         style: { maxWidth: '250px' },
       },
     ],
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('Username')).toBeVisible();
+    await expect(canvas.getByText('bowie-the-dj')).toBeVisible();
   },
 };
 
