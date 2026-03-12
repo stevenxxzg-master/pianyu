@@ -30,7 +30,7 @@ const mapStateToProps = state => {
 
 const hasVisibleText = value => typeof value === 'string' && value.trim().length > 0;
 
-export class ServerBanner extends PureComponent {
+export class ServerBannerContent extends PureComponent {
 
   static propTypes = {
     server: PropTypes.object,
@@ -109,4 +109,4 @@ export class ServerBanner extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(ServerBanner));
+export default connect(mapStateToProps)(injectIntl(ServerBannerContent));

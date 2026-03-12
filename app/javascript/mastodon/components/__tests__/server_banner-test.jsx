@@ -6,7 +6,7 @@ import { fromJS } from 'immutable';
 
 import { render, screen } from '@/testing/rendering';
 
-import { ServerBanner } from '../server_banner';
+import { ServerBannerContent } from '../server_banner';
 
 function MockAccount({ id }) {
   return (
@@ -70,7 +70,7 @@ const buildServer = (contact = {}) =>
 
 const renderServerBanner = (contact = {}, { contactAccountLoaded = !!contact.account?.id } = {}) =>
   render(
-    <ServerBanner
+    <ServerBannerContent
       dispatch={vi.fn()}
       intl={intl}
       server={buildServer(contact)}
