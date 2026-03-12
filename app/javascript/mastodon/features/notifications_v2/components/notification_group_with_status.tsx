@@ -80,22 +80,24 @@ export const NotificationGroupWithStatus: React.FC<{
   );
 
   const handlers = useMemo(
-    () => ({
-      open: () => {
-        dispatch(navigateToStatus(statusId));
-      },
+    () =>
+      statusId
+        ? {
+            open: () => {
+              dispatch(navigateToStatus(statusId));
+            },
 
-      reply: () => {
-        dispatch(replyComposeById(statusId));
-      },
-    }),
+            reply: () => {
+              dispatch(replyComposeById(statusId));
+            },
+          }
+        : {},
     [dispatch, statusId],
   );
 
   return (
     <Hotkeys handlers={handlers}>
       <div
-        role='button'
         className={classNames(
           `notification-group focusable notification-group--${type}`,
           {
@@ -103,7 +105,7 @@ export const NotificationGroupWithStatus: React.FC<{
             'notification-group--direct': isPrivateMention,
           },
         )}
-        tabIndex={0}
+        tabIndex={-1}
       >
         <div className='notification-group__icon'>
           <Icon icon={icon} id={iconId} />

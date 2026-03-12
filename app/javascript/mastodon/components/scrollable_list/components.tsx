@@ -43,7 +43,6 @@ export const ItemList = forwardRef<
   return (
     <>
       <div
-        role='feed'
         className={classNames('item-list', className)}
         ref={ref}
         {...otherProps}

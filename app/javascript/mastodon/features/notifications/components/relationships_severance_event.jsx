@@ -15,7 +15,7 @@ const messages = defineMessages({
   user_domain_block: { id: 'notification.relationships_severance_event.user_domain_block', defaultMessage: 'You have blocked {target}, removing {followersCount} of your followers and {followingCount, plural, one {# account} other {# accounts}} you follow.' },
 });
 
-export const RelationshipsSeveranceEvent = ({ type, target, followingCount, followersCount, hidden, unread }) => {
+export const RelationshipsSeveranceEvent = ({ type, target, followingCount, followersCount, hidden, unread, focusable = false }) => {
   const intl = useIntl();
 
   if (hidden) {
@@ -23,7 +23,7 @@ export const RelationshipsSeveranceEvent = ({ type, target, followingCount, foll
   }
 
   return (
-    <div role='button' className={classNames('notification-group notification-group--link notification-group--relationships-severance-event focusable', { 'notification-group--unread': unread })} tabIndex='0'>
+    <div className={classNames('notification-group notification-group--link notification-group--relationships-severance-event', { 'notification-group--unread': unread, focusable })} tabIndex={focusable ? -1 : undefined}>
       <div className='notification-group__icon'><Icon id='heart_broken' icon={HeartBrokenIcon} /></div>
 
       <div className='notification-group__main'>
@@ -45,4 +45,5 @@ RelationshipsSeveranceEvent.propTypes = {
   followingCount: PropTypes.number.isRequired,
   hidden: PropTypes.bool,
   unread: PropTypes.bool,
+  focusable: PropTypes.bool,
 };

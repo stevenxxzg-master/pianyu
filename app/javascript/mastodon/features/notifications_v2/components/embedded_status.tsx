@@ -97,8 +97,6 @@ export const EmbeddedStatus: React.FC<{ statusId: string }> = ({
   return (
     <AnimateEmojiProvider
       className='notification-group__embedded-status'
-      role='button'
-      tabIndex={-1}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >

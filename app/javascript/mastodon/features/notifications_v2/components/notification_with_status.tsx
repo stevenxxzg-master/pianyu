@@ -91,7 +91,6 @@ export const NotificationWithStatus: React.FC<{
   return (
     <Hotkeys handlers={handlers}>
       <div
-        role='button'
         className={classNames(
           `notification-ungrouped focusable notification-ungrouped--${type}`,
           {
@@ -99,7 +98,7 @@ export const NotificationWithStatus: React.FC<{
             'notification-ungrouped--direct': isPrivateMention,
           },
         )}
-        tabIndex={0}
+        tabIndex={-1}
       >
         <div className='notification-ungrouped__header'>
           <div className='notification-ungrouped__header__icon'>

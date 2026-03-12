@@ -9,5 +9,6 @@ export const NotificationModerationWarning: React.FC<{
     action={moderationWarning.action}
     id={moderationWarning.id}
     unread={unread}
+    focusable
   />
 );
