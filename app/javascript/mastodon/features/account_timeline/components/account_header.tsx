@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import { defineMessages, useIntl } from 'react-intl';
+
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
@@ -35,6 +37,13 @@ import { AccountNumberFields } from './number_fields';
 import redesignClasses from './redesign.module.scss';
 import { AccountTabs } from './tabs';
 
+const messages = defineMessages({
+  avatarLabel: {
+    id: 'account_header.avatar_label',
+    defaultMessage: 'View avatar for {name}',
+  },
+});
+
 const titleFromAccount = (account: Account) => {
   const displayName = account.display_name;
   const acct =
@@ -53,6 +62,7 @@ export const AccountHeader: React.FC<{
 }> = ({ accountId, hideTabs }) => {
   const isRedesign = isRedesignEnabled();
 
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useAppSelector((state) => state.accounts.get(accountId));
   const relationship = useAppSelector((state) =>
@@ -99,6 +109,10 @@ export const AccountHeader: React.FC<{
   const suspendedOrHidden = hidden || account.suspended;
   const isLocal = !account.acct.includes('@');
   const isMe = me && account.id === me;
+  const accountTitle = titleFromAccount(account);
+  const avatarLabel = intl.formatMessage(messages.avatarLabel, {
+    name: accountTitle,
+  });
 
   return (
     <div className='account-timeline__header'>
@@ -152,6 +166,7 @@ export const AccountHeader: React.FC<{
               href={account.avatar}
               rel='noopener'
               target='_blank'
+              aria-label={avatarLabel}
               onClick={handleOpenAvatar}
             >
               <Avatar
@@ -241,7 +256,7 @@ export const AccountHeader: React.FC<{
       <div ref={observedRef} />
 
       <Helmet>
-        <title>{titleFromAccount(account)}</title>
+        <title>{accountTitle}</title>
         <meta
           name='robots'
           content={isLocal && !account.noindex ? 'all' : 'noindex'}

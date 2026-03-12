@@ -43,6 +43,7 @@ interface Props {
   id: string;
   hidden?: boolean;
   unread?: boolean;
+  focusable?: boolean;
 }
 
 export const ModerationWarning: React.FC<Props> = ({
@@ -50,6 +51,7 @@ export const ModerationWarning: React.FC<Props> = ({
   id,
   hidden,
   unread,
+  focusable = false,
 }) => {
   const intl = useIntl();
 
@@ -59,12 +61,14 @@ export const ModerationWarning: React.FC<Props> = ({
 
   return (
     <div
-      role='button'
       className={classNames(
-        'notification-group notification-group--link notification-group--moderation-warning focusable',
-        { 'notification-group--unread': unread },
+        'notification-group notification-group--link notification-group--moderation-warning',
+        {
+          'notification-group--unread': unread,
+          focusable,
+        },
       )}
-      tabIndex={0}
+      tabIndex={focusable ? -1 : undefined}
     >
       <div className='notification-group__icon'>
         <Icon id='warning' icon={GavelIcon} />

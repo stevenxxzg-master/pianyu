@@ -28,12 +28,11 @@ export const NotificationAnnualReport: React.FC<{
 
   return (
     <div
-      role='button'
       className={classNames(
         'notification-group notification-group--link notification-group--annual-report focusable',
         { 'notification-group--unread': unread },
       )}
-      tabIndex={0}
+      tabIndex={-1}
     >
       <div className='notification-group__icon'>
         <Icon id='celebration' icon={CelebrationIcon} />
