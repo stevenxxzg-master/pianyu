@@ -8,12 +8,13 @@ import { Helmet } from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'mastodon/actions/server';
+import { fetchServer, fetchExtendedDescription, fetchDomainBlocks } from 'mastodon/actions/server';
 import { Account } from 'mastodon/components/account';
 import Column from 'mastodon/components/column';
 import { ServerHeroImage } from 'mastodon/components/server_hero_image';
 import { Skeleton } from 'mastodon/components/skeleton';
-import { LinkFooter} from 'mastodon/features/ui/components/link_footer';
+import { LinkFooter } from 'mastodon/features/ui/components/link_footer';
+import { getColumnSkipLinkId } from 'mastodon/features/ui/components/skip_links';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
@@ -39,14 +40,22 @@ const severityMessages = {
   },
 };
 
-const mapStateToProps = state => ({
-  server: state.getIn(['server', 'server']),
-  locale: state.getIn(['meta', 'locale']),
-  extendedDescription: state.getIn(['server', 'extendedDescription']),
-  domainBlocks: state.getIn(['server', 'domainBlocks']),
-});
+const mapStateToProps = state => {
+  const contactAccountId = state.getIn(['server', 'server', 'contact', 'account', 'id']);
 
-class About extends PureComponent {
+  return {
+    server: state.getIn(['server', 'server']),
+    locale: state.getIn(['meta', 'locale']),
+    extendedDescription: state.getIn(['server', 'extendedDescription']),
+    domainBlocks: state.getIn(['server', 'domainBlocks']),
+    contactAccountLoaded: !!(contactAccountId && state.getIn(['accounts', contactAccountId])),
+  };
+};
+
+const hasVisibleText = value => typeof value === 'string' && value.trim().length > 0;
+const mainContentId = getColumnSkipLinkId(1);
+
+export class About extends PureComponent {
 
   static propTypes = {
     server: ImmutablePropTypes.map,
@@ -57,6 +66,7 @@ class About extends PureComponent {
       isAvailable: PropTypes.bool,
       items: ImmutablePropTypes.list,
     }),
+    contactAccountLoaded: PropTypes.bool,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     multiColumn: PropTypes.bool,
@@ -74,12 +84,15 @@ class About extends PureComponent {
   };
 
   render () {
-    const { multiColumn, intl, server, extendedDescription, domainBlocks, locale } = this.props;
+    const { multiColumn, intl, server, extendedDescription, domainBlocks, locale, contactAccountLoaded } = this.props;
     const isLoading = server.get('isLoading');
+    const contactAccountId = server.getIn(['contact', 'account', 'id']);
+    const contactEmail = server.getIn(['contact', 'email']);
+    const hasContactAccount = hasVisibleText(contactAccountId);
 
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
-        <div className='scrollable about'>
+        <main className='scrollable about' id={mainContentId} tabIndex='-1'>
           <div className='about__header'>
             <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} srcSet={server.getIn(['thumbnail', 'versions'])?.map((value, key) => `${value} ${key.replace('@', '')}`).join(', ')} className='about__header__hero' />
             <h1>{isLoading ? <Skeleton width='10ch' /> : server.get('domain')}</h1>
@@ -90,7 +103,13 @@ class About extends PureComponent {
             <div className='about__meta__column'>
               <h4><FormattedMessage id='server_banner.administered_by' defaultMessage='Administered by:' /></h4>
 
-              <Account id={server.getIn(['contact', 'account', 'id'])} size={36} minimal />
+              {isLoading || (hasContactAccount && !contactAccountLoaded) ? (
+                <Skeleton width='10ch' />
+              ) : hasContactAccount ? (
+                <Account id={contactAccountId} size={36} minimal />
+              ) : (
+                <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
+              )}
             </div>
 
             <hr className='about__meta__divider' />
@@ -98,7 +117,13 @@ class About extends PureComponent {
             <div className='about__meta__column'>
               <h4><FormattedMessage id='about.contact' defaultMessage='Contact:' /></h4>
 
-              {isLoading ? <Skeleton width='10ch' /> : <a className='about__mail' href={`mailto:${server.getIn(['contact', 'email'])}`}>{server.getIn(['contact', 'email'])}</a>}
+              {isLoading ? (
+                <Skeleton width='10ch' />
+              ) : hasVisibleText(contactEmail) ? (
+                <a className='about__mail' href={`mailto:${contactEmail}`}>{contactEmail}</a>
+              ) : (
+                <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
+              )}
             </div>
           </div>
 
@@ -161,7 +186,7 @@ class About extends PureComponent {
           <div className='about__footer'>
             <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.' /></p>
           </div>
-        </div>
+        </main>
 
         <Helmet>
           <title>{intl.formatMessage(messages.title)}</title>

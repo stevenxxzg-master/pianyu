@@ -1099,6 +1099,7 @@
   "search_results.statuses": "Posts",
   "search_results.title": "Search for \"{q}\"",
   "server_banner.about_active_users": "People using this server during the last 30 days (Monthly Active Users)",
+  "server_banner.about_link": "About this server",
   "server_banner.active_users": "active users",
   "server_banner.administered_by": "Administered by:",
   "server_banner.is_one_of_many": "{domain} is one of the many independent Mastodon servers you can use to participate in the fediverse.",

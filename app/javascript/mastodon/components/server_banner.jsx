@@ -16,16 +16,25 @@ import { domain } from 'mastodon/initial_state';
 
 const messages = defineMessages({
   aboutActiveUsers: { id: 'server_banner.about_active_users', defaultMessage: 'People using this server during the last 30 days (Monthly Active Users)' },
+  aboutLink: { id: 'server_banner.about_link', defaultMessage: 'About this server' },
 });
 
-const mapStateToProps = state => ({
-  server: state.getIn(['server', 'server']),
-});
+const mapStateToProps = state => {
+  const contactAccountId = state.getIn(['server', 'server', 'contact', 'account', 'id']);
 
-class ServerBanner extends PureComponent {
+  return {
+    server: state.getIn(['server', 'server']),
+    contactAccountLoaded: !!(contactAccountId && state.getIn(['accounts', contactAccountId])),
+  };
+};
+
+const hasVisibleText = value => typeof value === 'string' && value.trim().length > 0;
+
+export class ServerBannerContent extends PureComponent {
 
   static propTypes = {
     server: PropTypes.object,
+    contactAccountLoaded: PropTypes.bool,
     dispatch: PropTypes.func,
     intl: PropTypes.object,
   };
@@ -36,8 +45,10 @@ class ServerBanner extends PureComponent {
   }
 
   render () {
-    const { server, intl } = this.props;
+    const { server, intl, contactAccountLoaded } = this.props;
     const isLoading = server.get('isLoading');
+    const contactAccountId = server.getIn(['contact', 'account', 'id']);
+    const hasContactAccount = hasVisibleText(contactAccountId);
 
     return (
       <div className='server-banner'>
@@ -45,7 +56,7 @@ class ServerBanner extends PureComponent {
           <FormattedMessage id='server_banner.is_one_of_many' defaultMessage='{domain} is one of the many independent Mastodon servers you can use to participate in the fediverse.' values={{ domain: <strong>{domain}</strong>, mastodon: <a href='https://joinmastodon.org' target='_blank' rel='noopener'>Mastodon</a> }} />
         </div>
 
-        <Link to='/about'>
+        <Link to='/about' aria-label={intl.formatMessage(messages.aboutLink)}>
           <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} className='server-banner__hero' />
         </Link>
 
@@ -65,7 +76,13 @@ class ServerBanner extends PureComponent {
           <div className='server-banner__meta__column'>
             <h4><FormattedMessage id='server_banner.administered_by' defaultMessage='Administered by:' /></h4>
 
-            <Account id={server.getIn(['contact', 'account', 'id'])} size={36} minimal />
+            {isLoading || (hasContactAccount && !contactAccountLoaded) ? (
+              <Skeleton width='10ch' />
+            ) : hasContactAccount ? (
+              <Account id={contactAccountId} size={36} minimal />
+            ) : (
+              <span><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></span>
+            )}
           </div>
 
           <div className='server-banner__meta__column'>
@@ -92,4 +109,4 @@ class ServerBanner extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(ServerBanner));
+export default connect(mapStateToProps)(injectIntl(ServerBannerContent));
