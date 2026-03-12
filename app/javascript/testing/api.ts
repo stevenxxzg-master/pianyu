@@ -4,7 +4,11 @@ import { action } from 'storybook/actions';
 
 import { toSupportedLocale } from '@/mastodon/features/emoji/locale';
 
-import { customEmojiFactory, relationshipsFactory } from './factories';
+import {
+  accountFactory,
+  customEmojiFactory,
+  relationshipsFactory,
+} from './factories';
 
 export const mockHandlers = {
   mute: http.post<{ id: string }>('/api/v1/accounts/:id/mute', ({ params }) => {
@@ -53,6 +57,33 @@ export const mockHandlers = {
     action('fetching relationships')(ids);
     return HttpResponse.json(ids.map((id) => relationshipsFactory({ id })));
   }),
+  familiarFollowers: http.get(
+    '/api/v1/accounts/familiar_followers',
+    ({ request }) => {
+      const url = new URL(request.url);
+      const ids = url.searchParams.getAll('id');
+      action('fetching familiar followers')(ids);
+      return HttpResponse.json(
+        ids.map((id) => ({
+          id,
+          accounts: [
+            accountFactory({
+              id: `${id}-mutual-1`,
+              acct: `mutual_${id}_1`,
+              username: `mutual_${id}_1`,
+              display_name: 'Mutual Writer',
+            }),
+            accountFactory({
+              id: `${id}-mutual-2`,
+              acct: `mutual_${id}_2`,
+              username: `mutual_${id}_2`,
+              display_name: 'Product Friend',
+            }),
+          ],
+        })),
+      );
+    },
+  ),
   notificationPolicy: http.get('/api/v2/notifications/policy', () => {
     action('fetching notification policy')();
     return HttpResponse.json({
