@@ -1,9 +1,9 @@
-import { Map as ImmutableMap } from 'immutable';
+import { List, Map as ImmutableMap } from 'immutable';
 
 import { STORE_HYDRATE } from '../actions/store';
 
 const initialState = ImmutableMap({
-  accept_content_types: [],
+  accept_content_types: List(),
 });
 
 export default function meta(state = initialState, action) {

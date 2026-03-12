@@ -11,11 +11,12 @@ import type { Preview } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { action } from 'storybook/actions';
 
+import { putCustomEmojiData } from '@/mastodon/features/emoji/database';
 import {
-  importCustomEmojiData,
   importLegacyShortcodes,
   importEmojiData,
 } from '@/mastodon/features/emoji/loader';
+import { IdentityContext } from '@/mastodon/identity_context';
 import type { LocaleData } from '@/mastodon/locales';
 import { reducerWithInitialState } from '@/mastodon/reducers';
 import { defaultMiddleware } from '@/mastodon/store/store';
@@ -34,6 +35,11 @@ const localeFiles = import.meta.glob('@/mastodon/locales/*.json', {
 initialize({
   onUnhandledRequest: unhandledRequestHandler,
 });
+
+const loadStorybookCustomEmojiData = async () => {
+  await putCustomEmojiData({ emojis: [], clear: true });
+  return [];
+};
 
 const preview: Preview = {
   // Auto-generate docs: https://storybook.js.org/docs/writing-docs/autodocs
@@ -107,9 +113,26 @@ const preview: Preview = {
           return getDefaultMiddleware(defaultMiddleware);
         },
       });
+
+      const meta = store.getState().meta;
+      const defaultIdentity = {
+        signedIn: Boolean(meta.get('me')),
+        accountId: (meta.get('me') as string | undefined) ?? undefined,
+        disabledAccountId:
+          (meta.get('disabled_account_id') as string | undefined) ?? undefined,
+        permissions: 0,
+      };
+
+      const identity = {
+        ...defaultIdentity,
+        ...(parameters.identity as Partial<typeof defaultIdentity> | undefined),
+      };
+
       return (
         <Provider store={store}>
-          <Story />
+          <IdentityContext.Provider value={identity}>
+            <Story />
+          </IdentityContext.Provider>
         </Provider>
       );
     },
@@ -152,25 +175,35 @@ const preview: Preview = {
       }, [theme]);
       return <Story />;
     },
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-        <Route
-          path='*'
-          // eslint-disable-next-line react/jsx-no-bind
-          render={({ location }) => {
-            if (location.pathname !== '/') {
-              action(`route change to ${location.pathname}`)(location);
-            }
-            return null;
-          }}
-        />
-      </MemoryRouter>
-    ),
+    (Story, { parameters }) => {
+      const router = parameters.router as
+        | { initialEntries?: string[]; initialIndex?: number }
+        | undefined;
+
+      return (
+        <MemoryRouter
+          initialEntries={router?.initialEntries ?? ['/']}
+          initialIndex={router?.initialIndex ?? 0}
+        >
+          <Story />
+          <Route
+            path='*'
+            // eslint-disable-next-line react/jsx-no-bind
+            render={({ location }) => {
+              if (location.pathname !== '/') {
+                action(`route change to ${location.pathname}`)(location);
+              }
+
+              return null;
+            }}
+          />
+        </MemoryRouter>
+      );
+    },
   ],
   loaders: [
     mswLoader,
-    importCustomEmojiData,
+    loadStorybookCustomEmojiData,
     importLegacyShortcodes,
     ({ globals: { locale } }) => importEmojiData(locale as string),
   ],
