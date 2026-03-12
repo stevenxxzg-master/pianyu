@@ -24,7 +24,6 @@ import { mockHandlers, unhandledRequestHandler } from '@/testing/api';
 
 import { modes } from './modes';
 
-import './mock_initial_state';
 import '../app/javascript/styles/application.scss';
 import './styles.css';
 
